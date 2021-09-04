@@ -24,8 +24,8 @@ const BasicLayout = () => {
           </div>
         </div>
         <div className={styles["bottom"]}>
-          {/* <ForceGraph width={400} height={400} /> */}
-          <StackChart width={600} height={400} />
+          <ForceGraph width={400} height={400} />
+          {/* <StackChart width={600} height={400} /> */}
         </div>
       </div>
       <div className={styles["right_menu"]}>

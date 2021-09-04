@@ -11,6 +11,8 @@ const findNodes = (event: MouseEvent, links: IGraphLink[]) => {
     return link.source.id === id || link.target.id === id;
   });
   const filteredNodesSet = new Set<string>();
+  // 如果该点没有边与其相连，不直接添加进入，则不会被高亮
+  filteredNodesSet.add(id);
   for (const link of filteredLinks) {
     filteredNodesSet.add(link.source.id);
     filteredNodesSet.add(link.target.id);
