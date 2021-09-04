@@ -5,6 +5,8 @@ import styles from "./index.less";
 import ForceGraph from "../ForceGraph";
 import ImagesDisplay from "../ImagesDisplay";
 import { Nations, icons } from "../../assets/images";
+import StackChart from "../StackChart";
+
 const BasicLayout = () => {
   return (
     <div className={styles["basic_layout"]}>
@@ -22,7 +24,8 @@ const BasicLayout = () => {
           </div>
         </div>
         <div className={styles["bottom"]}>
-          <ForceGraph width={400} height={400} />
+          {/* <ForceGraph width={400} height={400} /> */}
+          <StackChart width={600} height={400} />
         </div>
       </div>
       <div className={styles["right_menu"]}>

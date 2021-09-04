@@ -1,6 +1,4 @@
-import React from "react";
-import ValueTypeButton from "../../containers/ValueTypeButton";
-import "./index.css";
+import ValueTypeButton from "@/containers/ValueTypeButton";
 
 const LeftMenu = () => {
   return (
