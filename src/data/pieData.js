@@ -1,0 +1,30 @@
+const pieData = {
+  values: [
+    { x: "SomethingA", y: 10 },
+    { x: "SomethingB", y: 2 },
+    { x: "SomethingC", y: 3 },
+    { x: "SomethingD", y: 4 },
+    { x: "SomethingE", y: 9 },
+    { x: "SomethingF", y: 1 },
+    { x: "SomethingG", y: 2 },
+    { x: "SomethingH", y: 3 },
+    { x: "SomethingI", y: 4 },
+    { x: "SomethingJ", y: 2 },
+    { x: "SomethingK", y: 1 },
+    { x: "SomethingL", y: 3 },
+    { x: "SomethingM", y: 4 },
+    { x: "SomethingN", y: 2 },
+    { x: "SomethingO", y: 1 },
+    { x: "SomethingP", y: 3 },
+    { x: "SomethingQ", y: 4 },
+    { x: "SomethingR", y: 2 },
+    { x: "SomethingS", y: 1 },
+    { x: "SomethingT", y: 3 },
+    { x: "SomethingU", y: 4 },
+    { x: "SomethingV", y: 2 },
+    { x: "SomethingW", y: 1 },
+    { x: "SomethingX", y: 3 },
+  ],
+};
+
+export { pieData };

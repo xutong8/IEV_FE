@@ -1,0 +1,29 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint/eslint-plugin"
+  ],
+  "extends": [
+    "alloy",
+    "alloy/react",
+    "alloy/typescript",
+    "react-app",
+    "react-app/jest"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "env": {
+    // 您的环境变量（包含多个预定义的全局变量）
+    "browser": true
+  },
+  "globals": {
+    // 您的全局变量（设置为 false 表示它不允许被重新赋值）
+  },
+  "rules": {
+    // 自定义您的规则
+    "@typescript-eslint/consistent-type-assertions": "off"	
+  }
+}

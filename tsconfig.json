@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "es5", // 目标语言的版本
+    // 编译时引入的 ES 功能库，包括：es5 、es6、es7、dom 等。// 如果未设置，则默认为： target 为 es5 时: ["dom", "es5", "scripthost"]
+    //target 为 es6 时: ["dom", "es6", "dom.iterable", "scripthost"]
+    "allowJs": true, // 允许编译器编译JS，JSX文件
+    "checkJs": true, // 允许在JS文件中报错，通常与allowJS一起使用
+    "esModuleInterop": true, // 允许export=导出，由import from 导入
+    "noImplicitAny": true, // 禁用any
+    "allowSyntheticDefaultImports": true,
+    "strict": true, // 开启所有严格的类型检查
+    "module": "esnext", // 生成代码的模板标准
+    "moduleResolution": "node", // 模块解析策略，ts默认用node的解析策略，即相对的方式导入
+    "noEmit": true, // 不输出文件,即编译后不会生成任何js文件
+    "jsx": "react-jsx", //在 .tsx 中支持 JSX ：React 或 Preserve
+    "baseUrl": ".", // 解析非相对模块的基地址，默认是当前目录,
+    "resolveJsonModule": true, // 支持json格式的文件
+    // 配置别名
+    "paths": {
+      "@/*": ["src/*"],
+      "@/components/*": ["src/components/*"],
+      "@/containers/*": ["src/containers/*"],
+      "@/types/*": ["src/types/*"]
+    }
+  },
+  "include": ["src", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
