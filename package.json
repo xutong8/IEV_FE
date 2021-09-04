@@ -91,7 +91,8 @@
     "lint:fix": "eslint src/** --env browser --ext .ts,.tsx,.js,.jsx --fix",
     "prettier": "prettier --check src/**/*.{ts,tsx}",
     "prettier:fix": "prettier --check src/**/*.{ts,tsx}",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "commitlint": "commitlint -e $1"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,js,jsx,css,less}": [
@@ -170,6 +171,8 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "@types/d3": "^7.0.0",
     "@types/node": "^16.7.10",
     "@types/react": "^17.0.19",
