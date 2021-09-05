@@ -41,11 +41,35 @@
     flex-direction: row;
 
     .left {
-      flex: 6 0 0;
+      flex: 3 0 0;
+      display: flex;
+      flex-direction: column;
+
+      .topMap {
+        flex: 1 0 0;
+      }
+
+      .bottomMap {
+        flex: 1 0 0;
+        display: flex;
+        flex-direction: row;
+
+        .sourceMap {
+          flex: 1 0 0;
+        }
+
+        .middleMap {
+          flex: 1 0 0;
+        }
+
+        .targetMap {
+          flex: 1 0 0;
+        }
+      }
     }
 
     .right {
-      flex: 6 0 0;
+      flex: 2 0 0;
       display: flex;
       flex-direction: column;
 

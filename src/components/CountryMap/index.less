@@ -1,4 +1,38 @@
 .countryMap {
   width: 100%;
   height: 100%;
+
+  svg {
+    stroke: #fff;
+
+    // All layers are just path elements
+    path {
+      fill: #a82b2b;
+      cursor: pointer;
+      outline: none;
+
+      // When a layer is hovered
+      &:hover {
+        fill: rgba(168, 43, 43, 0.83);
+      }
+
+      // When a layer is focused.
+      &:focus {
+        fill: rgba(168, 43, 43, 0.6);
+      }
+
+      // When a layer is 'checked' (via checkedLayers prop).
+      &[aria-checked="true"] {
+        fill: rgba(56, 43, 168, 1);
+      }
+
+      &[aria-current="true"] {
+        fill: rgba(56, 43, 168, 0.83);
+      }
+
+      &[id="nz-can"] {
+        fill: rgba(56, 43, 168, 0.6);
+      }
+    }
+  }
 }
