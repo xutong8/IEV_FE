@@ -1,7 +1,6 @@
 import valueType from "./valueType";
 import { combineReducers } from "redux";
 import { ValueType } from "@/types";
-
 export interface IStore {
   valueType: ValueType;
 }

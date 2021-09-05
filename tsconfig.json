@@ -21,7 +21,8 @@
       "@/components/*": ["src/components/*"],
       "@/containers/*": ["src/containers/*"],
       "@/types/*": ["src/types/*"]
-    }
+    },
+    "types": ["node", "webpack-env"]
   },
   "include": ["src", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
+    "@south-paw/react-vector-maps": "^3.1.0",
     "@svgr/webpack": "5.5.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -176,6 +177,7 @@
     "@types/node": "^16.7.10",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
+    "@types/webpack-env": "^1.16.2",
     "eslint-config-alloy": "^4.3.0",
     "eslint-loader": "^4.0.2",
     "husky": "^7.0.2",
