@@ -25,14 +25,28 @@ const BasicLayout = () => {
           </div>
         </div>
         <div className={styles["bottom"]}>
-          {/* <CountryMap name="china" /> */}
-          <div className={styles.left} />
+          <div className={styles.left}>
+            <div className={styles.topMap}>
+              {/* <CountryMap name="china" /> */}
+            </div>
+            <div className={styles.bottomMap}>
+              <div className={styles.sourceMap}>
+                <CountryMap name="china" />
+              </div>
+              <div className={styles.middleMap}>
+                {/* <CountryMap name="china" /> */}
+              </div>
+              <div className={styles.targetMap}>
+                <CountryMap name="usa" />
+              </div>
+            </div>
+          </div>
           <div className={styles.right}>
             <div className={styles.force}>
-              <ForceGraph width={575} height={337} />
+              <ForceGraph width={460} height={337} />
             </div>
             <div className={styles.stack}>
-              <StackChart width={575} height={337} />
+              <StackChart width={460} height={337} />
             </div>
           </div>
         </div>
