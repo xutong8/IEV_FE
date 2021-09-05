@@ -37,7 +37,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
 
   // useEffect(() => {
   //   setInterval(() => {
-  //     setYear(year => year + 1);
+  //     setYear((year) => year + 1);
   //   }, 15000);
   // }, []);
 

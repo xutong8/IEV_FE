@@ -30,7 +30,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // x轴的scale
   const xScale = scaleLinear()
     .domain([minYear, maxYear])
-    .range([zeroPosition[0], width]);
+    .range([zeroPosition[0], width - 20]);
 
   // 最后一行的数据
   const lastItems = series[series.length - 1].map((item) => item[1]);

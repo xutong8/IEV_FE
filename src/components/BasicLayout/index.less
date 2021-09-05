@@ -37,6 +37,26 @@
 
   .bottom {
     flex: 5 0 0;
+    display: flex;
+    flex-direction: row;
+
+    .left {
+      flex: 6 0 0;
+    }
+
+    .right {
+      flex: 6 0 0;
+      display: flex;
+      flex-direction: column;
+
+      .force {
+        flex: 1 0 0;
+      }
+
+      .stack {
+        flex: 1 0 0;
+      }
+    }
   }
 }
 

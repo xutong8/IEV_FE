@@ -6,6 +6,7 @@ import ForceGraph from "../ForceGraph";
 import ImagesDisplay from "../ImagesDisplay";
 import { Nations, icons } from "../../assets/images";
 import StackChart from "../StackChart";
+import CountryMap from "../CountryMap";
 
 const BasicLayout = () => {
   return (
@@ -24,8 +25,16 @@ const BasicLayout = () => {
           </div>
         </div>
         <div className={styles["bottom"]}>
-          {/* <ForceGraph width={400} height={400} /> */}
-          <StackChart width={600} height={400} />
+          {/* <CountryMap name="china" /> */}
+          <div className={styles.left} />
+          <div className={styles.right}>
+            <div className={styles.force}>
+              <ForceGraph width={575} height={337} />
+            </div>
+            <div className={styles.stack}>
+              <StackChart width={575} height={337} />
+            </div>
+          </div>
         </div>
       </div>
       <div className={styles["right_menu"]}>

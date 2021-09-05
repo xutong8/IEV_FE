@@ -1751,6 +1751,11 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@south-paw/react-vector-maps@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.nlark.com/@south-paw/react-vector-maps/download/@south-paw/react-vector-maps-3.1.0.tgz#f4b371d14b46de8fa12a0f594e565cd7aa5278f3"
+  integrity sha1-9LNx0UtG3o+hKg9ZTlZc16pSePM=
+
 "@surma/rollup-plugin-off-main-thread@^1.1.1":
   version "1.4.2"
   resolved "https://registry.nlark.com/@surma/rollup-plugin-off-main-thread/download/@surma/rollup-plugin-off-main-thread-1.4.2.tgz?cache=0&sync_timestamp=1621527461408&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40surma%2Frollup-plugin-off-main-thread%2Fdownload%2F%40surma%2Frollup-plugin-off-main-thread-1.4.2.tgz#e6786b6af5799f82f7ab3a82e53f6182d2b91a58"
@@ -2353,6 +2358,11 @@
   integrity sha1-XoienoHpQkXHW2RQYA4cXqKHiuo=
   dependencies:
     source-map "^0.6.1"
+
+"@types/webpack-env@^1.16.2":
+  version "1.16.2"
+  resolved "https://registry.nlark.com/@types/webpack-env/download/@types/webpack-env-1.16.2.tgz?cache=0&sync_timestamp=1629709774945&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fwebpack-env%2Fdownload%2F%40types%2Fwebpack-env-1.16.2.tgz#8db514b059c1b2ae14ce9d7bb325296de6a9a0fa"
+  integrity sha1-jbUUsFnBsq4Uzp17syUpbeapoPo=
 
 "@types/webpack-sources@*":
   version "3.2.0"

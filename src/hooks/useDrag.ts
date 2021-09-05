@@ -15,7 +15,7 @@ function useDrag(selection: any, handlers: IUseDragProps) {
         .on("drag", handlers.drag)
         .on("end", handlers.end)
     );
-  }, []);
+  }, [selection, handlers]);
 }
 
 export { useDrag };
