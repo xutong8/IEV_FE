@@ -17,20 +17,23 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
 
   const [lineX, setLineX] = useState<number>(width);
 
-  const handleClick = () => {
+  // TODO: 事件解除绑定
+  const bindClick = () => {
     select(`.${styles.progressbar}`).on("click", (event: MouseEvent) => {
       const mouseX = pointer(event)[0];
       const newYear = Math.round(xScale.invert(mouseX));
       setLineX(xScale(newYear));
     });
+  };
 
-    // return () => {
-    //   select(`.${styles.progressbar}`).on("click", null);
-    // };
+  // 添加动画
+  const registerAnimation = () => {
+    select(`.${styles.tooltip}`).transition();
   };
 
   useEffect(() => {
-    handleClick();
+    bindClick();
+    registerAnimation();
   }, []);
 
   return (

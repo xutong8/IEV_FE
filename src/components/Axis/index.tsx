@@ -48,7 +48,7 @@ const Axis: React.FC<IAxisProps> = (props) => {
 
   useEffect(() => {
     select(gAxisRef.current).call(axis);
-  }, [axis]);
+  }, [axis, scale.domain()]);
 
   return (
     <g ref={gAxisRef} transform={`translate(${position[0]}, ${position[1]})`} />
