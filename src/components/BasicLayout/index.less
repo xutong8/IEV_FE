@@ -46,23 +46,44 @@
       flex-direction: column;
 
       .topMap {
-        flex: 1 0 0;
+        flex: 2 0 0;
       }
 
       .bottomMap {
-        flex: 1 0 0;
+        flex: 3 0 0;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
 
-        .sourceMap {
-          flex: 1 0 0;
+        .maps {
+          display: flex;
+          flex-direction: row;
+          .select {
+            width: 110px;
+            margin-top: 12px;
+          }
+
+          .basicMap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .sourceMap {
+            flex: 1 0 0;
+          }
+
+          .middleMap {
+            flex: 1 0 0;
+          }
+
+          .targetMap {
+            flex: 1 0 0;
+          }
         }
 
-        .middleMap {
-          flex: 1 0 0;
-        }
-
-        .targetMap {
+        .progress {
+          margin-top: 12px;
+          padding: 8px;
           flex: 1 0 0;
         }
       }
