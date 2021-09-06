@@ -17,9 +17,9 @@ const { Option } = Select;
 const BasicLayout = () => {
   const productData = useContext(projectContext);
   // 对比国家
-  const [sourceCountry, setSourceCountry] = useState<string>("China");
+  const [sourceCountry, setSourceCountry] = useState<string>("china");
   // 参照国家
-  const [targetCountry, setTargetCountry] = useState<string>("Usa");
+  const [targetCountry, setTargetCountry] = useState<string>("usa");
 
   return (
     <div className={styles["basic_layout"]}>

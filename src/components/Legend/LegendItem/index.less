@@ -1,0 +1,19 @@
+.legend_item {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1px;
+  margin: 0 2px;
+
+  .legend_swatch {
+    width: 15px;
+    height: 15px;
+    margin: 0 0.5em 0 0;
+  }
+
+  .legend_label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 15px - 0.5em);
+  }
+}

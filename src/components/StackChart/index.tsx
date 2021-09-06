@@ -1,20 +1,20 @@
 import { scaleLinear, scaleOrdinal } from "d3-scale";
-import { schemeCategory10 } from "d3";
+import { schemeCategory10, schemeAccent } from "d3";
 import { area, stack } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
 import { areaData } from "@/utils/processAreaData";
 import { useMemo } from "react";
 import Path from "../Path";
+import Legend from "../Legend";
 
 export interface IStackChartProps {
   width: number;
   height: number;
 }
-
 const StackChart: React.FC<IStackChartProps> = (props) => {
   const { width, height } = props;
 
-  const zeroPosition = [100, height - 20];
+  const zeroPosition = [100, height - 40];
 
   // 映射获得年数组
   const years = useMemo(() => areaData.map((item) => item.date), []);
@@ -39,7 +39,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const maxY = useMemo(() => Math.max(...lastItems), [lastItems]);
 
   // y轴的scale
-  const yScale = scaleLinear().domain([0, maxY]).range([zeroPosition[1], 20]);
+  const yScale = scaleLinear().domain([0, maxY]).range([zeroPosition[1], 60]);
 
   const areaFunc = area()
     .x((d: any) => xScale(Number(d.data.date)))
@@ -54,7 +54,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     <svg width={width} height={height}>
       <Axis
         scale={xScale}
-        position={[0, zeroPosition[1]]}
+        position={[0, zeroPosition[1] + 40]}
         direction={DirectionValue.BOTTOM}
       />
       <Axis
