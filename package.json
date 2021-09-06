@@ -94,13 +94,15 @@
     "prettier": "prettier --check src/**/*.{ts,tsx}",
     "prettier:fix": "prettier --check src/**/*.{ts,tsx}",
     "lint-staged": "lint-staged",
-    "commitlint": "commitlint -e $1"
+    "commitlint": "commitlint -e $1",
+    "stylelint": "stylelint --fix"
   },
   "lint-staged": {
+    "src/**/*.{ts,tsx,js,jsx}": "yarn run lint",
+    "src/**/*.{css,less}": "yarn run stylelint",
     "src/**/*.{ts,tsx,js,jsx,css,less}": [
       "prettier --write"
-    ],
-    "src/**/*.{ts,tsx,js,jsx}": "yarn run lint"
+    ]
   },
   "browserslist": {
     "production": [
@@ -183,6 +185,10 @@
     "eslint-loader": "^4.0.2",
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "stylelint": "^13.13.1",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-order": "^4.1.0"
   }
 }
