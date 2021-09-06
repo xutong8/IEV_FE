@@ -95,7 +95,7 @@
     "prettier:fix": "prettier --check src/**/*.{ts,tsx} --fix",
     "lint-staged": "lint-staged --allow-empty",
     "commitlint": "commitlint -e $1",
-    "stylelint": "stylelint --fix"
+    "stylelint": "stylelint"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,js,jsx}": "yarn run lint",
