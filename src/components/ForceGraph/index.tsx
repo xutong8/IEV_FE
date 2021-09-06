@@ -189,4 +189,4 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   );
 };
 
-export default ForceGraph;
+export default React.memo(ForceGraph);
