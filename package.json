@@ -93,12 +93,14 @@
     "lint:fix": "eslint src/** --env browser --ext .ts,.tsx,.js,.jsx --fix",
     "prettier": "prettier --check src/**/*.{ts,tsx}",
     "prettier:fix": "prettier --check src/**/*.{ts,tsx}",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "commitlint": "commitlint -e $1"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,js,jsx,css,less}": [
       "prettier --write"
-    ]
+    ],
+    "src/**/*.{ts,tsx,js,jsx}": "yarn run lint"
   },
   "browserslist": {
     "production": [
