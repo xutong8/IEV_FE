@@ -4,6 +4,7 @@ import Axis, { DirectionValue } from "../Axis";
 import styles from "./index.less";
 import { select } from "d3-selection";
 import { pointer } from "d3";
+import { useTransition } from "@/hooks/useTransition";
 
 export interface IProgressBarProps {
   width: number;
@@ -36,16 +37,40 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     registerAnimation();
   }, []);
 
+  useTransition({
+    className: "transition",
+    value: [
+      {
+        width: lineX,
+      },
+      {
+        width: lineX,
+      },
+      {
+        width: lineX,
+      },
+      {
+        width: lineX,
+      },
+      {
+        width: lineX,
+      },
+    ],
+  });
+
   return (
     <svg width={width} height={height} className={styles.progressbar}>
       <foreignObject width="100%" height="100%">
         <div
+          className="transition"
           style={{ width: lineX, height: 10, background: "red", opacity: 0.6 }}
         />
         <div
+          className="transition"
           style={{ width: lineX, height: 10, background: "blue", opacity: 0.6 }}
         />
         <div
+          className="transition"
           style={{
             width: lineX,
             height: 10,
@@ -54,9 +79,11 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
           }}
         />
         <div
+          className="transition"
           style={{ width: lineX, height: 10, background: "pink", opacity: 0.6 }}
         />
         <div
+          className="transition"
           style={{
             width: lineX,
             height: 10,
