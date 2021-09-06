@@ -3,8 +3,10 @@ import { schemeCategory10 } from "d3";
 import { area, stack } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
 import { areaData } from "@/utils/processAreaData";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Path from "../Path";
+import { brushX } from "d3-brush";
+import { select } from "d3-selection";
 
 export interface IStackChartProps {
   width: number;
@@ -14,7 +16,7 @@ export interface IStackChartProps {
 const StackChart: React.FC<IStackChartProps> = (props) => {
   const { width, height } = props;
 
-  const zeroPosition = [100, height - 20];
+  const zeroPosition = useMemo(() => [100, height - 120], [height]);
 
   // 映射获得年数组
   const years = useMemo(() => areaData.map((item) => item.date), []);
@@ -24,13 +26,63 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const maxYear = useMemo(() => Math.max(...years), [years]);
 
   // 使用stack函数计算得到堆叠后的数据
-  const series = stack().keys((areaData as any).columns.slice(1))(areaData);
+  const series = useMemo(
+    () => stack().keys((areaData as any).columns.slice(1))(areaData),
+    []
+  );
 
   // TODO: 修改domain
   // x轴的scale
-  const xScale = scaleLinear()
-    .domain([minYear, maxYear])
-    .range([zeroPosition[0], width - 20]);
+  const xScale = useMemo(
+    () =>
+      scaleLinear()
+        .domain([minYear, maxYear])
+        .range([zeroPosition[0], width - 20]),
+    [minYear, maxYear, zeroPosition, width]
+  );
+
+  // brush的scale
+  const brushScale = useMemo(
+    () =>
+      scaleLinear()
+        .domain([minYear, maxYear])
+        .range([zeroPosition[0], width - 20]),
+    [minYear, maxYear, zeroPosition, width]
+  );
+
+  // brush ref
+  const brushRef = useRef<SVGGElement>(null);
+
+  // 强制组件更新
+  const [, forceUpdate] = useState<number>(0);
+
+  // brush的处理函数
+  const brushed = useMemo(
+    () => (event: any) => {
+      const selection = event.selection || brushScale.range();
+      xScale.domain(selection.map(brushScale.invert, brushScale));
+      forceUpdate((prev) => prev + 1);
+    },
+    [brushScale, xScale]
+  );
+
+  // 创建一个brush
+  const brush = useMemo(
+    () =>
+      brushX()
+        .extent([
+          [zeroPosition[0], 0],
+          [width - 20, 40],
+        ])
+        .on("brush end", brushed),
+    [width, zeroPosition, brushed]
+  );
+
+  useEffect(() => {
+    select(brushRef.current as SVGGElement)
+      .call(brush)
+      .call(brush.move, xScale.range());
+  }, []);
 
   // 最后一行的数据
   const lastItems = series[series.length - 1].map((item) => item[1]);
@@ -52,29 +104,49 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   return (
     <svg width={width} height={height}>
-      <Axis
-        scale={xScale}
-        position={[0, zeroPosition[1]]}
-        direction={DirectionValue.BOTTOM}
-      />
-      <Axis
-        scale={yScale}
-        position={[zeroPosition[0], 0]}
-        direction={DirectionValue.LEFT}
-      />
+      <defs>
+        <clipPath id="clip">
+          <rect
+            x={zeroPosition[0]}
+            y={0}
+            width={width - 20 - zeroPosition[0]}
+            height={zeroPosition[1]}
+          />
+        </clipPath>
+      </defs>
       <g>
-        {series.map((item: any, index: number) => {
-          return (
-            <Path
-              id={item.key as string}
-              key={index}
-              attributes={{
-                fill: colorScale(String(index)) as string,
-                d: areaFunc(item) as string,
-              }}
-            />
-          );
-        })}
+        <Axis
+          scale={xScale}
+          position={[0, zeroPosition[1]]}
+          direction={DirectionValue.BOTTOM}
+        />
+        <Axis
+          scale={yScale}
+          position={[zeroPosition[0], 0]}
+          direction={DirectionValue.LEFT}
+        />
+        <g clipPath="url(#clip)">
+          {series.map((item: any, index: number) => {
+            return (
+              <Path
+                id={item.key as string}
+                key={index}
+                attributes={{
+                  fill: colorScale(String(index)) as string,
+                  d: areaFunc(item) as string,
+                }}
+              />
+            );
+          })}
+        </g>
+      </g>
+      <g transform={`translate(0, ${zeroPosition[1] + 20})`}>
+        <Axis
+          scale={brushScale}
+          position={[0, 40]}
+          direction={DirectionValue.BOTTOM}
+        />
+        <g ref={brushRef} />
       </g>
     </svg>
   );
