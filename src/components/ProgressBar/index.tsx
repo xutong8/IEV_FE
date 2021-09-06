@@ -53,18 +53,26 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
         <div
           style={{ width: lineX, height: 10, background: "pink", opacity: 0.6 }}
         />
+        <div
+          style={{
+            width: lineX,
+            height: 10,
+            background: "purple",
+            opacity: 0.6,
+          }}
+        />
       </foreignObject>
       <line
         className={styles.tooltip}
         x1={lineX}
         y1={0}
         x2={lineX}
-        y2={40}
+        y2={50}
         strokeWidth={4}
       />
       <Axis
         direction={DirectionValue.BOTTOM}
-        position={[0, 40]}
+        position={[0, 50]}
         scale={xScale}
       />
     </svg>
