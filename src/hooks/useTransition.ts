@@ -6,8 +6,8 @@ const DEFAULT_TRANSITION_DURATION = 800;
 
 const useTransition: (props: {
   className: string;
-  value: any[];
-  deps?: [];
+  value: any[] | any;
+  deps?: any[];
   intial?: any;
   duration?: number;
   easingFunction?: any;
@@ -37,14 +37,11 @@ const useTransition: (props: {
 
     const attrNames = Object.keys(attrState[0]);
 
-    console.log(attrNames);
-
     attrNames.forEach((attrName) => {
       transitions.each((d, index: number, nodes) => {
-        const transition = nodes[index] as any;
-        console.log("nodes: ", nodes);
-        console.log("transition: ", transition, index);
-        transitions.select(transition).attr(attrName, value[index][attrName]);
+        transitions
+          .filter((d, idx: number) => index === idx)
+          .attr(attrName, value[index][attrName]);
       });
     });
 
