@@ -96,10 +96,10 @@ const BasicLayout = () => {
           </div>
           <div className={styles.right}>
             <div className={styles.force}>
-              <ForceGraph width={460} height={337} />
+              <ForceGraph width={460} height={310} />
             </div>
             <div className={styles.stack}>
-              <StackChart width={460} height={337} />
+              <StackChart width={460} height={310} />
             </div>
           </div>
         </div>
