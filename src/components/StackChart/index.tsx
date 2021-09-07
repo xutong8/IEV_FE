@@ -60,7 +60,12 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const brushed = useMemo(
     () => (event: any) => {
       const selection = event.selection || brushScale.range();
-      xScale.domain(selection.map(brushScale.invert, brushScale));
+      xScale.domain(
+        selection.map(
+          (s: number) => Math.round(brushScale.invert(s)),
+          brushScale
+        )
+      );
       forceUpdate((prev) => prev + 1);
     },
     [brushScale, xScale]

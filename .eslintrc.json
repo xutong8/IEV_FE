@@ -1,8 +1,6 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint/eslint-plugin"
-  ],
+  "plugins": ["@typescript-eslint/eslint-plugin"],
   "extends": [
     "alloy",
     "alloy/react",
@@ -24,6 +22,7 @@
   },
   "rules": {
     // 自定义您的规则
-    "@typescript-eslint/consistent-type-assertions": "off"	
+    "@typescript-eslint/consistent-type-assertions": "off",
+    "no-debugger": "off"
   }
 }
