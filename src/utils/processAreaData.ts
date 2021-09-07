@@ -1,4 +1,4 @@
-import totalData from "../data/57-63_countries-trades_HS92_total_V202102.json";
+import totalData from "../data/totalData.json";
 
 const keys = [] as any;
 
