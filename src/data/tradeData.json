@@ -1,0 +1,46 @@
+{
+  "1995": {
+    "China": {
+      "Rice": {
+        "expmap": {
+          "Japan": 1050,
+          "Usa": 1150
+        },
+        "exptotal": 2200,
+        "imptotal": 3780,
+        "impmap": {
+          "Japan": 1180,
+          "Usa": 2600
+        }
+      }
+    },
+    "Japan": {
+      "Rice": {
+        "expmap": {
+          "China": 200,
+          "Usa": 875
+        },
+        "exptotal": 1075,
+        "imptotal": 3390,
+        "impmap": {
+          "China": 1290,
+          "Usa": 2100
+        }
+      }
+    },
+    "Usa": {
+      "Rice": {
+        "expmap": {
+          "China": 1360,
+          "Usa": 500
+        },
+        "exptotal": 1860,
+        "imptotal": 1900,
+        "impmap": {
+          "China": 1180,
+          "Usa": 720
+        }
+      }
+    }
+  }
+}
