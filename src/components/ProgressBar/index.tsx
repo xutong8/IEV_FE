@@ -11,7 +11,7 @@ export interface IProgressBarProps {
   height: number;
 }
 
-const colors = ["red", "blue", "yellow", "pink", "purple"];
+const colors = ["red", "blue", "yellow", "pink", "purple", "orange"];
 
 const ProgressBar: React.FC<IProgressBarProps> = (props) => {
   const { width, height } = props;
@@ -25,6 +25,12 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     x2: lineX,
   });
   const [values, setValues] = useState<any>([
+    {
+      width: lineX,
+    },
+    {
+      width: lineX,
+    },
     {
       width: lineX,
     },
@@ -106,12 +112,12 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
         y1={0}
         x2={lineAttrState.x2 as number}
         // x2={lineX}
-        y2={50}
+        y2={60}
         strokeWidth={4}
       />
       <Axis
         direction={DirectionValue.BOTTOM}
-        position={[0, 50]}
+        position={[0, 60]}
         scale={xScale}
       />
     </svg>

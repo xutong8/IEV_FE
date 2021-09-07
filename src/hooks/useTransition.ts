@@ -6,7 +6,7 @@ const DEFAULT_TRANSITION_DURATION = 800;
 
 const useTransition: (props: {
   className: string;
-  value: any[] | any;
+  value: any[];
   deps?: any[];
   intial?: any;
   duration?: number;
@@ -19,7 +19,7 @@ const useTransition: (props: {
   duration = null,
   easingFunction = null,
 }) => {
-  const [attrState, setAttrState] = useState(intial || value);
+  const [attrState, setAttrState] = useState<any>(intial || value);
 
   const executeTransition = () => {
     if (!className) return;
@@ -52,7 +52,7 @@ const useTransition: (props: {
     return () => elements.interrupt() as any;
   };
 
-  useEffect(executeTransition, [...deps]);
+  useEffect(executeTransition, deps);
 
   return {
     attrState,
