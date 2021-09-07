@@ -100,7 +100,9 @@
   "lint-staged": {
     "src/**/*.{ts,tsx,js,jsx,css,less}": [
       "prettier --write"
-    ]
+    ],
+    "src/**/*.{ts,tsx,js,jsx}": "yarn run lint",
+    "src/**/*.{css,less}": "yarn run stylelint"
   },
   "browserslist": {
     "production": [
