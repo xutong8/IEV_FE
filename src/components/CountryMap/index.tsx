@@ -17,8 +17,6 @@ const CountryMap: React.FC<ICountryMapProps> = (props) => {
     [projectData, name]
   );
 
-  console.log("a: ", projectData);
-
   return (
     <div className={styles.countryMap}>
       {attributes && <VectorMap {...attributes} />}

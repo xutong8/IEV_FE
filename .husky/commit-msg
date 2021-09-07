@@ -1,5 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo $1
-npx commitlint -e $1
+yarn run commitlint 

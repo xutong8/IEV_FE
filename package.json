@@ -94,13 +94,12 @@
     "prettier": "prettier --check src/**/*.{ts,tsx}",
     "prettier:fix": "prettier --check src/**/*.{ts,tsx}",
     "lint-staged": "lint-staged",
-    "commitlint": "commitlint -e $1"
+    "commitlint": "commitlint -e .git/COMMIT_EDITMSG"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,js,jsx,css,less}": [
       "prettier --write"
-    ],
-    "src/**/*.{ts,tsx,js,jsx}": "yarn run lint"
+    ]
   },
   "browserslist": {
     "production": [
