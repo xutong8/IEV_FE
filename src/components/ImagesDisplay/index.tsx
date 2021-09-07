@@ -1,4 +1,4 @@
-import ImageItem, { Image } from "../ImageItem";
+import ImageItem, { Image } from "./ImageItem";
 import styles from "./index.less";
 
 export interface IImagesDisplayProps {
