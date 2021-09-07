@@ -92,10 +92,11 @@
     "lint": "eslint src/** --env browser --ext .ts,.tsx,.js,.jsx ",
     "lint:fix": "eslint src/** --env browser --ext .ts,.tsx,.js,.jsx --fix",
     "prettier": "prettier --check src/**/*.{ts,tsx}",
-    "prettier:fix": "prettier --check src/**/*.{ts,tsx}",
-    "lint-staged": "lint-staged",
-    "commitlint": "commitlint -e .git/COMMIT_EDITMSG"
-  },
+    "commitlint": "commitlint -e .git/COMMIT_EDITMSG",
+    "prettier:fix": "prettier --check src/**/*.{ts,tsx} --fix",
+    "lint-staged": "lint-staged --allow-empty",
+    "stylelint": "stylelint"
+  }, 
   "lint-staged": {
     "src/**/*.{ts,tsx,js,jsx,css,less}": [
       "prettier --write"
@@ -182,6 +183,10 @@
     "eslint-loader": "^4.0.2",
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "stylelint": "^13.13.1",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-order": "^4.1.0"
   }
 }
