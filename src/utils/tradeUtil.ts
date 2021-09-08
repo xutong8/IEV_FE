@@ -1,20 +1,9 @@
 import tradeData from "@/data/tradeData.json";
-
+import { ICountry, ITradeCountry } from "@/types/index";
 export interface ITradeItem {
   countryName: string;
   imptotal: number;
   exptotal: number;
-}
-
-interface ICountry {
-  [country: string]: number;
-}
-
-export interface ITradeCountry {
-  expmap: ICountry;
-  exptotal: number;
-  impmap: ICountry;
-  imptotal: number;
 }
 
 const getLittleTradeData = (

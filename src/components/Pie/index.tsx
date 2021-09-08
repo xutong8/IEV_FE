@@ -19,9 +19,10 @@ export interface IPieData {
 
 const Pie: React.FC<IPie> = (prop) => {
   const { width, height } = prop;
+
   const data = useMemo(() => pieData, [pieData]);
   const [innerRadius, outerRadius] = useMemo(() => {
-    const radius = Math.min(width, height) / 2;
+    const radius = Math.min(width - 20, height - 20) / 2;
     return [radius * 0.75, radius - 10];
   }, [width, height]);
 
@@ -48,7 +49,6 @@ const Pie: React.FC<IPie> = (prop) => {
       <g transform={translation}>
         {pieDrawData.map((item, index) => {
           const itemCenter = arcData.centroid(item);
-          console.log("item: ", item);
           return (
             <g key={item.index}>
               <Wedge
@@ -66,9 +66,9 @@ const Pie: React.FC<IPie> = (prop) => {
                 textAnchor="middle"
                 transform={`rotate(${
                   (180 * (item.startAngle + item.endAngle)) / 2 / Math.PI
-                }) translate(0, -22)`}
+                }) translate(10, -18)`}
               >
-                {item.data.type + ": " + item.data.value}
+                {item.data.type}
               </text>
             </g>
           );
