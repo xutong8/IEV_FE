@@ -18,7 +18,7 @@ const Pie: React.FC<IPie> = (prop) => {
     .innerRadius(innerRadius)
     .outerRadius(outerRadius)
     .padRadius(padRadius);
-  const translation = `translate(${innerWidth / 2}, ${innerHeight / 2})`;
+  // const translation = `translate(${innerWidth / 2}, ${innerHeight / 2})`;
 
   return (
     <svg width={width} height={height}>
