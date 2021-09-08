@@ -1,5 +1,5 @@
 export interface IWedge {
-  d: string;
+  d: any;
   fill: string;
 }
 

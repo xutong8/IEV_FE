@@ -3,6 +3,7 @@ import LeftMenu from "../LeftMenu";
 import styles from "./index.less";
 import ForceGraph from "../ForceGraph";
 import ImagesDisplay from "../ImagesDisplay";
+import Pie from "../Pie";
 import { Nations, icons } from "../../assets/images";
 import StackChart from "../StackChart";
 import CountryMap from "../CountryMap";
@@ -66,6 +67,7 @@ const BasicLayout = () => {
                 </div>
                 <div className={styles.middleMap}>
                   {/* <CountryMap name="china" /> */}
+                  <Pie width={400} height={400} />
                 </div>
                 <div
                   className={cn({
