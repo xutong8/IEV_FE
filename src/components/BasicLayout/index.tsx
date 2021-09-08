@@ -2,6 +2,7 @@ import SearchTableWithStore from "@/containers/SearchTableWithStore";
 import LeftMenu from "../LeftMenu";
 import styles from "./index.less";
 import ForceGraph from "../ForceGraph";
+import Pie from "../Pie";
 import ImagesDisplay from "../Images";
 import { Nations, icons } from "../../assets/images";
 import StackChart from "../StackChart";
@@ -53,7 +54,10 @@ const BasicLayout = () => {
                     [styles.basicMap]: true,
                   })}
                 >
-                  <CountryMap name={sourceCountry} />
+                  <CountryMap
+                    name={sourceCountry}
+                    style={{ transform: "translate(0, 10%)" }}
+                  />
                   <Select
                     className={styles.select}
                     value={sourceCountry}
@@ -70,6 +74,16 @@ const BasicLayout = () => {
                 </div>
                 <div className={styles.middleMap}>
                   {/* <CountryMap name="china" /> */}
+                  <Pie width={320} height={300} />
+                  <CountryMap
+                    name="World"
+                    style={{
+                      position: "absolute",
+                      left: "50%",
+                      top: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  />
                 </div>
                 <div
                   className={cn({
@@ -77,7 +91,10 @@ const BasicLayout = () => {
                     [styles.basicMap]: true,
                   })}
                 >
-                  <CountryMap name={targetCountry} />
+                  <CountryMap
+                    name={targetCountry}
+                    style={{ transform: "translate(0, 10%)" }}
+                  />
                   <Select
                     className={styles.select}
                     value={targetCountry}
