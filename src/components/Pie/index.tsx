@@ -2,7 +2,6 @@ import { pie, arc } from "d3";
 import Wedge from "./Wedge";
 import { IItemPieData, pieData, selectCountries } from "@/utils/processPieData";
 import { useMemo } from "react";
-import { workerData } from "worker_threads";
 
 export interface IPie {
   width: number;

@@ -2,8 +2,8 @@ import SearchTableWithStore from "@/containers/SearchTableWithStore";
 import LeftMenu from "../LeftMenu";
 import styles from "./index.less";
 import ForceGraph from "../ForceGraph";
-import ImagesDisplay from "../ImagesDisplay";
 import Pie from "../Pie";
+import ImagesDisplay from "../Images";
 import { Nations, icons } from "../../assets/images";
 import StackChart from "../StackChart";
 import CountryMap from "../CountryMap";
@@ -12,6 +12,8 @@ import { useContext, useState } from "react";
 import { projectContext } from "@/context/projectData";
 import cn from "classnames";
 import ProgressBar from "../ProgressBar";
+import BarChart from "../ComposedBarChart/BarChart";
+import ComposedBarChart from "../ComposedBarChart";
 
 const { Option } = Select;
 
@@ -40,7 +42,13 @@ const BasicLayout = () => {
         <div className={styles["bottom"]}>
           <div className={styles.left}>
             <div className={styles.topMap}>
-              {/* <CountryMap name="china" /> */}
+              <ComposedBarChart
+                width={200}
+                height={60}
+                countryNames={["China", "Usa", "Japan"]}
+                year="1995"
+                category="Rice"
+              />
             </div>
             <div className={styles.bottomMap}>
               <div className={styles.maps}>
