@@ -22,7 +22,7 @@ const Pie: React.FC<IPie> = (prop) => {
   const { width, height } = prop;
   const data = useMemo(() => pieData, [pieData]);
   const [innerRadius, outerRadius] = useMemo(() => {
-    const radius = Math.min(width, height);
+    const radius = Math.min(width, height) / 2;
     return [radius * 0.8, radius - 10];
   }, [width, height]);
 

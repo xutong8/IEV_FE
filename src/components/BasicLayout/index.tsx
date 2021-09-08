@@ -68,6 +68,16 @@ const BasicLayout = () => {
                 <div className={styles.middleMap}>
                   {/* <CountryMap name="china" /> */}
                   <Pie width={400} height={400} />
+                  <CountryMap
+                    name="World"
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      right: 0,
+                      top: "50%",
+                      transform: "translate(0, -50%)",
+                    }}
+                  />
                 </div>
                 <div
                   className={cn({
