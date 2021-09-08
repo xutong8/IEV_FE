@@ -18,9 +18,6 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
     category
   );
 
-  console.log("dataSource: ", dataSource);
-  console.log("max: ", maxValue);
-
   // color scale
   const colorScale = scaleLinear<string>()
     .domain([0, maxValue])

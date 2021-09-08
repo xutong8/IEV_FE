@@ -5,14 +5,19 @@
         "expmap": {
           "Japan": 1050,
           "Usa": 1150,
-          "England": 1200
+          "England": 1200,
+          "Italy": 200,
+          "Germany": 150,
+          "France": 100
         },
-        "exptotal": 3400,
-        "imptotal": 3980,
+        "exptotal": 3850,
+        "imptotal": 4480,
         "impmap": {
           "Japan": 1180,
           "Usa": 2600,
-          "England": 200
+          "England": 200,
+          "Italy": 200,
+          "France": 100
         }
       }
     },
@@ -21,14 +26,20 @@
         "expmap": {
           "China": 200,
           "Usa": 875,
-          "England": 400
+          "England": 400,
+          "Italy": 200,
+          "Germany": 150,
+          "France": 100
         },
-        "exptotal": 1475,
-        "imptotal": 3600,
+        "exptotal": 1925,
+        "imptotal": 4050,
         "impmap": {
           "China": 1290,
           "Usa": 2100,
-          "England": 210
+          "England": 210,
+          "Italy": 200,
+          "Germany": 150,
+          "France": 100
         }
       }
     },
@@ -37,14 +48,20 @@
         "expmap": {
           "China": 1360,
           "Japan": 500,
-          "England": 240
+          "England": 240,
+          "Italy": 200,
+          "Germany": 150,
+          "France": 100
         },
-        "exptotal": 2100,
-        "imptotal": 2200,
+        "exptotal": 2550,
+        "imptotal": 2670,
         "impmap": {
           "China": 1180,
           "Japan": 720,
-          "England": 320
+          "England": 320,
+          "Italy": 200,
+          "Germany": 150,
+          "Fance": 100
         }
       }
     },
@@ -53,15 +70,87 @@
         "expmap": {
           "China": 850,
           "Japan": 250,
-          "Usa": 1200
+          "Usa": 1200,
+          "Italy": 200,
+          "Germany": 150,
+          "France": 100
         },
-        "exptotal": 2300,
+        "exptotal": 2650,
         "impmap": {
           "China": 850,
           "Japan": 250,
-          "Usa": 1200
+          "Usa": 1200,
+          "Italy": 200,
+          "Germany": 150,
+          "France": 100
         },
-        "imptotal": 2300
+        "imptotal": 2650
+      }
+    },
+    "Germany": {
+      "Rice": {
+        "expmap": {
+          "Japan": 1050,
+          "Usa": 1150,
+          "England": 1200,
+          "Italy": 150,
+          "China": 500,
+          "Fance": 100
+        },
+        "exptotal": 4050,
+        "impmap": {
+          "Japan": 1050,
+          "Usa": 1150,
+          "England": 1200,
+          "Italy": 150,
+          "China": 500,
+          "France": 100
+        },
+        "imptotal": 4050
+      }
+    },
+    "Italy": {
+      "Rice": {
+        "expmap": {
+          "Japan": 1050,
+          "Usa": 1150,
+          "England": 1200,
+          "Germany": 150,
+          "China": 500,
+          "France": 100
+        },
+        "exptotal": 4050,
+        "impmap": {
+          "Japan": 1050,
+          "Usa": 1150,
+          "England": 1200,
+          "Germany": 150,
+          "China": 500,
+          "France": 100
+        },
+        "imptotal": 4050
+      }
+    },
+    "France": {
+      "Rice": {
+        "expmap": {
+          "Japan": 1050,
+          "Usa": 1150,
+          "England": 1200,
+          "Germany": 150,
+          "China": 500,
+          "Italy": 100
+        },
+        "exptotal": 4050,
+        "impmap": {
+          "Japan": 1050,
+          "Usa": 1150,
+          "England": 1200,
+          "Germany": 150,
+          "China": 500,
+          "Italy": 100
+        },
+        "imptotal": 4050
       }
     }
   }
