@@ -22,7 +22,7 @@ const Pie: React.FC<IPie> = (prop) => {
   const data = useMemo(() => pieData, [pieData]);
   const [innerRadius, outerRadius] = useMemo(() => {
     const radius = Math.min(width, height) / 2;
-    return [radius * 0.8, radius - 10];
+    return [radius * 0.75, radius - 10];
   }, [width, height]);
 
   const pieDrawData = useMemo(
@@ -48,6 +48,7 @@ const Pie: React.FC<IPie> = (prop) => {
       <g transform={translation}>
         {pieDrawData.map((item, index) => {
           const itemCenter = arcData.centroid(item);
+          console.log("item: ", item);
           return (
             <g key={item.index}>
               <Wedge
@@ -58,13 +59,16 @@ const Pie: React.FC<IPie> = (prop) => {
                     : "#d2796f"
                 }
               />
-              <text x={itemCenter[0]} y={itemCenter[1]} textAnchor="middle">
-                <tspan x={itemCenter[0]} y={itemCenter[1] - 6}>
-                  {item.data.country}
-                </tspan>
-                <tspan x={itemCenter[0]} y={itemCenter[1] + 6}>
-                  {item.data.type + ": " + item.data.value}
-                </tspan>
+              <text
+                x={itemCenter[0]}
+                y={itemCenter[1]}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+                textAnchor="middle"
+                transform={`rotate(${
+                  (180 * (item.startAngle + item.endAngle)) / 2 / Math.PI
+                }) translate(0, -22)`}
+              >
+                {item.data.type + ": " + item.data.value}
               </text>
             </g>
           );

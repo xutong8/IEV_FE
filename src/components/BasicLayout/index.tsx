@@ -58,7 +58,10 @@ const BasicLayout = () => {
                     [styles.basicMap]: true,
                   })}
                 >
-                  <CountryMap name={sourceCountry} />
+                  <CountryMap
+                    name={sourceCountry}
+                    style={{ transform: "translate(0, 10%)" }}
+                  />
                   <Select
                     className={styles.select}
                     value={sourceCountry}
@@ -75,15 +78,14 @@ const BasicLayout = () => {
                 </div>
                 <div className={styles.middleMap}>
                   {/* <CountryMap name="china" /> */}
-                  <Pie width={400} height={400} />
+                  <Pie width={320} height={300} />
                   <CountryMap
                     name="World"
                     style={{
                       position: "absolute",
-                      left: 0,
-                      right: 0,
+                      left: "50%",
                       top: "50%",
-                      transform: "translate(0, -50%)",
+                      transform: "translate(-50%, -50%)",
                     }}
                   />
                 </div>
@@ -93,7 +95,10 @@ const BasicLayout = () => {
                     [styles.basicMap]: true,
                   })}
                 >
-                  <CountryMap name={targetCountry} />
+                  <CountryMap
+                    name={targetCountry}
+                    style={{ transform: "translate(0, 10%)" }}
+                  />
                   <Select
                     className={styles.select}
                     value={targetCountry}
