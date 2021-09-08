@@ -56,7 +56,6 @@ function initializeData() {
     const curCountry = (totalData as ITotalData)["1995"][id];
     keys.push(curCountry.iso_2digit_alpha);
   });
-
   (areaData as IAreaData).columns = Object.keys(areaData[0]);
 
   return areaData;
