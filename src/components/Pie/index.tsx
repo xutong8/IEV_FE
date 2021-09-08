@@ -23,16 +23,16 @@ const Pie: React.FC<IPie> = (prop) => {
   return (
     <svg width={width} height={height}>
       {/* <g>
-                {
-                    pieData.map((item, index) => (
-                        <Wedge
-                            key={item.toString()}
-                            d={arcData(item)}
-                            fill={colorScale(e.data)}
-                        />
-                    ))
-                }
-            </g> */}
+        {
+          pieData.map((item, index) => (
+            <Wedge
+              key={item.toString()}
+              d={arcData(item)}
+              fill={colorScale(e.data)}
+            />
+          ))
+        }
+      </g> */}
     </svg>
   );
 };
