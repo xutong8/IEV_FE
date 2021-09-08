@@ -26,6 +26,7 @@ const CountryMap: React.FC<ICountryMapProps> = (props) => {
         [styles.countryMap]: true,
         [styles.large]: large,
       })}
+      style={style}
     >
       {attributes && <VectorMap {...attributes} />}
     </div>

@@ -73,8 +73,7 @@ const BasicLayout = () => {
                   </Select>
                 </div>
                 <div className={styles.middleMap}>
-                  {/* <CountryMap name="china" /> */}
-                  <Pie width={320} height={300} />
+                  <Pie width={320} height={200} />
                   <CountryMap
                     name="World"
                     style={{
