@@ -1,4 +1,4 @@
-import totalData from "../data/57-63_countries-trades_HS92_total_V202102.json";
+import totalData from "../data/totalData.json";
 
 const keys = [] as any;
 
@@ -38,7 +38,6 @@ export interface IAreaData {
 
 function initializeData() {
   // prepare map data
-
   const areaData = Object.keys(totalData as ITotalData).map((key) => {
     const yearExpSumEachCountry = {} as IYearExpSumEachCountry;
     Object.keys((totalData as ITotalData)[key]).forEach((id) => {

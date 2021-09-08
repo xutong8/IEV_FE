@@ -1,5 +1,5 @@
 import { scaleLinear, scaleOrdinal } from "d3-scale";
-import { schemeCategory10, schemeAccent } from "d3";
+import { schemeCategory10 } from "d3";
 import { area, stack } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
 import { areaData } from "@/utils/processAreaData";
