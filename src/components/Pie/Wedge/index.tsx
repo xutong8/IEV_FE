@@ -1,11 +1,11 @@
 export interface IWedge {
-  d: any;
+  d: string | null;
   fill: string;
 }
 
 const Wedge: React.FC<IWedge> = (props) => {
   const { d, fill } = props;
-  return <path fill={fill} d={d} />;
+  return d ? <path fill={fill} d={d} /> : null;
 };
 
 export default Wedge;
