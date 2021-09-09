@@ -41,7 +41,12 @@
   .bottom {
     flex: 5 0 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+
+    .progress {
+      padding: 8px;
+      &:extend(.block);
+    }
 
     .left {
       flex: 3 0 0;
@@ -50,6 +55,7 @@
 
       .topMap {
         height: 312px;
+        margin-right: 12px;
       }
 
       .bottomMap {
@@ -62,6 +68,10 @@
           flex: 2 0 0;
           display: flex;
           flex-direction: row;
+          &:extend(.block);
+
+          margin-right: 12px;
+          margin-bottom: 12px;
 
           .select {
             width: 110px;
@@ -87,12 +97,6 @@
             flex: 1 0 0;
           }
         }
-
-        .progress {
-          margin-top: 12px;
-          padding: 8px;
-          flex: 1 0 0;
-        }
       }
     }
 
@@ -103,10 +107,16 @@
 
       .force {
         flex: 1 0 0;
+        display: flex;
+        margin-bottom: 12px;
+        &:extend(.block);
       }
 
       .stack {
         flex: 1 0 0;
+        display: flex;
+        margin-bottom: 12px;
+        &:extend(.block);
       }
     }
   }
