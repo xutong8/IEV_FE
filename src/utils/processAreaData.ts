@@ -1,6 +1,6 @@
 import totalData from "../data/totalData.json";
-
-const keys = [] as any;
+import { digit2ToIDMap } from "./processCountriesMap";
+console.log(totalData);
 
 export interface IYearExpSumEachCountry {
   [index: string]: number;
@@ -51,15 +51,36 @@ function initializeData() {
     };
   });
 
-  // init keys
-  Object.keys((totalData as ITotalData)["1995"]).forEach((id) => {
-    const curCountry = (totalData as ITotalData)["1995"][id];
-    keys.push(curCountry.iso_2digit_alpha);
-  });
   (areaData as IAreaData).columns = Object.keys(areaData[0]);
 
   return areaData;
 }
 
 const areaData = initializeData();
-export { areaData, keys };
+
+const filterCountry = (filterList: Array<string>) => {
+  // prepare map data
+  const areaData = Object.keys(totalData as ITotalData).map((key) => {
+    const yearExpSumEachCountry = {} as IYearExpSumEachCountry;
+    Object.keys((totalData as ITotalData)[key]).forEach((id) => {
+      // filter data
+      if (filterList.includes(id)) {
+        // 模拟continue
+        return;
+      }
+      const curCountry = (totalData as ITotalData)[key][id] as ICountryData;
+      yearExpSumEachCountry[curCountry.iso_2digit_alpha] = curCountry.expsum;
+    });
+
+    return {
+      date: Number(key),
+      ...yearExpSumEachCountry,
+    };
+  });
+
+  (areaData as IAreaData).columns = Object.keys(areaData[0]);
+
+  return areaData;
+};
+
+export { areaData };

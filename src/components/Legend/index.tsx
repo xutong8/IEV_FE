@@ -7,10 +7,11 @@ export interface ILegend {
   orient: string;
   // Pos问题
   data: Array<string>;
+  onClick: () => void;
 }
 
 const Legend: React.FC<ILegend> = (props) => {
-  const { color, orient, data } = props;
+  const { color, orient, data, onClick } = props;
   const style = { flexDirection: orient };
 
   return (
@@ -20,6 +21,7 @@ const Legend: React.FC<ILegend> = (props) => {
           key={label}
           label={label}
           fill={color[index % color.length]}
+          onClick={onClick}
         />
       ))}
     </div>
