@@ -14,6 +14,8 @@ import cn from "classnames";
 import ProgressBar from "../ProgressBar";
 import BarChart from "../ComposedBarChart/BarChart";
 import ComposedBarChart from "../ComposedBarChart";
+import HeatMap from "../HeatMap";
+import TopMap from "../TopMap";
 
 const { Option } = Select;
 
@@ -42,13 +44,7 @@ const BasicLayout = () => {
         <div className={styles["bottom"]}>
           <div className={styles.left}>
             <div className={styles.topMap}>
-              <ComposedBarChart
-                width={200}
-                height={60}
-                countryNames={["China", "Usa", "Japan"]}
-                year="1995"
-                category="Rice"
-              />
+              <TopMap />
             </div>
             <div className={styles.bottomMap}>
               <div className={styles.maps}>
@@ -77,8 +73,7 @@ const BasicLayout = () => {
                   </Select>
                 </div>
                 <div className={styles.middleMap}>
-                  {/* <CountryMap name="china" /> */}
-                  <Pie width={320} height={300} />
+                  <Pie width={320} height={200} />
                   <CountryMap
                     name="World"
                     style={{

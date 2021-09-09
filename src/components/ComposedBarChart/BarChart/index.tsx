@@ -1,4 +1,5 @@
 import { ITradeItem } from "@/utils/tradeUtil";
+import cn from "classnames";
 import { ScaleLinear } from "d3-scale";
 import React, { useMemo } from "react";
 import styles from "./index.less";
@@ -25,7 +26,10 @@ const BarChart: React.FC<IBarChartProps> = (props) => {
     <div className={styles.barchart}>
       {dataSource.map((country) => (
         <div
-          className={styles.row}
+          className={cn({
+            [styles.row]: true,
+            [`${country.countryName}bar`]: true,
+          })}
           key={country.countryName}
           style={{ flexDirection: reverseDirection }}
         >
