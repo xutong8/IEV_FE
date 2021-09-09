@@ -63,7 +63,16 @@ export const columns = [
     },
   },
   {
-    title: "Amount",
+    title: () => {
+      return (
+        <div>
+          Amount
+          <Tooltip title="(In thousands current USD)">
+            <QuestionOutlined />
+          </Tooltip>
+        </div>
+      );
+    },
     dataIndex: "amount",
     key: "amount",
     width: 140,
