@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styles from "./index.less";
 import { Select, Button, Table } from "antd";
-import dataSource from "./data.json";
-import SearchItem from "./SearchItem";
 import { ValueType } from "@/types";
 import { columns } from "./columns";
+import { processTableData } from "@/utils/processTableData";
 
 const { Option } = Select;
 
@@ -18,6 +17,8 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
   };
 
   const { valueType } = props;
+
+  const dataSource = useMemo(() => processTableData(), []);
 
   return (
     <div className={styles["search_table"]}>
@@ -39,8 +40,11 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
         <div className={styles["search_container"]}>
           <Table
             columns={columns}
-            dataSource={dataSource.data}
+            dataSource={dataSource}
             rowKey={(record) => record.id}
+            pagination={{
+              showSizeChanger: false,
+            }}
           />
         </div>
       </div>
