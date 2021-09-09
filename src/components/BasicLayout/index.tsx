@@ -12,9 +12,6 @@ import { useContext, useState } from "react";
 import { projectContext } from "@/context/projectData";
 import cn from "classnames";
 import ProgressBar from "../ProgressBar";
-import BarChart from "../ComposedBarChart/BarChart";
-import ComposedBarChart from "../ComposedBarChart";
-import HeatMap from "../HeatMap";
 import TopMap from "../TopMap";
 
 const { Option } = Select;
