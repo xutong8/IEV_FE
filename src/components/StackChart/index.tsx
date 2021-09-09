@@ -1,9 +1,9 @@
 import { scaleLinear, scaleOrdinal } from "d3-scale";
-import { schemeCategory10 } from "d3";
+import { schemeCategory10, schemeAccent } from "d3";
 import { area, stack } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
 import { areaData } from "@/utils/processAreaData";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Path from "../Path";
 import Legend from "../Legend";
 import { brushX } from "d3-brush";
@@ -17,7 +17,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const { width, height } = props;
 
   const zeroPosition = useMemo(() => [100, height - 120], [height]);
-
+  console.log(areaData);
   // 映射获得年数组
   const years = useMemo(() => areaData.map((item) => item.date), []);
   // 获取最小年
@@ -107,8 +107,28 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     .domain((areaData as any).columns.slice(1))
     .range(schemeCategory10);
 
+  const onMouseEnter = useCallback((e) => {
+    e.target.setAttribute("class", "hover");
+  }, []);
+
+  const onMouseLeave = useCallback((e) => {
+    e.target.removeAttribute("class", "hover");
+  }, []);
+
+  const onClick = useCallback(() => {}, []);
+
+  const legendData = ["CN", "US", "UK"];
+
   return (
     <svg width={width} height={height}>
+      <foreignObject width="100%" height="100%">
+        <Legend
+          data={legendData}
+          orient="row"
+          color={schemeAccent}
+          onClick={onClick}
+        />
+      </foreignObject>
       <defs>
         <clipPath id="clip">
           <rect
@@ -140,6 +160,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                   fill: colorScale(String(index)) as string,
                   d: areaFunc(item) as string,
                 }}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
               />
             );
           })}
