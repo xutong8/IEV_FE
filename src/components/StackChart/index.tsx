@@ -100,10 +100,12 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   );
 
   useEffect(() => {
-    select(brushRef.current as SVGGElement)
-      .call(brush)
-      .call(brush.move, xScale.range());
-  }, []);
+    if (computedWidth !== 0) {
+      select(brushRef.current as SVGGElement)
+        .call(brush)
+        .call(brush.move, xScale.range());
+    }
+  }, [computedWidth]);
 
   // 最后一行的数据
   const lastItems = series[series.length - 1].map((item) => item[1]);
@@ -134,7 +136,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const onClick = useCallback(() => {
     // 更新数据
     setAreaData(filterCountry(["China"]));
-    // console.log("click: ", filterCountry(["China"]));
   }, []);
 
   const legendData = ["CN", "US", "UK"];
@@ -154,8 +155,12 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
           <rect
             x={zeroPosition[0]}
             y={0}
-            width={computedWidth - 20 - zeroPosition[0]}
-            height={zeroPosition[1]}
+            width={
+              computedWidth - 20 - zeroPosition[0] < 0
+                ? 0
+                : computedWidth - 20 - zeroPosition[0]
+            }
+            height={zeroPosition[1] < 0 ? 0 : zeroPosition[1]}
           />
         </clipPath>
       </defs>
