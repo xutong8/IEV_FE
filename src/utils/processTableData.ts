@@ -1,4 +1,4 @@
-import { iDtodigit2Map } from "./processCountriesMap";
+import { iDToNameMap } from "./processCountriesMap";
 import dataSource from "@/data/Y1995AndTypeCountry.json";
 import { getCategoryById } from "./getCategoryById";
 
@@ -33,7 +33,7 @@ const processTableData = () => {
       expList.forEach((expId) => {
         const country = {} as ITableCountry;
         // 进口国家
-        const importCountry = iDtodigit2Map.get(countryId);
+        const importCountry = iDToNameMap.get(countryId);
         country.importCountry = importCountry;
         // TODO: 需要一个参数来接受年份
         country.year = 1995;
@@ -41,7 +41,7 @@ const processTableData = () => {
         const category = getCategoryById(categoryId).slice(4);
         country.category = category;
         // 出口国家
-        const exportCountry = iDtodigit2Map.get(expId);
+        const exportCountry = iDToNameMap.get(expId);
         country.exportCountry = exportCountry;
         // id
         country.id = id++;
