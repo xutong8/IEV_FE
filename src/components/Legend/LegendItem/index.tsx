@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import styles from "./index.less";
 
 export interface ILegendItem {
@@ -16,7 +16,6 @@ const LegendItem: React.FC<ILegendItem> = (props) => {
 
   const onClickLegend = useCallback(() => {
     setSelected(!selected);
-    // setSelected(selected => !selected);
     onClick(label, !selected);
   }, [selected]);
 

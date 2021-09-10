@@ -1,10 +1,13 @@
 import { CSSProperties } from "react";
 import styles from "./index.less";
-
+import cn from "classnames";
+import { Tooltip } from "antd";
+import { QuestionOutlined } from "@ant-design/icons";
 export interface IImageItem {
   image: Image;
   style: CSSProperties;
-  size: number;
+  bordered?: boolean;
+  imgStyle?: CSSProperties;
 }
 
 export interface Image {
@@ -14,16 +17,18 @@ export interface Image {
 }
 
 const ImageItem: React.FC<IImageItem> = (props) => {
-  const { image, style, size } = props;
-  const { name, img } = image;
+  const { image, style, bordered = false, imgStyle = {} } = props;
+  const { name = "", img } = image;
   return (
-    <div className={styles["image_item"]} key={name} style={style}>
-      <img
-        className={styles["image"]}
-        src={img}
-        alt={name}
-        style={{ width: size }}
-      />
+    <div
+      className={cn({
+        [styles["image_item"]]: true,
+        [styles["bordered"]]: bordered,
+      })}
+      key={name}
+      style={style}
+    >
+      <img className={styles["image"]} src={img} alt={name} style={imgStyle} />
       <div className={styles["image_name"]}>{name}</div>
     </div>
   );

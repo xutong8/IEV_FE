@@ -1,27 +1,44 @@
+import { CSSProperties } from "react";
 import ImageItem, { Image } from "./ImageItem";
 import styles from "./index.less";
 
-export interface IImagesDisplayProps {
+export interface IImagesProps {
   imageList: Array<Image>;
   column: number;
-  size: number;
+  bordered?: boolean;
+  imgStyle?: CSSProperties;
+  style?: CSSProperties;
 }
 
-const ImagesDisplay: React.FC<IImagesDisplayProps> = (props) => {
-  const { imageList, column, size } = props;
+const Images: React.FC<IImagesProps> = (props) => {
+  const {
+    imageList,
+    column,
+    bordered = false,
+    imgStyle = {},
+    style = {},
+  } = props;
 
-  const style = column
+  // 左右margin各为4px
+  const innerStyle = column
     ? {
-        width: `${100 / column}%`,
+        width: `calc(${100 / column}% - 8px)`,
       }
     : {};
+
   return (
     <div className={styles["image_list"]}>
       {imageList.map((item: any, index: number) => (
-        <ImageItem key={index} image={item} style={style} size={size} />
+        <ImageItem
+          key={index}
+          image={item}
+          style={{ ...style, ...innerStyle }}
+          bordered={bordered}
+          imgStyle={imgStyle}
+        />
       ))}
     </div>
   );
 };
 
-export default ImagesDisplay;
+export default Images;
