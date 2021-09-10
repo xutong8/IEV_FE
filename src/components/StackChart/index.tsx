@@ -2,7 +2,12 @@ import { scaleLinear, scaleOrdinal } from "d3-scale";
 import { schemeCategory10, schemeAccent } from "d3";
 import { area, stack } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
-import { areaData } from "@/utils/processAreaData";
+import {
+  areaDataRaw,
+  IAreaData,
+  IStackAreaData,
+  filterCountry,
+} from "@/utils/processAreaData";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Path from "../Path";
 import Legend from "../Legend";
@@ -15,11 +20,12 @@ export interface IStackChartProps {
 }
 const StackChart: React.FC<IStackChartProps> = (props) => {
   const { width, height } = props;
-
   const zeroPosition = useMemo(() => [100, height - 120], [height]);
-  console.log(areaData);
+  // const areaData = areaDataRaw
+  const [areaData, setAreaData] = useState<IStackAreaData[]>(areaDataRaw);
+  console.log(areaDataRaw, areaData);
   // 映射获得年数组
-  const years = useMemo(() => areaData.map((item) => item.date), []);
+  const years = useMemo(() => areaData.map((item) => item.date), [areaData]);
   // 获取最小年
   const minYear = useMemo(() => Math.min(...years), [years]);
   // 获取最大年
@@ -28,7 +34,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // 使用stack函数计算得到堆叠后的数据
   const series = useMemo(
     () => stack().keys((areaData as any).columns.slice(1))(areaData),
-    []
+    [areaData]
   );
 
   // TODO: 修改domain
@@ -115,7 +121,11 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     e.target.removeAttribute("class", "hover");
   }, []);
 
-  const onClick = useCallback(() => {}, []);
+  const onClick = useCallback(() => {
+    // 更新数据
+    setAreaData(filterCountry(["China"]));
+    console.log("click: ", filterCountry(["China"]));
+  }, []);
 
   const legendData = ["CN", "US", "UK"];
 
