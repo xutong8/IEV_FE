@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.6.4",
     "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@south-paw/react-vector-maps": "^3.1.0",
@@ -96,7 +97,7 @@
     "prettier:fix": "prettier --check src/**/*.{ts,tsx} --fix",
     "lint-staged": "lint-staged --allow-empty",
     "stylelint": "stylelint"
-  }, 
+  },
   "lint-staged": {
     "src/**/*.{ts,tsx,js,jsx,css,less}": [
       "prettier --write"
@@ -183,6 +184,7 @@
     "eslint-loader": "^4.0.2",
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
+    "postcss-scss": "^4.0.0",
     "prettier": "^2.3.2",
     "stylelint": "^13.13.1",
     "stylelint-config-rational-order": "^0.1.2",

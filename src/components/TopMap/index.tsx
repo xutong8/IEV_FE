@@ -15,7 +15,7 @@ const TopMap = () => {
   // 圆的半径
   const circleRadius = 6;
   // 柱状图的宽度
-  const barWidth = 100;
+  const barWidth = 80;
   // 柱状图的高度
   const barHeight = 300;
   // 热力图的宽度和高度
@@ -34,6 +34,7 @@ const TopMap = () => {
 
   const getLinesCoordinates = () => {
     const namesLen = countryNames.length;
+    // TODO: 终点位置需要重新计算
     const yStart = -2;
     const xStart = 560;
     const linesCoordinates = [];
@@ -71,7 +72,7 @@ const TopMap = () => {
       linesCoordinates.push(lineCoordinates);
     }
 
-    console.log("linesCoordinates: ", linesCoordinates);
+    // console.log("linesCoordinates: ", linesCoordinates);
     setLines(linesCoordinates);
   };
 
