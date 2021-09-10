@@ -13,17 +13,27 @@ import Path from "../Path";
 import Legend from "../Legend";
 import { brushX } from "d3-brush";
 import { select } from "d3-selection";
+import { useSVGSize } from "@/hooks/useSVGSize";
 
 export interface IStackChartProps {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
 }
 const StackChart: React.FC<IStackChartProps> = (props) => {
   const { width, height } = props;
-  const zeroPosition = useMemo(() => [100, height - 120], [height]);
-  // const areaData = areaDataRaw
+
+  // svg ref
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  const [computedWidth, computedHeight] = useSVGSize(svgRef);
+
+  const zeroPosition = useMemo(
+    () => [100, computedHeight - 120],
+    [computedHeight]
+  );
+
   const [areaData, setAreaData] = useState<IStackAreaData[]>(areaDataRaw);
-  console.log(areaDataRaw, areaData);
+  // console.log(areaDataRaw, areaData);
   // 映射获得年数组
   const years = useMemo(() => areaData.map((item) => item.date), [areaData]);
   // 获取最小年
@@ -43,8 +53,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     () =>
       scaleLinear()
         .domain([minYear, maxYear])
-        .range([zeroPosition[0], width - 20]),
-    [minYear, maxYear, zeroPosition, width]
+        .range([zeroPosition[0], computedWidth - 20]),
+    [minYear, maxYear, zeroPosition, computedWidth]
   );
 
   // brush的scale
@@ -52,8 +62,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     () =>
       scaleLinear()
         .domain([minYear, maxYear])
-        .range([zeroPosition[0], width - 20]),
-    [minYear, maxYear, zeroPosition, width]
+        .range([zeroPosition[0], computedWidth - 20]),
+    [minYear, maxYear, zeroPosition, computedWidth]
   );
 
   // brush ref
@@ -83,10 +93,10 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       brushX()
         .extent([
           [zeroPosition[0], 0],
-          [width - 20, 40],
+          [computedWidth - 20, 40],
         ])
         .on("brush end", brushed),
-    [width, zeroPosition, brushed]
+    [computedWidth, zeroPosition, brushed]
   );
 
   useEffect(() => {
@@ -124,13 +134,13 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const onClick = useCallback(() => {
     // 更新数据
     setAreaData(filterCountry(["China"]));
-    console.log("click: ", filterCountry(["China"]));
+    // console.log("click: ", filterCountry(["China"]));
   }, []);
 
   const legendData = ["CN", "US", "UK"];
 
   return (
-    <svg width={width} height={height}>
+    <svg width={width} height={height} ref={svgRef}>
       <foreignObject width="100%" height="100%">
         <Legend
           data={legendData}
@@ -144,7 +154,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
           <rect
             x={zeroPosition[0]}
             y={0}
-            width={width - 20 - zeroPosition[0]}
+            width={computedWidth - 20 - zeroPosition[0]}
             height={zeroPosition[1]}
           />
         </clipPath>

@@ -72,7 +72,7 @@ const TopMap = () => {
       linesCoordinates.push(lineCoordinates);
     }
 
-    console.log("linesCoordinates: ", linesCoordinates);
+    // console.log("linesCoordinates: ", linesCoordinates);
     setLines(linesCoordinates);
   };
 

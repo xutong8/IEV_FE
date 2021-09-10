@@ -3,7 +3,7 @@ import LeftMenu from "../LeftMenu";
 import styles from "./index.less";
 import ForceGraph from "../ForceGraph";
 import Pie from "../Pie";
-import ImagesDisplay from "../Images";
+import Images from "../Images";
 import { Nations, icons } from "../../assets/images";
 import StackChart from "../StackChart";
 import CountryMap from "../CountryMap";
@@ -32,10 +32,10 @@ const BasicLayout = () => {
         <div className={styles["top"]}>top</div>
         <div className={styles["middle"]}>
           <div className={styles["item"]}>
-            <ImagesDisplay imageList={Nations} column={5} size={20} />
+            <Images imageList={Nations} column={5} size={20} />
           </div>
           <div className={styles["item"]}>
-            <ImagesDisplay imageList={icons} column={5} size={30} />
+            <Images imageList={icons} column={5} size={30} />
           </div>
         </div>
         <div className={styles["bottom"]}>
@@ -111,15 +111,15 @@ const BasicLayout = () => {
             </div>
             <div className={styles.right}>
               <div className={styles.force}>
-                <ForceGraph width={460} height={310} />
+                <ForceGraph width="100%" height="100%" />
               </div>
               <div className={styles.stack}>
-                <StackChart width={460} height={310} />
+                <StackChart width="100%" height="100%" />
               </div>
             </div>
           </div>
           <div className={styles.progress}>
-            <ProgressBar width={984} height={80} />
+            <ProgressBar width="100%" height="100%" />
           </div>
         </div>
       </div>
