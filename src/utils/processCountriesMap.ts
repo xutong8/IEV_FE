@@ -1,4 +1,5 @@
-import partnerAreaIDAndNameJSON from "@/data/idToCountryName.json";
+import partnerAreaIDAndNameJSON from "@/data/partnerAreaIDToName.json";
+import nameToDigit2Data from "@/data/nameToDigit2.json";
 
 interface IItem {
   text: string;
@@ -14,4 +15,9 @@ partnerAreaIDAndNameData.forEach((item: IItem) => {
   iDToNameMap.set(item.id, item.text);
 });
 
-export { nameToIDMap, iDToNameMap };
+const nameToDigit2Map = new Map();
+nameToDigit2Data.results.forEach((item) => {
+  nameToDigit2Map.set(item.name, item.iso_2digit_alpha);
+});
+
+export { nameToIDMap, iDToNameMap, nameToDigit2Map };
