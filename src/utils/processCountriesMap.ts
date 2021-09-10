@@ -1,10 +1,10 @@
 import partnerAreaIDAndNameJSON from "@/data/partnerAreaIDToName.json";
 const partnerAreaIDAndNameData = partnerAreaIDAndNameJSON.results;
-const digit2ToIDMap = new Map();
-const iDtodigit2Map = new Map();
+const nameToIDMap = new Map();
+const iDToNameMap = new Map();
 partnerAreaIDAndNameData.forEach((item) => {
-  digit2ToIDMap.set(item.text, item.id);
-  iDtodigit2Map.set(item.text, item.id);
+  nameToIDMap.set(item.text, item.id);
+  iDToNameMap.set(item.id, item.text);
 });
 
-export { digit2ToIDMap, iDtodigit2Map };
+export { nameToIDMap, iDToNameMap };

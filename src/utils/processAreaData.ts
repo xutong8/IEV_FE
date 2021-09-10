@@ -1,6 +1,5 @@
 import totalData from "../data/totalData.json";
-import { digit2ToIDMap } from "./processCountriesMap";
-console.log(totalData);
+import { iDToNameMap } from "./processCountriesMap";
 
 export interface IYearExpSumEachCountry {
   [index: string]: number;
@@ -32,40 +31,19 @@ export interface IStackAreaData {
 }
 
 export interface IAreaData {
-  [index: number]: IStackAreaData | Array<string>;
+  [index: number]: IStackAreaData;
   columns?: Array<string>;
 }
-
-function initializeData() {
-  // prepare map data
-  const areaData = Object.keys(totalData as ITotalData).map((key) => {
-    const yearExpSumEachCountry = {} as IYearExpSumEachCountry;
-    Object.keys((totalData as ITotalData)[key]).forEach((id) => {
-      const curCountry = (totalData as ITotalData)[key][id] as ICountryData;
-      yearExpSumEachCountry[curCountry.iso_2digit_alpha] = curCountry.expsum;
-    });
-
-    return {
-      date: Number(key),
-      ...yearExpSumEachCountry,
-    };
-  });
-
-  (areaData as IAreaData).columns = Object.keys(areaData[0]);
-
-  return areaData;
-}
-
-const areaData = initializeData();
-
-const filterCountry = (filterList: Array<string>) => {
+console.log();
+const filterCountry = (filterList: Array<string> = []) => {
   // prepare map data
   const areaData = Object.keys(totalData as ITotalData).map((key) => {
     const yearExpSumEachCountry = {} as IYearExpSumEachCountry;
     Object.keys((totalData as ITotalData)[key]).forEach((id) => {
       // filter data
-      if (filterList.includes(id)) {
+      if (filterList.includes(iDToNameMap.get(id))) {
         // 模拟continue
+        console.log("filter");
         return;
       }
       const curCountry = (totalData as ITotalData)[key][id] as ICountryData;
@@ -83,4 +61,10 @@ const filterCountry = (filterList: Array<string>) => {
   return areaData;
 };
 
-export { areaData };
+function initializeData() {
+  return filterCountry();
+}
+
+const areaDataRaw = initializeData();
+
+export { areaDataRaw, filterCountry };
