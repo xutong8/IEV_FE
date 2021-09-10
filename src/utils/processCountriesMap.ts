@@ -6,12 +6,11 @@ interface IItem {
 }
 
 const partnerAreaIDAndNameData = partnerAreaIDAndNameJSON.results;
-const digit2ToIDMap = new Map();
-const iDtodigit2Map = new Map();
-
-partnerAreaIDAndNameData.forEach((item: IItem) => {
-  digit2ToIDMap.set(item.text, item.id);
-  iDtodigit2Map.set(item.id, item.text);
+const nameToIDMap = new Map();
+const iDToNameMap = new Map();
+partnerAreaIDAndNameData.forEach((item) => {
+  nameToIDMap.set(item.text, item.id);
+  iDToNameMap.set(item.id, item.text);
 });
 
-export { digit2ToIDMap, iDtodigit2Map };
+export { nameToIDMap, iDToNameMap };
