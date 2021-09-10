@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styles from "./index.less";
-import { Select, Button } from "antd";
-import dataSource from "./data.json";
-import SearchItem from "./SearchItem";
+import { Select, Button, Table } from "antd";
 import { ValueType } from "@/types";
+import { columns } from "./columns";
+import { processTableData } from "@/utils/processTableData";
 
 const { Option } = Select;
 
@@ -18,6 +18,8 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
 
   const { valueType } = props;
 
+  const dataSource = useMemo(() => processTableData(), []);
+
   return (
     <div className={styles["search_table"]}>
       <div className={styles["search_top"]}>
@@ -28,9 +30,6 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
         >
           <Option value="jack">Jack</Option>
           <Option value="lucy">Lucy</Option>
-          <Option value="disabled" disabled>
-            Disabled
-          </Option>
           <Option value="Yiminghe">yiminghe</Option>
         </Select>
         <Button type="primary" style={{ width: "80%", marginTop: 15 }}>
@@ -39,221 +38,13 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
       </div>
       <div className={styles["search_list"]}>
         <div className={styles["search_container"]}>
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
-          />
-          <SearchItem
-            year="2004"
-            exportCountry="中国"
-            importCountry="美国"
-            type="农业"
-            amount="1200"
-            valueType={valueType}
+          <Table
+            columns={columns}
+            dataSource={dataSource}
+            rowKey={(record) => record.id}
+            pagination={{
+              showSizeChanger: false,
+            }}
           />
         </div>
       </div>

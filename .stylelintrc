@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "string-quotes": "double",
+    "declaration-colon-newline-after": null,
+    "value-list-comma-newline-after": null
+  },
+  "extends": "stylelint-config-standard",
+  "plugins": [
+    "stylelint-order"
+  ]
+}

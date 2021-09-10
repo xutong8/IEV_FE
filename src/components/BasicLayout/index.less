@@ -1,3 +1,5 @@
+@import url("../../styles/base.less");
+
 .basic_layout {
   width: 100vw;
   height: 100vh;
@@ -5,41 +7,46 @@
 }
 
 .left_menu {
+  padding: 16px 8px;
   flex: 1 0 0;
 }
 
 .main_content {
-  flex: 3 0 0;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+  flex: 4 0 0;
   display: flex;
   flex-direction: column;
+  padding: 16px;
 
   .top {
     flex: 1 0 0;
-    border-bottom: 1px solid black;
+    &:extend(.block);
   }
 
   .middle {
     flex: 1 0 0;
-    border-bottom: 1px solid black;
     display: flex;
+    margin: 16px 0;
 
     .item {
       flex: 1 0 0;
-      display: flex;
-      justify-content: center;
 
       &:first-child {
-        border-right: 1px solid black;
+        margin-right: 12px;
       }
+
+      &:extend(.block);
     }
   }
 
   .bottom {
     flex: 5 0 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+
+    .progress {
+      padding: 16px;
+      &:extend(.block);
+    }
 
     .left {
       flex: 3 0 0;
@@ -48,6 +55,7 @@
 
       .topMap {
         height: 312px;
+        margin-right: 12px;
       }
 
       .bottomMap {
@@ -60,6 +68,10 @@
           flex: 2 0 0;
           display: flex;
           flex-direction: row;
+          &:extend(.block);
+
+          margin-right: 12px;
+          margin-bottom: 12px;
 
           .select {
             width: 110px;
@@ -85,12 +97,6 @@
             flex: 1 0 0;
           }
         }
-
-        .progress {
-          margin-top: 12px;
-          padding: 8px;
-          flex: 1 0 0;
-        }
       }
     }
 
@@ -101,15 +107,23 @@
 
       .force {
         flex: 1 0 0;
+        display: flex;
+        margin-bottom: 12px;
+        &:extend(.block);
       }
 
       .stack {
         flex: 1 0 0;
+        display: flex;
+        margin-bottom: 12px;
+        &:extend(.block);
       }
     }
   }
 }
 
 .right_menu {
-  flex: 1 0 0;
+  margin: 16px 0;
+
+  &:extend(.block);
 }

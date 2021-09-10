@@ -14,7 +14,7 @@
   resolved "https://registry.npm.taobao.org/@ant-design/icons-svg/download/@ant-design/icons-svg-4.1.0.tgz#480b025f4b20ef7fe8f47d4a4846e4fee84ea06c"
   integrity sha1-SAsCX0sg73/o9H1KSEbk/uhOoGw=
 
-"@ant-design/icons@^4.6.3":
+"@ant-design/icons@^4.6.3", "@ant-design/icons@^4.6.4":
   version "4.6.4"
   resolved "https://registry.nlark.com/@ant-design/icons/download/@ant-design/icons-4.6.4.tgz#21b037dbb90ee1bb7c632cca057006e57d992fd9"
   integrity sha1-IbA327kO4bt8YyzKBXAG5X2ZL9k=
@@ -10914,6 +10914,11 @@ postcss-scss@^2.0.0, postcss-scss@^2.1.1:
   integrity sha1-7Dp1+imlXgFrkL8yaQJsU8HSs4M=
   dependencies:
     postcss "^7.0.6"
+
+postcss-scss@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.nlark.com/postcss-scss/download/postcss-scss-4.0.0.tgz#6cfe09040f01e3345c9c226894c5913ac5fa9381"
+  integrity sha1-bP4JBA8B4zRcnCJolMWROsX6k4E=
 
 postcss-selector-matches@^4.0.0:
   version "4.0.0"

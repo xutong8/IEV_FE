@@ -11,9 +11,11 @@ export interface ILegend {
   onMouseEnter: (e: any) => void;
   onMouseLeave: (e: any) => void;
 }
+
 const Legend: React.FC<ILegend> = (props) => {
   const { color, orient, data, onClick, onMouseEnter, onMouseLeave } = props;
   const style = { flexDirection: orient };
+
   return (
     <div className={styles["legend"]} style={style as CSSProperties}>
       {data.map((label: string, index: number) => (
