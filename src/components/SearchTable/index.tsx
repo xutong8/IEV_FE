@@ -4,6 +4,7 @@ import { Select, Button, Table } from "antd";
 import { ValueType } from "@/types";
 import { columns } from "./columns";
 import { processTableData } from "@/utils/processTableData";
+import SearchInput from "../SearchInput";
 
 const { Option } = Select;
 
@@ -12,10 +13,6 @@ export interface ISearchTableProps {
 }
 
 const SearchTable: React.FC<ISearchTableProps> = (props) => {
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
   const { valueType } = props;
 
   const dataSource = useMemo(() => processTableData(), []);
@@ -23,18 +20,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
   return (
     <div className={styles["search_table"]}>
       <div className={styles["search_top"]}>
-        <Select
-          defaultValue="lucy"
-          onChange={handleChange}
-          style={{ width: "80%" }}
-        >
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
-          <Option value="Yiminghe">yiminghe</Option>
-        </Select>
-        <Button type="primary" style={{ width: "80%", marginTop: 15 }}>
-          Primary
-        </Button>
+        <SearchInput />
       </div>
       <div className={styles["search_list"]}>
         <div className={styles["search_container"]}>
@@ -44,6 +30,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
             rowKey={(record) => record.id}
             pagination={{
               showSizeChanger: false,
+              pageSize: 12,
             }}
           />
         </div>
