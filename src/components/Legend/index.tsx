@@ -3,14 +3,16 @@ import LegendItem from "./LegendItem";
 import styles from "./index.less";
 
 export interface ILegend {
-  color: ReadonlyArray<string>;
+  color: (key: string) => string;
   orient: string;
   // Pos问题
   data: Array<string>;
-  onClick: () => void;
+  onClick: (digit2: string, state: boolean) => void;
+  onMouseEnter: (e: any) => void;
+  onMouseLeave: (e: any) => void;
 }
 const Legend: React.FC<ILegend> = (props) => {
-  const { color, orient, data, onClick } = props;
+  const { color, orient, data, onClick, onMouseEnter, onMouseLeave } = props;
   const style = { flexDirection: orient };
   return (
     <div className={styles["legend"]} style={style as CSSProperties}>
@@ -18,8 +20,10 @@ const Legend: React.FC<ILegend> = (props) => {
         <LegendItem
           key={label}
           label={label}
-          fill={color[index % color.length]}
+          fill={color(label)}
           onClick={onClick}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
         />
       ))}
     </div>
