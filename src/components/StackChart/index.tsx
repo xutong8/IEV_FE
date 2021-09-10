@@ -7,12 +7,15 @@ import {
   IAreaData,
   IStackAreaData,
   filterCountry,
+  selectedCounties,
+  selected2Digit,
 } from "@/utils/processAreaData";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Path from "../Path";
 import Legend from "../Legend";
 import { brushX } from "d3-brush";
 import { select } from "d3-selection";
+import styles from "./index.less";
 import { useSVGSize } from "@/hooks/useSVGSize";
 
 export interface IStackChartProps {
@@ -33,7 +36,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   );
 
   const [areaData, setAreaData] = useState<IStackAreaData[]>(areaDataRaw);
-  // console.log(areaDataRaw, areaData);
+  const [filterList, setFilterList] = useState<Array<string>>([]);
+
   // 映射获得年数组
   const years = useMemo(() => areaData.map((item) => item.date), [areaData]);
   // 获取最小年
@@ -121,33 +125,48 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     .y0((d) => yScale(d[0]))
     .y1((d) => yScale(d[1]));
 
-  const colorScale = scaleOrdinal()
-    .domain((areaData as any).columns.slice(1))
-    .range(schemeCategory10);
+  const colorScale = useCallback(
+    (key) =>
+      scaleOrdinal<string, string>()
+        .domain((areaData as any).columns.slice(1))
+        .range(schemeAccent)(key),
+    [areaData]
+  );
 
   const onMouseEnter = useCallback((e) => {
-    e.target.setAttribute("class", "hover");
+    e.target.setAttribute("class", styles["hover"]);
   }, []);
 
   const onMouseLeave = useCallback((e) => {
-    e.target.removeAttribute("class", "hover");
+    e.target.removeAttribute("class", styles["hover"]);
   }, []);
 
-  const onClick = useCallback(() => {
-    // 更新数据
-    setAreaData(filterCountry(["China"]));
-  }, []);
-
-  const legendData = ["CN", "US", "UK"];
+  const onClick = useCallback(
+    (digit2, state) => {
+      console.log(filterList);
+      // 更新过滤列表
+      if (state) {
+        setAreaData(filterCountry([...filterList, digit2]));
+        setFilterList([...filterList, digit2]);
+      } else {
+        filterList.splice(filterList.indexOf(digit2), 1);
+        setAreaData(filterCountry([...filterList]));
+        setFilterList([...filterList]);
+      }
+    },
+    [filterList]
+  );
 
   return (
     <svg width={width} height={height} ref={svgRef}>
       <foreignObject width="100%" height="100%">
         <Legend
-          data={legendData}
+          data={selected2Digit}
           orient="row"
-          color={schemeAccent}
+          color={colorScale}
           onClick={onClick}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
         />
       </foreignObject>
       <defs>
@@ -182,7 +201,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                 id={item.key as string}
                 key={index}
                 attributes={{
-                  fill: colorScale(String(index)) as string,
+                  fill: colorScale(item.key as string) as string,
                   d: areaFunc(item) as string,
                 }}
                 onMouseEnter={onMouseEnter}

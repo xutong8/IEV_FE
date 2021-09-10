@@ -1,5 +1,9 @@
 import totalData from "../data/totalData.json";
-import { iDToNameMap } from "./processCountriesMap";
+import {
+  iDToNameMap,
+  nameToDigit2Map,
+  nameToIDMap,
+} from "./processCountriesMap";
 
 export interface IYearExpSumEachCountry {
   [index: string]: number;
@@ -34,20 +38,58 @@ export interface IAreaData {
   [index: number]: IStackAreaData;
   columns?: Array<string>;
 }
-// console.log();
-const filterCountry = (filterList: Array<string> = []) => {
+
+// array: 国家全名
+const selectedCounties = [
+  "China",
+  "USA",
+  "India",
+  "Japan",
+  "Germany",
+  "Russian Federation",
+  "Indonesia",
+  "Brazil",
+  "United Kingdom",
+  "France",
+  "Mexico",
+  "Italy",
+  "Turkey",
+  "Dem. People's Rep. of Korea",
+];
+// array: 国家对应ID
+const selectedIDArray: Array<string> = selectedCounties.map((item) =>
+  nameToIDMap.get(item)
+);
+
+// array: 国家全名对应缩写,便于legend展示
+const selected2Digit = selectedCounties.map((item) =>
+  nameToDigit2Map.get(item)
+);
+
+/**
+ * 将全部数据通过参数数组进行过滤预处理
+ * @param filterCountries 堆栈图所需展示的国家ID
+ * @param selectedIDs 堆栈图所需过滤的国家ID
+ */
+const filterCountry = (
+  filterCountries: Array<string> = [],
+  selectedIDs: Array<string> = selectedIDArray
+) => {
   // prepare map data
   const areaData = Object.keys(totalData as ITotalData).map((key) => {
     const yearExpSumEachCountry = {} as IYearExpSumEachCountry;
     Object.keys((totalData as ITotalData)[key]).forEach((id) => {
       // filter data
-      if (filterList.includes(iDToNameMap.get(id))) {
-        // 模拟continue
-        // console.log("filter");
-        return;
+      if (selectedIDs.includes(id)) {
+        // TODO: 因为没有Digit2到ID的映射所以需要映射两次
+        if (
+          filterCountries.includes(nameToDigit2Map.get(iDToNameMap.get(id)))
+        ) {
+          return;
+        }
+        const curCountry = (totalData as ITotalData)[key][id] as ICountryData;
+        yearExpSumEachCountry[curCountry.iso_2digit_alpha] = curCountry.expsum;
       }
-      const curCountry = (totalData as ITotalData)[key][id] as ICountryData;
-      yearExpSumEachCountry[curCountry.iso_2digit_alpha] = curCountry.expsum;
     });
 
     return {
@@ -62,9 +104,9 @@ const filterCountry = (filterList: Array<string> = []) => {
 };
 
 function initializeData() {
-  return filterCountry();
+  return filterCountry([], selectedIDArray);
 }
 
 const areaDataRaw = initializeData();
 
-export { areaDataRaw, filterCountry };
+export { areaDataRaw, filterCountry, selectedCounties, selected2Digit };

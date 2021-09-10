@@ -1,5 +1,4 @@
 import React, { SVGAttributes } from "react";
-import "./index.css";
 
 export interface IPathProps {
   attributes?: SVGAttributes<SVGPathElement>;
