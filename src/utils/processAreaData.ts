@@ -4,6 +4,7 @@ import {
   nameToDigit2Map,
   nameToIDMap,
 } from "./processCountriesMap";
+import { selectedCounties } from "@/constants/top14Countries";
 
 export interface IYearExpSumEachCountry {
   [index: string]: number;
@@ -39,23 +40,6 @@ export interface IAreaData {
   columns?: Array<string>;
 }
 
-// array: 国家全名
-const selectedCounties = [
-  "China",
-  "USA",
-  "India",
-  "Japan",
-  "Germany",
-  "Russian Federation",
-  "Indonesia",
-  "Brazil",
-  "United Kingdom",
-  "France",
-  "Mexico",
-  "Italy",
-  "Turkey",
-  "Dem. People's Rep. of Korea",
-];
 // array: 国家对应ID
 const selectedIDArray: Array<string> = selectedCounties.map((item) =>
   nameToIDMap.get(item)

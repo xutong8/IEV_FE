@@ -1,4 +1,4 @@
-import partnerAreaIDAndNameJSON from "@/data/partnerAreaIDToName.json";
+import idToCountryName from "@/data/idToCountryName.json";
 import nameToDigit2Data from "@/data/nameToDigit2.json";
 
 interface IItem {
@@ -6,7 +6,7 @@ interface IItem {
   id: string;
 }
 
-const partnerAreaIDAndNameData = partnerAreaIDAndNameJSON.results;
+const partnerAreaIDAndNameData = idToCountryName.results;
 const nameToIDMap = new Map();
 const iDToNameMap = new Map();
 

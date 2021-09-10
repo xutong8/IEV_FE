@@ -32,10 +32,26 @@ const BasicLayout = () => {
         <div className={styles["top"]}>top</div>
         <div className={styles["middle"]}>
           <div className={styles["item"]}>
-            <Images imageList={Nations} column={5} size={20} />
+            <Images
+              imageList={Nations}
+              column={7}
+              bordered={true}
+              imgStyle={{
+                width: 36,
+                height: 24,
+              }}
+            />
           </div>
           <div className={styles["item"]}>
-            <Images imageList={icons} column={5} size={30} />
+            <Images
+              imageList={icons}
+              column={5}
+              imgStyle={{ boxShadow: "none", width: "80%" }}
+              style={{
+                boxShadow: "1px 1px 1px 1px rgba(0, 0, 0, 0.1)",
+                borderRadius: 4,
+              }}
+            />
           </div>
         </div>
         <div className={styles["bottom"]}>
@@ -71,7 +87,7 @@ const BasicLayout = () => {
                     </Select>
                   </div>
                   <div className={styles.middleMap}>
-                    <Pie width={320} height={200} />
+                    <Pie width={300} height={200} />
                     <CountryMap
                       name="World"
                       style={{

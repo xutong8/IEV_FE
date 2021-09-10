@@ -12,7 +12,6 @@ import Mexico from "./mexico.png";
 import Italy from "./italy.png";
 import Turkey from "./turkey.png";
 import Korea from "./south korea.png";
-import Spain from "./spain.png";
 
 export const Nations = [
   {
@@ -70,9 +69,5 @@ export const Nations = [
   {
     name: "Korea, South",
     img: Korea,
-  },
-  {
-    name: "Spain",
-    img: Spain,
   },
 ];
