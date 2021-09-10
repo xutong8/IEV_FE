@@ -9,9 +9,11 @@ export interface ILegend {
   data: Array<string>;
   onClick: () => void;
 }
+
 const Legend: React.FC<ILegend> = (props) => {
   const { color, orient, data, onClick } = props;
   const style = { flexDirection: orient };
+
   return (
     <div className={styles["legend"]} style={style as CSSProperties}>
       {data.map((label: string, index: number) => (

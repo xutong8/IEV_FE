@@ -34,7 +34,7 @@ export interface IAreaData {
   [index: number]: IStackAreaData;
   columns?: Array<string>;
 }
-console.log();
+// console.log();
 const filterCountry = (filterList: Array<string> = []) => {
   // prepare map data
   const areaData = Object.keys(totalData as ITotalData).map((key) => {
@@ -43,7 +43,7 @@ const filterCountry = (filterList: Array<string> = []) => {
       // filter data
       if (filterList.includes(iDToNameMap.get(id))) {
         // 模拟continue
-        console.log("filter");
+        // console.log("filter");
         return;
       }
       const curCountry = (totalData as ITotalData)[key][id] as ICountryData;

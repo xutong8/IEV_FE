@@ -1,0 +1,52 @@
+[
+  {
+    "id": "0",
+    "text": "0 - Food and live animals",
+    "parent": "TOTAL"
+  },
+  {
+    "id": "1",
+    "text": "1 - Beverages and tobacco",
+    "parent": "TOTAL"
+  },
+  {
+    "id": "2",
+    "text": "2 - Crude materials, inedible, except fuels",
+    "parent": "TOTAL"
+  },
+  {
+    "id": "3",
+    "text": "3 - Mineral fuels, lubricants and related materials",
+    "parent": "TOTAL"
+  },
+  {
+    "id": "4",
+    "text": "4 - Animal and vegetable oils and fats",
+    "parent": "TOTAL"
+  },
+  {
+    "id": "5",
+    "text": "5 - Chemicals",
+    "parent": "TOTAL"
+  },
+  {
+    "id": "6",
+    "text": "6 - Manufact goods classified chiefly by material",
+    "parent": "TOTAL"
+  },
+  {
+    "id": "7",
+    "text": "7 - Machinery and transport equipment",
+    "parent": "TOTAL"
+  },
+  {
+    "id": "8",
+    "text": "8 - Miscellaneous manufactured articles",
+    "parent": "TOTAL"
+  },
+  {
+    "id": "9",
+    "text": "9 - Commod. \u0026 transacts. Not class. Accord. To kind",
+    "parent": "TOTAL"
+  }
+]

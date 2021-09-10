@@ -1,5 +1,5 @@
 import { getNodeColor, processGraphData } from "@/utils/processGraphData";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ForceNode from "./ForceNode";
 import styles from "./index.less";
 import {
@@ -23,10 +23,11 @@ import {
   highlightLink,
   unhighlightLink,
 } from "@/utils/linkUtils";
+import { useSVGSize } from "@/hooks/useSVGSize";
 
 export interface IForceGraphProps {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
 }
 
 const ForceGraph: React.FC<IForceGraphProps> = (props) => {
@@ -40,6 +41,10 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   //     setYear((year) => year + 1);
   //   }, 15000);
   // }, []);
+
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  const [computedWidth, computedHeight] = useSVGSize(svgRef);
 
   // 按照expsum的值来映射节点的半径
   const minNode = useMemo(() => {
@@ -71,7 +76,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     )
     .force("charge", forceManyBody().distanceMax(30))
     .force("collide", forceCollide().radius(5))
-    .force("center", forceCenter(width / 2, height / 2));
+    .force("center", forceCenter(computedWidth / 2, computedHeight / 2));
 
   useEffect(() => {
     simulation.on("tick", () => {
@@ -141,7 +146,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   };
 
   return (
-    <svg width={width} height={height}>
+    <svg width={width} height={height} ref={svgRef}>
       <g className={styles.links} stroke="#999">
         {links.map((link, index: number) => {
           return (

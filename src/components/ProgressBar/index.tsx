@@ -1,14 +1,15 @@
 import { scaleLinear } from "d3-scale";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Axis, { DirectionValue } from "../Axis";
 import styles from "./index.less";
 import { select } from "d3-selection";
 import { pointer, easeLinear } from "d3";
 import { useTransition } from "@/hooks/useTransition";
 import cn from "classnames";
+import { useSVGSize } from "@/hooks/useSVGSize";
 export interface IProgressBarProps {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
 }
 
 const colors = ["red", "blue", "yellow", "pink", "purple", "orange"];
@@ -16,37 +17,57 @@ const colors = ["red", "blue", "yellow", "pink", "purple", "orange"];
 const ProgressBar: React.FC<IProgressBarProps> = (props) => {
   const { width, height } = props;
 
-  const xScale = scaleLinear().domain([1995, 2019]).range([0, width]);
+  const axisHeight = 20;
 
-  const [lineX, setLineX] = useState<number>(width);
+  // svg ref
+  const svgRef = useRef<SVGSVGElement>(null);
 
-  const [lines, setLines] = useState<any>({
-    x1: lineX,
-    x2: lineX,
-  });
-  const [values, setValues] = useState<any>([
-    {
-      width: lineX,
-    },
-    {
-      width: lineX,
-    },
-    {
-      width: lineX,
-    },
-    {
-      width: lineX,
-    },
-    {
-      width: lineX,
-    },
-    {
-      width: lineX,
-    },
-    {
-      width: lineX,
-    },
-  ]);
+  // computed width and height
+  const [computedWidth, computedHeight] = useSVGSize(svgRef);
+
+  const xScale = scaleLinear().domain([1995, 2019]).range([0, computedWidth]);
+
+  // 当前年份的x坐标
+  const [lineX, setLineX] = useState<number>(0);
+
+  useEffect(() => {
+    setLineX(computedWidth);
+  }, [computedWidth]);
+
+  const lines = useMemo(
+    () => ({
+      x1: lineX,
+      x2: lineX,
+    }),
+    [lineX]
+  );
+
+  const bars = useMemo(
+    () => [
+      {
+        width: lineX,
+      },
+      {
+        width: lineX,
+      },
+      {
+        width: lineX,
+      },
+      {
+        width: lineX,
+      },
+      {
+        width: lineX,
+      },
+      {
+        width: lineX,
+      },
+      {
+        width: lineX,
+      },
+    ],
+    [lineX]
+  );
 
   // TODO: 事件解除绑定
   const bindClick = () => {
@@ -54,13 +75,6 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
       const mouseX = pointer(event)[0];
       const newYear = Math.round(xScale.invert(mouseX));
       setLineX(xScale(newYear));
-      const lineX = xScale(newYear);
-      const newValues = values.map(() => ({ width: lineX }));
-      setLines({
-        x1: lineX,
-        x2: lineX,
-      });
-      setValues(newValues);
     });
   };
 
@@ -70,8 +84,8 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
 
   const { attrState: barAttrState } = useTransition({
     className: "bar-transition",
-    value: values,
-    deps: [values],
+    value: bars,
+    deps: [bars],
     duration: 500,
     easingFunction: easeLinear,
   });
@@ -85,7 +99,12 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
   });
 
   return (
-    <svg width={width} height={height} className={styles.progressbar}>
+    <svg
+      width={width}
+      height={height}
+      className={styles.progressbar}
+      ref={svgRef}
+    >
       <foreignObject width="100%" height="100%">
         {(barAttrState as { width: number }[]).map((item, index) => {
           return (
@@ -94,7 +113,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
               key={index}
               style={{
                 width: item.width,
-                height: 10,
+                height: (computedHeight - axisHeight) / colors.length,
                 opacity: 0.6,
                 background: colors[index],
               }}
@@ -108,16 +127,14 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
           "line-transition": true,
         })}
         x1={lineAttrState.x1 as number}
-        // x1={lineX}
         y1={0}
         x2={lineAttrState.x2 as number}
-        // x2={lineX}
-        y2={60}
+        y2={computedHeight - axisHeight}
         strokeWidth={4}
       />
       <Axis
         direction={DirectionValue.BOTTOM}
-        position={[0, 60]}
+        position={[0, computedHeight - axisHeight]}
         scale={xScale}
       />
     </svg>
