@@ -1,5 +1,4 @@
 import totalData from "@/data/totalData.json";
-import { schemeCategory10 } from "d3";
 
 export interface IGraphNode {
   id: string;
@@ -20,7 +19,6 @@ export interface IGraphLink {
 export interface IGraphData {
   nodes: IGraphNode[];
   links: IGraphLink[];
-  colorMap: Map<string, string>;
 }
 
 function initializeData(year: number, data: any) {
@@ -50,28 +48,11 @@ function initializeData(year: number, data: any) {
 
   gData.nodes = nodes;
   gData.links = links;
-  gData.colorMap = getNodeColor(nodes);
 
   return gData;
-}
-
-function getNodeColor(nodes: IGraphNode[]) {
-  const continents = new Set();
-  for (const node of nodes) {
-    continents.add(node.continent);
-  }
-
-  const filteredContinents = Array.from(continents);
-  const colorMap = new Map();
-
-  filteredContinents.forEach((continent, index) => {
-    colorMap.set(continent, schemeCategory10[index % 10]);
-  });
-
-  return colorMap;
 }
 
 const processGraphData: (year: number) => IGraphData = (year: number) =>
   initializeData(year, totalData);
 
-export { getNodeColor, processGraphData };
+export { processGraphData };

@@ -6,7 +6,6 @@ import {
   areaDataRaw,
   IStackAreaData,
   filterCountry,
-  selected2Digit,
 } from "@/utils/processAreaData";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Path from "../Path";
@@ -124,7 +123,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const maxY = useMemo(() => Math.max(...lastItems), [lastItems]);
 
   // y轴的scale
-  const yScale = scaleLinear().domain([0, maxY]).range([zeroPosition[1], 60]);
+  const yScale = scaleLinear().domain([0, maxY]).range([zeroPosition[1], 40]);
 
   const areaFunc = area()
     .x((d: any) => xScale(Number(d.data.date)))
@@ -178,20 +177,20 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         <clipPath id="clip-path">
           <rect
             x={zeroPosition[0]}
-            y={56}
+            y={36}
             width={
               computedWidth - 20 - zeroPosition[0] < 0
                 ? 0
                 : computedWidth - 20 - zeroPosition[0]
             }
             // 56为Legend的高度
-            height={zeroPosition[1] - 56 < 0 ? 0 : zeroPosition[1] - 56}
+            height={zeroPosition[1] - 36 < 0 ? 0 : zeroPosition[1] - 36}
           />
         </clipPath>
         <clipPath id="clip-axis">
           <rect
             x={zeroPosition[0] - 10}
-            y={183}
+            y={126}
             width={
               computedWidth - zeroPosition[0] + 3 < 0
                 ? 0

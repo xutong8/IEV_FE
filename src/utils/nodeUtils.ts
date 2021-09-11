@@ -1,4 +1,5 @@
 import { select } from "d3-selection";
+import { colorMap } from "./generateCountryColor";
 import { IGraphData, IGraphLink, IGraphNode } from "./processGraphData";
 
 // 获取节点的完整id
@@ -34,10 +35,10 @@ const highlightNodeById = (id: string) => {
 // 取消高亮节点
 // TODO: 不需要nodes参数
 const unhighlightNodeById = (graphData: IGraphData, id: string) => {
-  const { nodes, colorMap } = graphData;
+  const { nodes } = graphData;
   select(`#${getNodeId(id)}`).attr(
     "fill",
-    colorMap.get((findNodeById(nodes, id) as IGraphNode).continent) as string
+    colorMap.get((findNodeById(nodes, id) as IGraphNode).name) as string
   );
 };
 

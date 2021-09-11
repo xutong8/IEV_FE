@@ -9,17 +9,22 @@ import cn from "classnames";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import { years } from "@/constants/years";
 import { processTicks } from "@/utils/processTicks";
+import { selectedCounties } from "@/constants/top14Countries";
+import { colorMap } from "@/utils/generateCountryColor";
 export interface IProgressBarProps {
   width: number | string;
   height: number | string;
 }
 
-const colors = ["red", "blue", "yellow", "pink", "purple", "orange"];
-
 const ProgressBar: React.FC<IProgressBarProps> = (props) => {
   const { width, height } = props;
 
   const axisHeight = 20;
+
+  const colors = useMemo(
+    () => selectedCounties.map((country) => colorMap.get(country) ?? "red"),
+    []
+  );
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
