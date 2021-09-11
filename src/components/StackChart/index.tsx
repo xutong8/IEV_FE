@@ -142,19 +142,20 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     setHoverCountry("");
   }, []);
 
-  const onClick = (digit2: string, state: boolean) => {
-    console.log(filterList);
-    // 更新过滤列表
-    if (state) {
-      console.log("enter");
-      setAreaData(filterCountry([...filterList, digit2]));
-      setFilterList((filterList) => [...filterList, digit2]);
-    } else {
-      filterList.splice(filterList.indexOf(digit2), 1);
-      setAreaData(filterCountry([...filterList]));
-      setFilterList([...filterList]);
-    }
-  };
+  const onClick = useCallback(
+    (digit2: string, state: boolean) => {
+      // 更新过滤列表
+      if (state) {
+        setAreaData(filterCountry([...filterList, digit2]));
+        setFilterList((filterList) => [...filterList, digit2]);
+      } else {
+        filterList.splice(filterList.indexOf(digit2), 1);
+        setAreaData(filterCountry([...filterList]));
+        setFilterList([...filterList]);
+      }
+    },
+    [filterList]
+  );
   return (
     <svg width={width} height={height} ref={svgRef}>
       <foreignObject width="100%" height="100%">

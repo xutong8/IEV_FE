@@ -18,7 +18,7 @@ const LegendItem: React.FC<ILegendItem> = (props) => {
     setSelected(!selected);
 
     onClick(label, !selected);
-  }, [selected]);
+  }, [selected, onClick]);
 
   return (
     <div
