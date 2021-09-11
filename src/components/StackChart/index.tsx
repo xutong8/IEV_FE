@@ -164,7 +164,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   return (
     <svg width={width} height={height} ref={svgRef}>
-      <foreignObject width="100%" height="100%">
+      {/* <foreignObject width="100%" height="100%">
         <Legend
           data={selected2Digit}
           orient="row"
@@ -173,7 +173,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         />
-      </foreignObject>
+      </foreignObject> */}
       <defs>
         <clipPath id="clip-path">
           <rect

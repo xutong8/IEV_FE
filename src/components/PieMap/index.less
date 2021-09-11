@@ -1,0 +1,38 @@
+@import url("../../styles/base.less");
+
+.pieMap {
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+
+  .maps {
+    flex: 2 0 0;
+    display: flex;
+    flex-direction: row;
+    &:extend(.block);
+
+    .select {
+      width: 110px;
+      margin-top: 12px;
+    }
+
+    .basicMap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sourceMap {
+      flex: 1 0 0;
+    }
+
+    .middleMap {
+      flex: 1 0 0;
+      position: relative;
+    }
+
+    .targetMap {
+      flex: 1 0 0;
+    }
+  }
+}

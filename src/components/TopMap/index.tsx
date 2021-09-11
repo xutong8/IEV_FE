@@ -17,7 +17,7 @@ const TopMap = () => {
   // 柱状图的宽度
   const barWidth = 80;
   // 柱状图的高度
-  const barHeight = 300;
+  const barHeight = 200;
   // 热力图的宽度和高度
   const heatmapHeight = barHeight / Math.sqrt(2);
   // 年份
@@ -89,7 +89,7 @@ const TopMap = () => {
       <div className={styles.container}>
         <div className={styles.left}>
           <div className={styles.map}>
-            <CountryMap name="World" large={true} />
+            <CountryMap name="World" />
             {coordinatesData.coordinates.map((item) => {
               return (
                 <div
@@ -101,7 +101,7 @@ const TopMap = () => {
             })}
           </div>
           <div className={styles.map}>
-            <CountryMap name="World" large={true} />
+            <CountryMap name="World" />
             {coordinatesData.coordinates.map((item) => {
               return (
                 <div

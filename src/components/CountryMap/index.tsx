@@ -6,12 +6,11 @@ import cn from "classnames";
 
 export interface ICountryMapProps {
   name: string;
-  large?: boolean;
   style?: CSSProperties;
 }
 
 const CountryMap: React.FC<ICountryMapProps> = (props) => {
-  const { name, style = {}, large = false } = props;
+  const { name, style = {} } = props;
 
   const projectData = useContext(projectContext);
 
@@ -24,7 +23,6 @@ const CountryMap: React.FC<ICountryMapProps> = (props) => {
     <div
       className={cn({
         [styles.countryMap]: true,
-        [styles.large]: large,
       })}
       style={style}
     >
