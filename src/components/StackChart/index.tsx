@@ -1,13 +1,11 @@
 import { scaleLinear, scaleOrdinal } from "d3-scale";
-import { schemeCategory10, schemeAccent } from "d3";
+import { schemeAccent } from "d3";
 import { area, stack } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
 import {
   areaDataRaw,
-  IAreaData,
   IStackAreaData,
   filterCountry,
-  selectedCounties,
   selected2Digit,
 } from "@/utils/processAreaData";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -56,7 +54,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     [areaData]
   );
 
-  // TODO: 修改domain
   // x轴的scale
   const xScale = useMemo(
     () =>
@@ -187,19 +184,20 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                 ? 0
                 : computedWidth - 20 - zeroPosition[0]
             }
+            // 56为Legend的高度
             height={zeroPosition[1] - 56 < 0 ? 0 : zeroPosition[1] - 56}
           />
         </clipPath>
         <clipPath id="clip-axis">
           <rect
             x={zeroPosition[0] - 10}
-            y={170}
+            y={183}
             width={
               computedWidth - zeroPosition[0] + 3 < 0
                 ? 0
                 : computedWidth - zeroPosition[0] + 3
             }
-            height={40}
+            height={20}
           />
         </clipPath>
       </defs>

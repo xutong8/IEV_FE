@@ -7,6 +7,8 @@ import { pointer, easeLinear } from "d3";
 import { useTransition } from "@/hooks/useTransition";
 import cn from "classnames";
 import { useSVGSize } from "@/hooks/useSVGSize";
+import { years } from "@/constants/years";
+import { processTicks } from "@/utils/processTicks";
 export interface IProgressBarProps {
   width: number | string;
   height: number | string;
@@ -24,14 +26,25 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
 
   // computed width and height
   const [computedWidth, computedHeight] = useSVGSize(svgRef);
+  // 最小年
+  const minYear = useMemo(() => Math.min(...years), []);
+  // 最大年
+  const maxYear = useMemo(() => Math.max(...years), []);
 
-  const xScale = scaleLinear().domain([1995, 2019]).range([0, computedWidth]);
+  // X轴的刻度数量为7个
+  const X_TICKS = 6;
+  // 处理ticks
+  const yearTicks = processTicks<number>(years, X_TICKS);
+
+  const xScale = scaleLinear()
+    .domain([minYear, maxYear])
+    .range([10, computedWidth - 30]);
 
   // 当前年份的x坐标
   const [lineX, setLineX] = useState<number>(0);
 
   useEffect(() => {
-    setLineX(computedWidth);
+    setLineX(computedWidth - 30);
   }, [computedWidth]);
 
   const lines = useMemo(
@@ -112,10 +125,11 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
               className="bar-transition"
               key={index}
               style={{
-                width: item.width,
+                width: item.width - 10,
                 height: (computedHeight - axisHeight) / colors.length,
                 opacity: 0.6,
                 background: colors[index],
+                marginLeft: 10,
               }}
             />
           );
@@ -136,6 +150,8 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
         direction={DirectionValue.BOTTOM}
         position={[0, computedHeight - axisHeight]}
         scale={xScale}
+        ticks={X_TICKS}
+        tickValues={yearTicks}
       />
     </svg>
   );
