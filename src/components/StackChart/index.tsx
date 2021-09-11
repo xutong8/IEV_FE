@@ -1,13 +1,11 @@
 import { scaleLinear, scaleOrdinal } from "d3-scale";
-import { schemeCategory10, schemeAccent } from "d3";
+import { schemeAccent } from "d3";
 import { area, stack } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
 import {
   areaDataRaw,
-  IAreaData,
   IStackAreaData,
   filterCountry,
-  selectedCounties,
   selected2Digit,
 } from "@/utils/processAreaData";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -17,6 +15,7 @@ import { brushX } from "d3-brush";
 import { select } from "d3-selection";
 import styles from "./index.less";
 import { useSVGSize } from "@/hooks/useSVGSize";
+import { processTicks } from "@/utils/processTicks";
 
 export interface IStackChartProps {
   width: number | string;
@@ -30,8 +29,12 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   const [computedWidth, computedHeight] = useSVGSize(svgRef);
 
+  // brush在Y轴上的偏移
+  const BrushYOffset = 20;
+
+  // (0, 0)点的位置
   const zeroPosition = useMemo(
-    () => [100, computedHeight - 120],
+    () => [40, computedHeight - 80],
     [computedHeight]
   );
 
@@ -52,7 +55,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     [areaData]
   );
 
-  // TODO: 修改domain
   // x轴的scale
   const xScale = useMemo(
     () =>
@@ -76,6 +78,10 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   // 强制组件更新
   const [, forceUpdate] = useState<number>(0);
+  // X轴的刻度数量为7个
+  const X_TICKS = 6;
+  // 处理ticks
+  const yearTicks = processTicks<number>(years, X_TICKS);
 
   // brush的处理函数
   const brushed = useMemo(
@@ -169,31 +175,48 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         />
       </foreignObject>
       <defs>
-        <clipPath id="clip">
+        <clipPath id="clip-path">
           <rect
             x={zeroPosition[0]}
-            y={0}
+            y={56}
             width={
               computedWidth - 20 - zeroPosition[0] < 0
                 ? 0
                 : computedWidth - 20 - zeroPosition[0]
             }
-            height={zeroPosition[1] < 0 ? 0 : zeroPosition[1]}
+            // 56为Legend的高度
+            height={zeroPosition[1] - 56 < 0 ? 0 : zeroPosition[1] - 56}
+          />
+        </clipPath>
+        <clipPath id="clip-axis">
+          <rect
+            x={zeroPosition[0] - 10}
+            y={183}
+            width={
+              computedWidth - zeroPosition[0] + 3 < 0
+                ? 0
+                : computedWidth - zeroPosition[0] + 3
+            }
+            height={20}
           />
         </clipPath>
       </defs>
       <g>
-        <Axis
-          scale={xScale}
-          position={[0, zeroPosition[1]]}
-          direction={DirectionValue.BOTTOM}
-        />
+        <g clipPath="url(#clip-axis)">
+          <Axis
+            scale={xScale}
+            position={[0, zeroPosition[1]]}
+            direction={DirectionValue.BOTTOM}
+            tickValues={yearTicks}
+            ticks={X_TICKS}
+          />
+        </g>
         <Axis
           scale={yScale}
           position={[zeroPosition[0], 0]}
           direction={DirectionValue.LEFT}
         />
-        <g clipPath="url(#clip)">
+        <g clipPath="url(#clip-path)">
           {series.map((item: any, index: number) => {
             // console.log(item)
             return (
@@ -214,11 +237,13 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
           })}
         </g>
       </g>
-      <g transform={`translate(0, ${zeroPosition[1] + 20})`}>
+      <g transform={`translate(0, ${zeroPosition[1] + BrushYOffset})`}>
         <Axis
           scale={brushScale}
           position={[0, 40]}
           direction={DirectionValue.BOTTOM}
+          tickValues={yearTicks}
+          ticks={X_TICKS}
         />
         <g ref={brushRef} />
       </g>
