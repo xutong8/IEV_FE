@@ -8,8 +8,8 @@ export interface ILegend {
   // Pos问题
   data: Array<string>;
   onClick: (digit2: string, state: boolean) => void;
-  onMouseEnter: (e: any) => void;
-  onMouseLeave: (e: any) => void;
+  onMouseEnter: (hoverName: string) => void;
+  onMouseLeave: () => void;
 }
 
 const Legend: React.FC<ILegend> = (props) => {
