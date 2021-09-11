@@ -1,40 +1,49 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./index.less";
-import { Select, Button, Table } from "antd";
+import { Table } from "antd";
 import { ValueType } from "@/types";
 import { columns } from "./columns";
-import { processTableData } from "@/utils/processTableData";
-
-const { Option } = Select;
+import { ITableCountry, processTableData } from "@/utils/processTableData";
+import SearchInput from "../SearchInput";
 
 export interface ISearchTableProps {
   valueType: ValueType;
 }
 
-const SearchTable: React.FC<ISearchTableProps> = (props) => {
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
+// TODO: 支持valueType
 
+const SearchTable: React.FC<ISearchTableProps> = (props) => {
   const { valueType } = props;
 
-  const dataSource = useMemo(() => processTableData(), []);
+  const [dataSource, setDataSource] = useState<ITableCountry[]>(
+    processTableData()
+  );
+
+  // 处理搜索逻辑
+  const handleSearch = (conditions: string[]) => {
+    if (conditions && conditions.length === 0) {
+      setDataSource(processTableData());
+      return;
+    }
+
+    const newDataSource = dataSource.slice();
+    const filteredDataSource = newDataSource.filter((item) => {
+      return conditions.every((condition) => {
+        return (
+          condition === String(item.year) ||
+          condition === item.exportCountry ||
+          condition === item.importCountry ||
+          condition === item.category
+        );
+      });
+    });
+    setDataSource(filteredDataSource);
+  };
 
   return (
     <div className={styles["search_table"]}>
       <div className={styles["search_top"]}>
-        <Select
-          defaultValue="lucy"
-          onChange={handleChange}
-          style={{ width: "80%" }}
-        >
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
-          <Option value="Yiminghe">yiminghe</Option>
-        </Select>
-        <Button type="primary" style={{ width: "80%", marginTop: 15 }}>
-          Primary
-        </Button>
+        <SearchInput onSearch={handleSearch} />
       </div>
       <div className={styles["search_list"]}>
         <div className={styles["search_container"]}>
@@ -44,6 +53,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
             rowKey={(record) => record.id}
             pagination={{
               showSizeChanger: false,
+              pageSize: 12,
             }}
           />
         </div>
