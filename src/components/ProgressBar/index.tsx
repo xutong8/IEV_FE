@@ -80,7 +80,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
 
   useEffect(() => {
     bindClick();
-  }, []);
+  }, [xScale.range()]);
 
   const { attrState: barAttrState } = useTransition({
     className: "bar-transition",
