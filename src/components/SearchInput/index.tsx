@@ -4,7 +4,7 @@ import { Tag, Input, Button } from "antd";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 
 export interface ISearchInputProps {
-  onSearch?: () => void;
+  onSearch?: (conditions: string[]) => void;
 }
 
 const SearchInput: React.FC<ISearchInputProps> = (props) => {
@@ -57,7 +57,7 @@ const SearchInput: React.FC<ISearchInputProps> = (props) => {
 
   // 处理Search事件
   const handleSearch = () => {
-    onSearch?.();
+    onSearch?.(conditions);
   };
 
   return (
