@@ -72,7 +72,6 @@ const TopMap = () => {
       linesCoordinates.push(lineCoordinates);
     }
 
-    // console.log("linesCoordinates: ", linesCoordinates);
     setLines(linesCoordinates);
   };
 
@@ -80,9 +79,9 @@ const TopMap = () => {
     return `M${line[0].x} ${line[0].y} L${line[1].x} ${line[1].y} L${line[2].x} ${line[2].y}`;
   };
 
-  useEffect(() => {
-    getLinesCoordinates();
-  }, []);
+  // useEffect(() => {
+  //   getLinesCoordinates();
+  // }, []);
 
   return (
     <div className={styles.topmap}>

@@ -1,5 +1,5 @@
 // array: 国家全名
-const selectedCounties = [
+const top14Countries = [
   "China",
   "USA",
   "India",
@@ -16,4 +16,4 @@ const selectedCounties = [
   "Dem. People's Rep. of Korea",
 ];
 
-export { selectedCounties };
+export { top14Countries };

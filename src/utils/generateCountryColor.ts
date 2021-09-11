@@ -1,13 +1,13 @@
-import { countries } from "@/constants/countries";
+import dataSource from "@/data/nameToDigit2.json";
 import randomcolor from "randomcolor";
 
 const colorMap = new Map<string, string>();
 const generateCountryColor = () => {
-  const len = countries.length;
+  const len = dataSource.results.length;
   const colors = randomcolor({ count: len });
 
-  countries.forEach((country, index: number) => {
-    colorMap.set(country, colors[index]);
+  dataSource.results.forEach((country, index: number) => {
+    colorMap.set(country.iso_2digit_alpha, colors[index]);
   });
 };
 

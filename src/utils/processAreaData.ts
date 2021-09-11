@@ -4,7 +4,7 @@ import {
   nameToDigit2Map,
   nameToIDMap,
 } from "./processCountriesMap";
-import { selectedCounties } from "@/constants/top14Countries";
+import { top14Countries } from "@/constants/top14Countries";
 
 export interface IYearExpSumEachCountry {
   [index: string]: number;
@@ -41,14 +41,12 @@ export interface IAreaData {
 }
 
 // array: 国家对应ID
-const selectedIDArray: Array<string> = selectedCounties.map((item) =>
+const selectedIDArray: Array<string> = top14Countries.map((item) =>
   nameToIDMap.get(item)
 );
 
 // array: 国家全名对应缩写,便于legend展示
-const selected2Digit = selectedCounties.map((item) =>
-  nameToDigit2Map.get(item)
-);
+const selected2Digit = top14Countries.map((item) => nameToDigit2Map.get(item));
 
 /**
  * 将全部数据通过参数数组进行过滤预处理
@@ -93,4 +91,4 @@ function initializeData() {
 
 const areaDataRaw = initializeData();
 
-export { areaDataRaw, filterCountry, selectedCounties, selected2Digit };
+export { areaDataRaw, filterCountry, top14Countries, selected2Digit };

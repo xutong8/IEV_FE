@@ -38,7 +38,7 @@ const unhighlightNodeById = (graphData: IGraphData, id: string) => {
   const { nodes } = graphData;
   select(`#${getNodeId(id)}`).attr(
     "fill",
-    colorMap.get((findNodeById(nodes, id) as IGraphNode).name) as string
+    colorMap.get((findNodeById(nodes, id) as IGraphNode).continent) as string
   );
 };
 

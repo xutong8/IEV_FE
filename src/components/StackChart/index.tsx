@@ -15,6 +15,7 @@ import { select } from "d3-selection";
 import styles from "./index.less";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import { processTicks } from "@/utils/processTicks";
+import { colorMap } from "@/utils/generateCountryColor";
 
 export interface IStackChartProps {
   width: number | string;
@@ -130,14 +131,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     .y0((d) => yScale(d[0]))
     .y1((d) => yScale(d[1]));
 
-  const colorScale = useCallback(
-    (key) =>
-      scaleOrdinal<string, string>()
-        .domain((areaData as any).columns.slice(1))
-        .range(schemeAccent)(key),
-    [areaData]
-  );
-
   const onMouseEnter = useCallback((e) => {
     e.target.setAttribute("class", styles["hover"]);
   }, []);
@@ -163,16 +156,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   return (
     <svg width={width} height={height} ref={svgRef}>
-      {/* <foreignObject width="100%" height="100%">
-        <Legend
-          data={selected2Digit}
-          orient="row"
-          color={colorScale}
-          onClick={onClick}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-        />
-      </foreignObject> */}
       <defs>
         <clipPath id="clip-path">
           <rect
@@ -217,12 +200,13 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         />
         <g clipPath="url(#clip-path)">
           {series.map((item: any, index: number) => {
+            console.log("item: ", item);
             return (
               <Path
                 id={item.key as string}
                 key={index}
                 attributes={{
-                  fill: colorScale(item.key as string) as string,
+                  fill: colorMap.get(item.key),
                   d: areaFunc(item) as string,
                 }}
                 onMouseEnter={onMouseEnter}
@@ -235,7 +219,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       <g transform={`translate(0, ${zeroPosition[1] + BrushYOffset})`}>
         <Axis
           scale={brushScale}
-          position={[0, 40]}
+          position={[0, 41]}
           direction={DirectionValue.BOTTOM}
           tickValues={yearTicks}
           ticks={X_TICKS}
