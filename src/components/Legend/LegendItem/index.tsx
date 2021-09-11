@@ -6,8 +6,8 @@ export interface ILegendItem {
   fill: string;
   hover?: any;
   onClick: (digit2: string, state: boolean) => void;
-  onMouseEnter: (e: any) => void;
-  onMouseLeave: (e: any) => void;
+  onMouseEnter: (hoverName: string) => void;
+  onMouseLeave: () => void;
 }
 
 const LegendItem: React.FC<ILegendItem> = (props) => {
@@ -16,6 +16,7 @@ const LegendItem: React.FC<ILegendItem> = (props) => {
 
   const onClickLegend = useCallback(() => {
     setSelected(!selected);
+
     onClick(label, !selected);
   }, [selected]);
 
@@ -23,7 +24,7 @@ const LegendItem: React.FC<ILegendItem> = (props) => {
     <div
       className={styles["legend_item"]}
       onClick={onClickLegend}
-      onMouseEnter={onMouseEnter}
+      onMouseEnter={() => onMouseEnter(label)}
       onMouseLeave={onMouseLeave}
     >
       <div

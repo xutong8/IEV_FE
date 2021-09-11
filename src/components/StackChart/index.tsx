@@ -37,6 +37,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   const [areaData, setAreaData] = useState<IStackAreaData[]>(areaDataRaw);
   const [filterList, setFilterList] = useState<Array<string>>([]);
+  const [hoverCountry, setHoverCountry] = useState<string>("");
 
   // 映射获得年数组
   const years = useMemo(() => areaData.map((item) => item.date), [areaData]);
@@ -133,30 +134,27 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     [areaData]
   );
 
-  const onMouseEnter = useCallback((e) => {
-    e.target.setAttribute("class", styles["hover"]);
+  const onMouseEnter = useCallback((hoverName) => {
+    setHoverCountry(hoverName);
   }, []);
 
-  const onMouseLeave = useCallback((e) => {
-    e.target.removeAttribute("class", styles["hover"]);
+  const onMouseLeave = useCallback(() => {
+    setHoverCountry("");
   }, []);
 
-  const onClick = useCallback(
-    (digit2, state) => {
-      console.log(filterList);
-      // 更新过滤列表
-      if (state) {
-        setAreaData(filterCountry([...filterList, digit2]));
-        setFilterList([...filterList, digit2]);
-      } else {
-        filterList.splice(filterList.indexOf(digit2), 1);
-        setAreaData(filterCountry([...filterList]));
-        setFilterList([...filterList]);
-      }
-    },
-    [filterList]
-  );
-
+  const onClick = (digit2: string, state: boolean) => {
+    console.log(filterList);
+    // 更新过滤列表
+    if (state) {
+      console.log("enter");
+      setAreaData(filterCountry([...filterList, digit2]));
+      setFilterList((filterList) => [...filterList, digit2]);
+    } else {
+      filterList.splice(filterList.indexOf(digit2), 1);
+      setAreaData(filterCountry([...filterList]));
+      setFilterList([...filterList]);
+    }
+  };
   return (
     <svg width={width} height={height} ref={svgRef}>
       <foreignObject width="100%" height="100%">
@@ -196,12 +194,16 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         />
         <g clipPath="url(#clip)">
           {series.map((item: any, index: number) => {
+            // console.log(item)
             return (
               <Path
                 id={item.key as string}
                 key={index}
                 attributes={{
-                  fill: colorScale(item.key as string) as string,
+                  fill:
+                    hoverCountry && item.key === hoverCountry
+                      ? "#8fce74"
+                      : (colorScale(item.key as string) as string),
                   d: areaFunc(item) as string,
                 }}
                 onMouseEnter={onMouseEnter}
