@@ -3,8 +3,8 @@ import React, { SVGAttributes } from "react";
 export interface IPathProps {
   attributes?: SVGAttributes<SVGPathElement>;
   id: string;
-  onMouseEnter: (e: any) => void;
-  onMouseLeave: (e: any) => void;
+  onMouseEnter: (hoverName: string) => void;
+  onMouseLeave: () => void;
   // onMouseLeave: function;
 }
 
@@ -15,7 +15,7 @@ const Path: React.FC<IPathProps> = (props) => {
     <path
       id={id}
       {...attributes}
-      onMouseEnter={onMouseEnter}
+      onMouseEnter={() => onMouseEnter(id)}
       onMouseLeave={onMouseLeave}
     />
   );

@@ -40,6 +40,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   const [areaData, setAreaData] = useState<IStackAreaData[]>(areaDataRaw);
   const [filterList, setFilterList] = useState<Array<string>>([]);
+  const [hoverCountry, setHoverCountry] = useState<string>("");
 
   // 映射获得年数组
   const years = useMemo(() => areaData.map((item) => item.date), [areaData]);
@@ -131,20 +132,20 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     .y0((d) => yScale(d[0]))
     .y1((d) => yScale(d[1]));
 
-  const onMouseEnter = useCallback((e) => {
-    e.target.setAttribute("class", styles["hover"]);
+  const onMouseEnter = useCallback((hoverName) => {
+    setHoverCountry(hoverName);
   }, []);
 
-  const onMouseLeave = useCallback((e) => {
-    e.target.removeAttribute("class", styles["hover"]);
+  const onMouseLeave = useCallback(() => {
+    setHoverCountry("");
   }, []);
 
   const onClick = useCallback(
-    (digit2, state) => {
+    (digit2: string, state: boolean) => {
       // 更新过滤列表
       if (state) {
         setAreaData(filterCountry([...filterList, digit2]));
-        setFilterList([...filterList, digit2]);
+        setFilterList((filterList) => [...filterList, digit2]);
       } else {
         filterList.splice(filterList.indexOf(digit2), 1);
         setAreaData(filterCountry([...filterList]));
@@ -153,7 +154,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     },
     [filterList]
   );
-
   return (
     <svg width={width} height={height} ref={svgRef}>
       <defs>
@@ -200,13 +200,15 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         />
         <g clipPath="url(#clip-path)">
           {series.map((item: any, index: number) => {
-            console.log("item: ", item);
             return (
               <Path
                 id={item.key as string}
                 key={index}
                 attributes={{
-                  fill: colorMap.get(item.key),
+                  fill:
+                    hoverCountry && item.key === hoverCountry
+                      ? "#8fce74"
+                      : colorMap.get(item.key),
                   d: areaFunc(item) as string,
                 }}
                 onMouseEnter={onMouseEnter}
