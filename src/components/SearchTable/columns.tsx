@@ -1,5 +1,5 @@
 import { Tooltip } from "antd";
-import { QuestionOutlined } from "@ant-design/icons";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 export const columns = [
   {
@@ -19,7 +19,7 @@ export const columns = [
           {importCountry.slice(0, 5)}
           {importCountry.length > 5 ? (
             <Tooltip title={importCountry}>
-              <QuestionOutlined />
+              <QuestionCircleOutlined />
             </Tooltip>
           ) : null}
         </div>
@@ -37,7 +37,7 @@ export const columns = [
           {exportCountry.slice(0, 5)}
           {exportCountry.length > 5 ? (
             <Tooltip title={exportCountry}>
-              <QuestionOutlined />
+              <QuestionCircleOutlined />
             </Tooltip>
           ) : null}
         </div>
@@ -55,7 +55,7 @@ export const columns = [
           {category.slice(0, 5)}
           {category.length > 5 ? (
             <Tooltip title={category}>
-              <QuestionOutlined />
+              <QuestionCircleOutlined />
             </Tooltip>
           ) : null}
         </div>
@@ -68,7 +68,7 @@ export const columns = [
         <div>
           Amount
           <Tooltip title="(In thousands current USD)">
-            <QuestionOutlined />
+            <QuestionCircleOutlined />
           </Tooltip>
         </div>
       );
