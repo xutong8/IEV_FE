@@ -19,6 +19,11 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
     processTableData()
   );
 
+  const maxAmount = useMemo(
+    () => Math.max(...dataSource.map((item) => item.amount)),
+    [dataSource]
+  );
+
   // 处理搜索逻辑
   const handleSearch = (conditions: string[]) => {
     if (conditions && conditions.length === 0) {
@@ -48,7 +53,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
       <div className={styles["search_list"]}>
         <div className={styles["search_container"]}>
           <Table
-            columns={columns}
+            columns={columns(valueType, maxAmount)}
             dataSource={dataSource}
             rowKey={(record) => record.id}
             pagination={{
