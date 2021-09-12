@@ -13,7 +13,6 @@ import Path from "../Path";
 import Legend from "../Legend";
 import { brushX } from "d3-brush";
 import { select } from "d3-selection";
-import styles from "./index.less";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import { processTicks } from "@/utils/processTicks";
 
@@ -116,7 +115,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         .call(brush)
         .call(brush.move, xScale.range());
     }
-  }, [computedWidth]);
+  }, [computedWidth, brush, xScale]);
 
   // 最后一行的数据
   const lastItems = series[series.length - 1].map((item) => item[1]);

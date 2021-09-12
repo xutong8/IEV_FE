@@ -7,6 +7,7 @@ import Images from "../Images";
 import { Nations, icons } from "../../assets/images";
 import StackChart from "../StackChart";
 import CountryMap from "../CountryMap";
+import Choropleth from "../Choropleth";
 import { Select } from "antd";
 import { useContext, useState } from "react";
 import { projectContext } from "@/context/projectData";
@@ -90,14 +91,10 @@ const BasicLayout = () => {
                   </div>
                   <div className={styles.middleMap}>
                     <Pie width={300} height={200} />
-                    <CountryMap
-                      name="World"
-                      style={{
-                        position: "absolute",
-                        left: "50%",
-                        top: "50%",
-                        transform: "translate(-50%, -50%)",
-                      }}
+                    <Choropleth
+                      data={data}
+                      selectedCountries={["156", "842"]}
+                      selectedColors={["#d2796f", "#508bbb"]}
                     />
                   </div>
                   <div
