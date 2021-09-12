@@ -13,10 +13,12 @@ import { projectContext } from "@/context/projectData";
 import cn from "classnames";
 import ProgressBar from "../ProgressBar";
 import TopMap from "../TopMap";
+import { data } from "@/utils/processChoroplethData";
 
 const { Option } = Select;
 
 const BasicLayout = () => {
+  console.log(data);
   const productData = useContext(projectContext);
   // 对比国家
   const [sourceCountry, setSourceCountry] = useState<string>("China");
