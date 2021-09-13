@@ -207,6 +207,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         />
         <g clipPath="url(#clip-path)">
           {series.map((item: any, index: number) => {
+            // console.log(item)
             return (
               <Path
                 id={item.key as string}
