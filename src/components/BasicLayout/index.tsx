@@ -44,8 +44,13 @@ const BasicLayout = () => {
         </div>
         <div className={styles["bottom"]}>
           <div className={styles.first}>
-            <div className={styles.topMap}>
+            <div className={styles.firstLeft}>
               <TopMap />
+            </div>
+            <div className={styles.firstRight}>
+              <div className={styles.force}>
+                <ForceGraph width="100%" height="100%" />
+              </div>
             </div>
           </div>
           <div className={styles.second}>
@@ -53,13 +58,10 @@ const BasicLayout = () => {
               <div className={styles.pieMapContainer}>
                 <PieMap />
               </div>
-              <div className={styles.stack}>
-                <StackChart width="100%" height="100%" />
-              </div>
             </div>
             <div className={styles.secondRight}>
-              <div className={styles.force}>
-                <ForceGraph width="100%" height="100%" />
+              <div className={styles.stack}>
+                <StackChart width="100%" height="100%" />
               </div>
             </div>
           </div>

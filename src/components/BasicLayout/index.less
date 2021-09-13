@@ -55,11 +55,25 @@
 
     .first {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       height: 212px;
 
-      .topMap {
+      .firstLeft {
+        flex: 1 0 0;
         height: 100%;
+      }
+
+      .firstRight {
+        width: 318px;
+        height: 100%;
+        margin-left: 12px;
+
+        .force {
+          flex: 1 0 0;
+          height: 100%;
+          display: flex;
+          &:extend(.block);
+        }
       }
     }
 
@@ -72,37 +86,20 @@
       .secondLeft {
         flex: 1 0 0;
         display: flex;
-        flex-direction: column;
 
         .pieMapContainer {
-          margin-bottom: 12px;
           flex: 1 0 0;
           &:extend(.block);
-
-          .svg {
-            flex: 1 0 0;
-          }
-        }
-
-        .stack {
-          flex: 1 0 0;
-          display: flex;
-          &:extend(.block);
-
-          .svg {
-            flex: 1 0 0;
-          }
         }
       }
 
       .secondRight {
         width: 318px;
-        height: 100%;
+        display: flex;
         margin-left: 12px;
 
-        .force {
+        .stack {
           flex: 1 0 0;
-          height: 100%;
           display: flex;
           &:extend(.block);
         }
