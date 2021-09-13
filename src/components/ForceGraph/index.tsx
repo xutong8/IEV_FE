@@ -1,4 +1,4 @@
-import { getNodeColor, processGraphData } from "@/utils/processGraphData";
+import { processGraphData, getNodeColor } from "@/utils/processGraphData";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ForceNode from "./ForceNode";
 import styles from "./index.less";
