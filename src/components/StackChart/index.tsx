@@ -1,5 +1,4 @@
-import { scaleLinear, scaleOrdinal } from "d3-scale";
-import { schemeAccent } from "d3";
+import { scaleLinear } from "d3-scale";
 import { area, stack } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
 import {
@@ -16,6 +15,7 @@ import styles from "./index.less";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import { processTicks } from "@/utils/processTicks";
 import { colorMap } from "@/utils/generateCountryColor";
+import dataSource from "@/data/nameToDigit2.json";
 
 export interface IStackChartProps {
   width: number | string;
@@ -29,12 +29,14 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   const [computedWidth, computedHeight] = useSVGSize(svgRef);
 
+  const legendHeight = 50;
+
   // brush在Y轴上的偏移
   const BrushYOffset = 20;
 
   // (0, 0)点的位置
   const zeroPosition = useMemo(
-    () => [40, computedHeight - 80],
+    () => [40, computedHeight - 60],
     [computedHeight]
   );
 
@@ -103,8 +105,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     () =>
       brushX()
         .extent([
-          [zeroPosition[0], 0],
-          [computedWidth - 20, 40],
+          [zeroPosition[0], 20],
+          [computedWidth - 40, 40],
         ])
         .on("brush end", brushed),
     [computedWidth, zeroPosition, brushed]
@@ -125,7 +127,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const maxY = useMemo(() => Math.max(...lastItems), [lastItems]);
 
   // y轴的scale
-  const yScale = scaleLinear().domain([0, maxY]).range([zeroPosition[1], 40]);
+  const yScale = scaleLinear()
+    .domain([0, maxY])
+    .range([zeroPosition[1], legendHeight]);
 
   const areaFunc = area()
     .x((d: any) => xScale(Number(d.data.date)))
@@ -156,11 +160,24 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   );
   return (
     <svg width={width} height={height} ref={svgRef}>
+      <foreignObject width="100%" height={legendHeight}>
+        <Legend
+          orient="row"
+          data={dataSource.results.map((item) => item.name)}
+          color={(label: string) => {
+            const item = dataSource.results.find((item) => item.name === label);
+            return colorMap.get(item?.iso_2digit_alpha ?? "") ?? "";
+          }}
+          onClick={onClick}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        />
+      </foreignObject>
       <defs>
         <clipPath id="clip-path">
           <rect
             x={zeroPosition[0]}
-            y={36}
+            y={36 + legendHeight}
             width={
               computedWidth - 20 - zeroPosition[0] < 0
                 ? 0
@@ -170,18 +187,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             height={zeroPosition[1] - 36 < 0 ? 0 : zeroPosition[1] - 36}
           />
         </clipPath>
-        {/* <clipPath id="clip-axis">
-          <rect
-            x={zeroPosition[0] - 10}
-            y={126}
-            width={
-              computedWidth - zeroPosition[0] + 3 < 0
-                ? 0
-                : computedWidth - zeroPosition[0] + 3
-            }
-            height={20}
-          />
-        </clipPath> */}
       </defs>
       <g>
         <Axis
@@ -191,15 +196,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
           tickValues={yearTicks}
           ticks={X_TICKS}
         />
-        {/* <g clipPath="url(#clip-axis)">
-          <Axis
-            scale={xScale}
-            position={[0, zeroPosition[1]]}
-            direction={DirectionValue.BOTTOM}
-            tickValues={yearTicks}
-            ticks={X_TICKS}
-          />
-        </g> */}
         <Axis
           scale={yScale}
           position={[zeroPosition[0], 0]}
@@ -207,7 +203,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         />
         <g clipPath="url(#clip-path)">
           {series.map((item: any, index: number) => {
-            // console.log(item)
             return (
               <Path
                 id={item.key as string}
