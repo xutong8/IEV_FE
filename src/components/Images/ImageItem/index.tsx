@@ -1,8 +1,6 @@
 import { CSSProperties } from "react";
 import styles from "./index.less";
 import cn from "classnames";
-import { Tooltip } from "antd";
-import { QuestionOutlined } from "@ant-design/icons";
 export interface IImageItem {
   image: Image;
   style: CSSProperties;

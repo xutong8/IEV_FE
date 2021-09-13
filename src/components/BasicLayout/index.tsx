@@ -34,10 +34,11 @@ const BasicLayout = () => {
             <Images
               imageList={icons}
               column={5}
-              imgStyle={{ boxShadow: "none", width: "80%" }}
+              imgStyle={{ boxShadow: "none", width: "40%" }}
               style={{
                 boxShadow: "1px 1px 1px 1px rgba(0, 0, 0, 0.1)",
                 borderRadius: 4,
+                marginTop: 10,
               }}
             />
           </div>

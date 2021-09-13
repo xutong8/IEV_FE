@@ -17,7 +17,7 @@ const TopMap = () => {
   // 柱状图的宽度
   const barWidth = 80;
   // 柱状图的高度
-  const barHeight = 200;
+  const barHeight = 300;
   // 热力图的宽度和高度
   const heatmapHeight = barHeight / Math.sqrt(2);
   // 年份

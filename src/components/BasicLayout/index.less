@@ -23,18 +23,18 @@
   }
 
   .middle {
-    flex: 1 0 0;
+    height: 140px;
     display: flex;
     margin: 16px 0;
 
     .item {
       &:first-child {
-        flex: 2 0 0;
+        flex: 1 0 0;
         margin-right: 12px;
       }
 
       &:nth-child(2) {
-        flex: 1 0 0;
+        width: 540px;
       }
 
       &:extend(.block);
@@ -56,7 +56,7 @@
     .first {
       display: flex;
       flex-direction: row;
-      height: 212px;
+      height: 312px;
 
       .firstLeft {
         flex: 1 0 0;
@@ -64,7 +64,7 @@
       }
 
       .firstRight {
-        width: 318px;
+        width: 540px;
         height: 100%;
         margin-left: 12px;
 
@@ -94,7 +94,7 @@
       }
 
       .secondRight {
-        width: 318px;
+        width: 540px;
         display: flex;
         margin-left: 12px;
 
