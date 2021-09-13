@@ -25,6 +25,7 @@ const PieMap = () => {
           })}
         >
           <CountryMap
+            className={styles.countryMap}
             name={sourceCountry}
             style={{ transform: "translate(0, 10%)" }}
           />
@@ -43,7 +44,7 @@ const PieMap = () => {
           </Select>
         </div>
         <div className={styles.middleMap}>
-          <Pie width={300} height={150} />
+          <Pie width="100%" height="100%" />
           <CountryMap
             name="World"
             style={{
@@ -62,6 +63,7 @@ const PieMap = () => {
         >
           <CountryMap
             name={targetCountry}
+            className={styles.countryMap}
             style={{ transform: "translate(0, 10%)" }}
           />
           <Select

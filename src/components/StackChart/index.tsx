@@ -170,7 +170,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             height={zeroPosition[1] - 36 < 0 ? 0 : zeroPosition[1] - 36}
           />
         </clipPath>
-        <clipPath id="clip-axis">
+        {/* <clipPath id="clip-axis">
           <rect
             x={zeroPosition[0] - 10}
             y={126}
@@ -181,10 +181,17 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             }
             height={20}
           />
-        </clipPath>
+        </clipPath> */}
       </defs>
       <g>
-        <g clipPath="url(#clip-axis)">
+        <Axis
+          scale={xScale}
+          position={[0, zeroPosition[1]]}
+          direction={DirectionValue.BOTTOM}
+          tickValues={yearTicks}
+          ticks={X_TICKS}
+        />
+        {/* <g clipPath="url(#clip-axis)">
           <Axis
             scale={xScale}
             position={[0, zeroPosition[1]]}
@@ -192,7 +199,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             tickValues={yearTicks}
             ticks={X_TICKS}
           />
-        </g>
+        </g> */}
         <Axis
           scale={yScale}
           position={[zeroPosition[0], 0]}

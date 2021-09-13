@@ -56,9 +56,10 @@
     .first {
       display: flex;
       flex-direction: column;
+      height: 212px;
 
       .topMap {
-        height: 212px;
+        height: 100%;
       }
     }
 
@@ -75,21 +76,32 @@
 
         .pieMapContainer {
           margin-bottom: 12px;
+          flex: 1 0 0;
+          &:extend(.block);
+
+          .svg {
+            flex: 1 0 0;
+          }
         }
 
         .stack {
           flex: 1 0 0;
           display: flex;
           &:extend(.block);
+
+          .svg {
+            flex: 1 0 0;
+          }
         }
       }
 
       .secondRight {
         width: 318px;
+        height: 100%;
         margin-left: 12px;
 
         .force {
-          width: 100%;
+          flex: 1 0 0;
           height: 100%;
           display: flex;
           &:extend(.block);
