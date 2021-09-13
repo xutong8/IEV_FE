@@ -27,7 +27,7 @@ const PieMap = () => {
           })}
         >
           <CountryMap
-            className={styles.countryMap}
+            className={styles.sourceCountryMap}
             name={sourceCountry}
             style={{ transform: "translate(0, 10%)" }}
           />
@@ -50,7 +50,6 @@ const PieMap = () => {
           <Choropleth
             data={data}
             selectedCountries={["156", "842"]}
-            // selectedColors = {['#508bbb', '#d2796f']}
             selectedColors={["red", "blue"]}
             parentClass={styles.middleMap}
           />
@@ -63,7 +62,7 @@ const PieMap = () => {
         >
           <CountryMap
             name={targetCountry}
-            className={styles.countryMap}
+            className={styles.targetCountryMap}
             style={{ transform: "translate(0, 10%)" }}
           />
           <Select
