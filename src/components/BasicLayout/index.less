@@ -18,7 +18,7 @@
   padding: 16px;
 
   .top {
-    flex: 1 0 0;
+    height: 50px;
     &:extend(.block);
   }
 
@@ -47,80 +47,65 @@
     flex-direction: column;
 
     .progress {
-      height: 146px;
+      margin-top: 12px;
+      height: 80px;
       padding: 16px 16px;
       &:extend(.block);
     }
 
-    .left {
-      flex: 3 0 0;
+    .first {
       display: flex;
       flex-direction: column;
+      height: 212px;
 
       .topMap {
-        height: 312px;
-        margin-right: 12px;
+        height: 100%;
       }
+    }
 
-      .bottomMap {
-        padding-top: 24px;
+    .second {
+      flex: 1 0 0;
+      margin-top: 12px;
+      display: flex;
+      flex-direction: row;
+
+      .secondLeft {
         flex: 1 0 0;
         display: flex;
         flex-direction: column;
 
-        .maps {
-          flex: 2 0 0;
-          display: flex;
-          flex-direction: row;
+        .pieMapContainer {
+          margin-bottom: 12px;
+          flex: 1 0 0;
           &:extend(.block);
 
-          margin-right: 12px;
-          margin-bottom: 12px;
-
-          .select {
-            width: 110px;
-            margin-top: 12px;
-          }
-
-          .basicMap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-          }
-
-          .sourceMap {
+          .svg {
             flex: 1 0 0;
           }
+        }
 
-          .middleMap {
-            flex: 1 0 0;
-            position: relative;
-          }
+        .stack {
+          flex: 1 0 0;
+          display: flex;
+          &:extend(.block);
 
-          .targetMap {
+          .svg {
             flex: 1 0 0;
           }
         }
       }
-    }
 
-    .right {
-      flex: 2 0 0;
-      display: flex;
-      flex-direction: column;
+      .secondRight {
+        width: 318px;
+        height: 100%;
+        margin-left: 12px;
 
-      .force {
-        flex: 1 0 0;
-        display: flex;
-        margin-bottom: 12px;
-        &:extend(.block);
-      }
-
-      .stack {
-        flex: 1 0 0;
-        display: flex;
-        margin-bottom: 12px;
-        &:extend(.block);
+        .force {
+          flex: 1 0 0;
+          height: 100%;
+          display: flex;
+          &:extend(.block);
+        }
       }
     }
   }
