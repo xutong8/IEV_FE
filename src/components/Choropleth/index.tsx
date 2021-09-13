@@ -25,7 +25,7 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
       }
       // console.log(id, iDToNameMap.get(id), fullName, parentClass);
       const impCountry = Object.keys(data[id])[0];
-      console.log(impCountry);
+
       try {
         // 其他情况
         select(`.${parentClass} #${curDigit2}`)
