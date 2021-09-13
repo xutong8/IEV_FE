@@ -1,5 +1,5 @@
 import totalData from "@/data/totalData.json";
-import { schemeCategory10 } from "d3";
+import randomcolor from "randomcolor";
 
 export interface IGraphNode {
   id: string;
@@ -64,8 +64,12 @@ function getNodeColor(nodes: IGraphNode[]) {
   const filteredContinents = Array.from(continents);
   const colorMap = new Map();
 
+  const colors = randomcolor({
+    count: filteredContinents.length,
+  });
+
   filteredContinents.forEach((continent, index) => {
-    colorMap.set(continent, schemeCategory10[index % 10]);
+    colorMap.set(continent, colors[index]);
   });
 
   return colorMap;

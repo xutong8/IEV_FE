@@ -17,7 +17,7 @@ const TopMap = () => {
   // 柱状图的宽度
   const barWidth = 80;
   // 柱状图的高度
-  const barHeight = 300;
+  const barHeight = 200;
   // 热力图的宽度和高度
   const heatmapHeight = barHeight / Math.sqrt(2);
   // 年份
@@ -72,7 +72,6 @@ const TopMap = () => {
       linesCoordinates.push(lineCoordinates);
     }
 
-    // console.log("linesCoordinates: ", linesCoordinates);
     setLines(linesCoordinates);
   };
 
@@ -80,16 +79,16 @@ const TopMap = () => {
     return `M${line[0].x} ${line[0].y} L${line[1].x} ${line[1].y} L${line[2].x} ${line[2].y}`;
   };
 
-  useEffect(() => {
-    getLinesCoordinates();
-  }, []);
+  // useEffect(() => {
+  //   getLinesCoordinates();
+  // }, []);
 
   return (
     <div className={styles.topmap}>
       <div className={styles.container}>
         <div className={styles.left}>
           <div className={styles.map}>
-            <CountryMap name="World" large={true} />
+            <CountryMap name="World" />
             {coordinatesData.coordinates.map((item) => {
               return (
                 <div
@@ -101,7 +100,7 @@ const TopMap = () => {
             })}
           </div>
           <div className={styles.map}>
-            <CountryMap name="World" large={true} />
+            <CountryMap name="World" />
             {coordinatesData.coordinates.map((item) => {
               return (
                 <div

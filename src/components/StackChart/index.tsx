@@ -6,7 +6,6 @@ import {
   areaDataRaw,
   IStackAreaData,
   filterCountry,
-  selected2Digit,
 } from "@/utils/processAreaData";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Path from "../Path";
@@ -16,6 +15,7 @@ import { select } from "d3-selection";
 import styles from "./index.less";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import { processTicks } from "@/utils/processTicks";
+import { colorMap } from "@/utils/generateCountryColor";
 
 export interface IStackChartProps {
   width: number | string;
@@ -125,20 +125,12 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const maxY = useMemo(() => Math.max(...lastItems), [lastItems]);
 
   // y轴的scale
-  const yScale = scaleLinear().domain([0, maxY]).range([zeroPosition[1], 60]);
+  const yScale = scaleLinear().domain([0, maxY]).range([zeroPosition[1], 40]);
 
   const areaFunc = area()
     .x((d: any) => xScale(Number(d.data.date)))
     .y0((d) => yScale(d[0]))
     .y1((d) => yScale(d[1]));
-
-  const colorScale = useCallback(
-    (key) =>
-      scaleOrdinal<string, string>()
-        .domain((areaData as any).columns.slice(1))
-        .range(schemeAccent)(key),
-    [areaData]
-  );
 
   const onMouseEnter = useCallback((hoverName) => {
     setHoverCountry(hoverName);
@@ -164,34 +156,24 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   );
   return (
     <svg width={width} height={height} ref={svgRef}>
-      <foreignObject width="100%" height="100%">
-        <Legend
-          data={selected2Digit}
-          orient="row"
-          color={colorScale}
-          onClick={onClick}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-        />
-      </foreignObject>
       <defs>
         <clipPath id="clip-path">
           <rect
             x={zeroPosition[0]}
-            y={56}
+            y={36}
             width={
               computedWidth - 20 - zeroPosition[0] < 0
                 ? 0
                 : computedWidth - 20 - zeroPosition[0]
             }
             // 56为Legend的高度
-            height={zeroPosition[1] - 56 < 0 ? 0 : zeroPosition[1] - 56}
+            height={zeroPosition[1] - 36 < 0 ? 0 : zeroPosition[1] - 36}
           />
         </clipPath>
-        <clipPath id="clip-axis">
+        {/* <clipPath id="clip-axis">
           <rect
             x={zeroPosition[0] - 10}
-            y={183}
+            y={126}
             width={
               computedWidth - zeroPosition[0] + 3 < 0
                 ? 0
@@ -199,10 +181,17 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             }
             height={20}
           />
-        </clipPath>
+        </clipPath> */}
       </defs>
       <g>
-        <g clipPath="url(#clip-axis)">
+        <Axis
+          scale={xScale}
+          position={[0, zeroPosition[1]]}
+          direction={DirectionValue.BOTTOM}
+          tickValues={yearTicks}
+          ticks={X_TICKS}
+        />
+        {/* <g clipPath="url(#clip-axis)">
           <Axis
             scale={xScale}
             position={[0, zeroPosition[1]]}
@@ -210,7 +199,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             tickValues={yearTicks}
             ticks={X_TICKS}
           />
-        </g>
+        </g> */}
         <Axis
           scale={yScale}
           position={[zeroPosition[0], 0]}
@@ -227,7 +216,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                   fill:
                     hoverCountry && item.key === hoverCountry
                       ? "#8fce74"
-                      : (colorScale(item.key as string) as string),
+                      : colorMap.get(item.key),
                   d: areaFunc(item) as string,
                 }}
                 onMouseEnter={onMouseEnter}
@@ -240,7 +229,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       <g transform={`translate(0, ${zeroPosition[1] + BrushYOffset})`}>
         <Axis
           scale={brushScale}
-          position={[0, 40]}
+          position={[0, 41]}
           direction={DirectionValue.BOTTOM}
           tickValues={yearTicks}
           ticks={X_TICKS}

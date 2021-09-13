@@ -9,17 +9,25 @@ import cn from "classnames";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import { years } from "@/constants/years";
 import { processTicks } from "@/utils/processTicks";
+import { colorMap } from "@/utils/generateCountryColor";
+import dataSource from "@/data/nameToDigit2.json";
 export interface IProgressBarProps {
   width: number | string;
   height: number | string;
 }
 
-const colors = ["red", "blue", "yellow", "pink", "purple", "orange"];
-
 const ProgressBar: React.FC<IProgressBarProps> = (props) => {
   const { width, height } = props;
 
   const axisHeight = 20;
+
+  const colors = useMemo(
+    () =>
+      dataSource.results.map((country) =>
+        colorMap.get(country.iso_2digit_alpha)
+      ),
+    []
+  );
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
@@ -55,32 +63,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     [lineX]
   );
 
-  const bars = useMemo(
-    () => [
-      {
-        width: lineX,
-      },
-      {
-        width: lineX,
-      },
-      {
-        width: lineX,
-      },
-      {
-        width: lineX,
-      },
-      {
-        width: lineX,
-      },
-      {
-        width: lineX,
-      },
-      {
-        width: lineX,
-      },
-    ],
-    [lineX]
-  );
+  const bars = useMemo(() => colors.map(() => ({ width: lineX })), [lineX]);
 
   // TODO: 事件解除绑定
   const bindClick = () => {
