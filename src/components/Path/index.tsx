@@ -5,7 +5,6 @@ export interface IPathProps {
   id: string;
   onMouseEnter: (hoverName: string) => void;
   onMouseLeave: () => void;
-  // onMouseLeave: function;
 }
 
 const Path: React.FC<IPathProps> = (props) => {

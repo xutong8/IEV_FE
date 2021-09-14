@@ -1,6 +1,10 @@
 import { select } from "d3-selection";
-import { colorMap } from "./generateCountryColor";
-import { IGraphData, IGraphLink, IGraphNode } from "./processGraphData";
+import {
+  getNodeColor,
+  IGraphData,
+  IGraphLink,
+  IGraphNode,
+} from "./processGraphData";
 
 // 获取节点的完整id
 const getNodeId = (id: string) => `node${id}`;
@@ -36,9 +40,10 @@ const highlightNodeById = (id: string) => {
 // TODO: 不需要nodes参数
 const unhighlightNodeById = (graphData: IGraphData, id: string) => {
   const { nodes } = graphData;
+  console.log("nodeId: ", getNodeId(id));
   select(`#${getNodeId(id)}`).attr(
     "fill",
-    colorMap.get((findNodeById(nodes, id) as IGraphNode).continent) as string
+    getNodeColor(nodes).get((findNodeById(nodes, id) as IGraphNode).continent)
   );
 };
 

@@ -34,7 +34,7 @@
       }
 
       &:nth-child(2) {
-        width: 540px;
+        flex: 1 0 0;
       }
 
       &:extend(.block);
@@ -56,15 +56,21 @@
     .first {
       display: flex;
       flex-direction: row;
-      height: 312px;
+      flex: 1 0 0;
 
       .firstLeft {
-        flex: 1 0 0;
+        flex: 3 0 0;
         height: 100%;
+
+        .topMap {
+          flex: 1 0 0;
+          height: 100%;
+          display: flex;
+        }
       }
 
       .firstRight {
-        width: 540px;
+        flex: 1 0 0;
         height: 100%;
         margin-left: 12px;
 
@@ -84,7 +90,7 @@
       flex-direction: row;
 
       .secondLeft {
-        flex: 1 0 0;
+        flex: 3 0 0;
         display: flex;
 
         .pieMapContainer {
@@ -94,7 +100,7 @@
       }
 
       .secondRight {
-        width: 540px;
+        flex: 1 0 0;
         display: flex;
         margin-left: 12px;
 

@@ -1,4 +1,8 @@
-import { processGraphData, getNodeColor } from "@/utils/processGraphData";
+import {
+  processGraphData,
+  getNodeColor,
+  graphNodeColopMap,
+} from "@/utils/processGraphData";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ForceNode from "./ForceNode";
 import styles from "./index.less";
@@ -54,7 +58,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     return Math.max(...nodes.map((node) => node.expsum));
   }, [nodes]);
 
-  const nodeScale = scaleLinear().domain([minNode, maxNode]).range([2, 6]);
+  const nodeScale = scaleLinear().domain([minNode, maxNode]).range([3, 12]);
 
   // 按照value值来映射边的长短
   const minLink = useMemo(() => {
@@ -135,6 +139,8 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     highlightNodeById(targetNodeId);
   };
 
+  const colorMap = useMemo(() => getNodeColor(nodes), [nodes]);
+
   // leave link取消高亮
   const linkMouseLeaveHandler = (event: MouseEvent) => {
     const link = findLinkById(event, links);
@@ -184,7 +190,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
               cx={node.x as number}
               cy={node.y as number}
               attributes={{
-                fill: getNodeColor(nodes).get(node.continent),
+                fill: graphNodeColopMap.get(node.continent),
               }}
             />
           );

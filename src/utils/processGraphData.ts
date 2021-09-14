@@ -55,27 +55,32 @@ function initializeData(year: number, data: any) {
   return gData;
 }
 
+const graphNodeColopMap = new Map();
+
 function getNodeColor(nodes: IGraphNode[]) {
+  if (graphNodeColopMap.size !== 0) {
+    return graphNodeColopMap;
+  }
+
   const continents = new Set();
   for (const node of nodes) {
     continents.add(node.continent);
   }
 
   const filteredContinents = Array.from(continents);
-  const colorMap = new Map();
 
   const colors = randomcolor({
     count: filteredContinents.length,
   });
 
   filteredContinents.forEach((continent, index) => {
-    colorMap.set(continent, colors[index]);
+    graphNodeColopMap.set(continent, colors[index]);
   });
 
-  return colorMap;
+  return graphNodeColopMap;
 }
 
 const processGraphData: (year: number) => IGraphData = (year: number) =>
   initializeData(year, totalData);
 
-export { getNodeColor, processGraphData };
+export { getNodeColor, processGraphData, graphNodeColopMap };

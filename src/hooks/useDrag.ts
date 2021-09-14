@@ -15,6 +15,10 @@ function useDrag(selection: any, handlers: IUseDragProps) {
         .on("drag", handlers.drag)
         .on("end", handlers.end)
     );
+
+    return () => {
+      selection.call(drag().on("start", null).on("drag", null).on("end", null));
+    };
   }, [selection, handlers]);
 }
 
