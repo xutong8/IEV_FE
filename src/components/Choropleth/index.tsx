@@ -17,13 +17,11 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
     Object.keys(data).forEach((id) => {
       const fullName = iDToNameMap.get(id);
       let curDigit2;
-      // console.log(nameToDigit2TotalMap)
       try {
         curDigit2 = nameToDigit2TotalMap.get(fullName).toLowerCase();
       } catch {
-        console.log(fullName, nameToDigit2TotalMap.has(fullName));
+        console.log(fullName);
       }
-      // console.log(id, iDToNameMap.get(id), fullName, parentClass);
       const impCountry = Object.keys(data[id])[0];
 
       try {
@@ -31,9 +29,7 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
         select(`.${parentClass} #${curDigit2}`)
           .attr(
             "fill",
-            `${
-              selectedColors[selectedCountries.indexOf(impCountry)]
-            } !important`
+            `${selectedColors[selectedCountries.indexOf(impCountry)]}`
           )
           .attr("opacity", data[id][impCountry] / 2 + 0.5);
       } catch {
