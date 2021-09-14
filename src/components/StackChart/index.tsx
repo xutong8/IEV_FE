@@ -1,5 +1,4 @@
-import { scaleLinear, scaleOrdinal } from "d3-scale";
-import { schemeAccent } from "d3";
+import { scaleLinear } from "d3-scale";
 import { area, stack } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
 import {
@@ -15,6 +14,12 @@ import { select } from "d3-selection";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import { processTicks } from "@/utils/processTicks";
 import { colorMap } from "@/utils/generateCountryColor";
+import dataSource from "@/data/nameToDigit2.json";
+import {
+  namesToColumns,
+  namesToNations,
+  nationsToNames,
+} from "@/utils/namesToColumns";
 
 export interface IStackChartProps {
   width: number | string;
@@ -28,12 +33,14 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   const [computedWidth, computedHeight] = useSVGSize(svgRef);
 
+  const legendHeight = 125;
+
   // brush在Y轴上的偏移
-  const BrushYOffset = 20;
+  const BrushYOffset = 25;
 
   // (0, 0)点的位置
   const zeroPosition = useMemo(
-    () => [40, computedHeight - 80],
+    () => [40, computedHeight - 70],
     [computedHeight]
   );
 
@@ -102,8 +109,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     () =>
       brushX()
         .extent([
-          [zeroPosition[0], 0],
-          [computedWidth - 20, 40],
+          [zeroPosition[0], -20],
+          [computedWidth - 20, 0],
         ])
         .on("brush end", brushed),
     [computedWidth, zeroPosition, brushed]
@@ -124,7 +131,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const maxY = useMemo(() => Math.max(...lastItems), [lastItems]);
 
   // y轴的scale
-  const yScale = scaleLinear().domain([0, maxY]).range([zeroPosition[1], 40]);
+  const yScale = scaleLinear()
+    .domain([0, maxY])
+    .range([zeroPosition[1], legendHeight]);
 
   const areaFunc = area()
     .x((d: any) => xScale(Number(d.data.date)))
@@ -143,54 +152,81 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     (digit2: string, state: boolean) => {
       // 更新过滤列表
       if (state) {
-        setAreaData(filterCountry([...filterList, digit2]));
-        setFilterList((filterList) => [...filterList, digit2]);
+        setAreaData(
+          filterCountry([
+            ...filterList,
+            namesToColumns.get(nationsToNames.get(digit2)),
+          ])
+        );
+        setFilterList((filterList) => [
+          ...filterList,
+          namesToColumns.get(nationsToNames.get(digit2)),
+        ]);
       } else {
-        filterList.splice(filterList.indexOf(digit2), 1);
+        filterList.splice(
+          filterList.indexOf(namesToColumns.get(nationsToNames.get(digit2))),
+          1
+        );
         setAreaData(filterCountry([...filterList]));
         setFilterList([...filterList]);
       }
     },
     [filterList]
   );
+
   return (
     <svg width={width} height={height} ref={svgRef}>
+      <foreignObject width="100%" height={legendHeight}>
+        <div className={styles.legends}>
+          <Legend
+            orient="row"
+            data={dataSource.results.map((item) =>
+              namesToNations.get(item.name)
+            )}
+            color={(label: string) => {
+              const item = dataSource.results.find(
+                (item) => item.name === nationsToNames.get(label)
+              );
+              return colorMap.get(item?.iso_2digit_alpha ?? "") ?? "";
+            }}
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          />
+        </div>
+      </foreignObject>
       <defs>
         <clipPath id="clip-path">
           <rect
             x={zeroPosition[0]}
-            y={36}
+            y={legendHeight}
             width={
               computedWidth - 20 - zeroPosition[0] < 0
                 ? 0
                 : computedWidth - 20 - zeroPosition[0]
             }
-            // 56为Legend的高度
-            height={zeroPosition[1] - 36 < 0 ? 0 : zeroPosition[1] - 36}
+            height={
+              zeroPosition[1] - legendHeight < 0
+                ? 0
+                : zeroPosition[1] - legendHeight
+            }
           />
         </clipPath>
-        {/* <clipPath id="clip-axis">
+        <clipPath id="clip-axis">
           <rect
             x={zeroPosition[0] - 10}
-            y={126}
+            y={zeroPosition[1]}
             width={
-              computedWidth - zeroPosition[0] + 3 < 0
+              computedWidth - 20 - zeroPosition[0] + 25 < 0
                 ? 0
-                : computedWidth - zeroPosition[0] + 3
+                : computedWidth - 20 - zeroPosition[0] + 25
             }
             height={20}
           />
-        </clipPath> */}
+        </clipPath>
       </defs>
       <g>
-        <Axis
-          scale={xScale}
-          position={[0, zeroPosition[1]]}
-          direction={DirectionValue.BOTTOM}
-          tickValues={yearTicks}
-          ticks={X_TICKS}
-        />
-        {/* <g clipPath="url(#clip-axis)">
+        <g clipPath="url(#clip-axis)">
           <Axis
             scale={xScale}
             position={[0, zeroPosition[1]]}
@@ -198,7 +234,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             tickValues={yearTicks}
             ticks={X_TICKS}
           />
-        </g> */}
+        </g>
         <Axis
           scale={yScale}
           position={[zeroPosition[0], 0]}
@@ -206,7 +242,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         />
         <g clipPath="url(#clip-path)">
           {series.map((item: any, index: number) => {
-            // console.log(item)
             return (
               <Path
                 id={item.key as string}
@@ -225,10 +260,10 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
           })}
         </g>
       </g>
-      <g transform={`translate(0, ${zeroPosition[1] + BrushYOffset})`}>
+      <g transform={`translate(0, ${zeroPosition[1] + BrushYOffset + 20})`}>
         <Axis
           scale={brushScale}
-          position={[0, 41]}
+          position={[0, 0]}
           direction={DirectionValue.BOTTOM}
           tickValues={yearTicks}
           ticks={X_TICKS}

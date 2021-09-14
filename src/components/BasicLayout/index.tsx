@@ -35,18 +35,24 @@ const BasicLayout = () => {
             <Images
               imageList={icons}
               column={5}
-              imgStyle={{ boxShadow: "none", width: "80%" }}
+              imgStyle={{ boxShadow: "none", width: "40%" }}
               style={{
                 boxShadow: "1px 1px 1px 1px rgba(0, 0, 0, 0.1)",
                 borderRadius: 4,
+                marginTop: 10,
               }}
             />
           </div>
         </div>
         <div className={styles["bottom"]}>
           <div className={styles.first}>
-            <div className={styles.topMap}>
+            <div className={styles.firstLeft}>
               <TopMap />
+            </div>
+            <div className={styles.firstRight}>
+              <div className={styles.force}>
+                <ForceGraph width="100%" height="100%" />
+              </div>
             </div>
           </div>
           <div className={styles.second}>
@@ -54,13 +60,10 @@ const BasicLayout = () => {
               <div className={styles.pieMapContainer}>
                 <PieMap />
               </div>
-              <div className={styles.stack}>
-                <StackChart width="100%" height="100%" />
-              </div>
             </div>
             <div className={styles.secondRight}>
-              <div className={styles.force}>
-                <ForceGraph width="100%" height="100%" />
+              <div className={styles.stack}>
+                <StackChart width="100%" height="100%" />
               </div>
             </div>
           </div>

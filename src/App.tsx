@@ -2,9 +2,9 @@ import "antd/dist/antd.css";
 import BasicLayout from "./components/BasicLayout";
 import { projectContext } from "@/context/projectData";
 import initProjectData from "@/utils/initProjectData";
-import { generateCountryColor } from "./utils/generateCountryColor";
+import init from "@/utils/init";
 
-generateCountryColor();
+init();
 
 function App() {
   return (

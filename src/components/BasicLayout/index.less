@@ -23,18 +23,18 @@
   }
 
   .middle {
-    flex: 1 0 0;
+    height: 140px;
     display: flex;
     margin: 16px 0;
 
     .item {
       &:first-child {
-        flex: 2 0 0;
+        flex: 1 0 0;
         margin-right: 12px;
       }
 
       &:nth-child(2) {
-        flex: 1 0 0;
+        width: 540px;
       }
 
       &:extend(.block);
@@ -55,11 +55,25 @@
 
     .first {
       display: flex;
-      flex-direction: column;
-      height: 212px;
+      flex-direction: row;
+      height: 312px;
 
-      .topMap {
+      .firstLeft {
+        flex: 1 0 0;
         height: 100%;
+      }
+
+      .firstRight {
+        width: 540px;
+        height: 100%;
+        margin-left: 12px;
+
+        .force {
+          flex: 1 0 0;
+          height: 100%;
+          display: flex;
+          &:extend(.block);
+        }
       }
     }
 
@@ -72,37 +86,20 @@
       .secondLeft {
         flex: 1 0 0;
         display: flex;
-        flex-direction: column;
 
         .pieMapContainer {
-          margin-bottom: 12px;
           flex: 1 0 0;
           &:extend(.block);
-
-          .svg {
-            flex: 1 0 0;
-          }
-        }
-
-        .stack {
-          flex: 1 0 0;
-          display: flex;
-          &:extend(.block);
-
-          .svg {
-            flex: 1 0 0;
-          }
         }
       }
 
       .secondRight {
-        width: 318px;
-        height: 100%;
+        width: 540px;
+        display: flex;
         margin-left: 12px;
 
-        .force {
+        .stack {
           flex: 1 0 0;
-          height: 100%;
           display: flex;
           &:extend(.block);
         }
