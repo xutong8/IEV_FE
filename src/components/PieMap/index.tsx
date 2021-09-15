@@ -44,7 +44,7 @@ const PieMap = () => {
               width: sourceMapWidth,
               height: sourceMapHeight - 44,
               overflow: "hidden",
-              transform: "translate(0, 30%)",
+              transform: "translate(0, 20%)",
             }}
           />
           <Select
@@ -84,7 +84,7 @@ const PieMap = () => {
               width: targetMapWidth,
               height: targetMapHeight - 44,
               overflow: "hidden",
-              transform: "translate(0, 30%)",
+              transform: "translate(0, 20%)",
             }}
           />
           <Select
