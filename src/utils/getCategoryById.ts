@@ -1,5 +1,4 @@
 import dataSource from "@/data/idToCategory.json";
-import { ICountry } from "@/types";
 
 export interface ICategory {
   id: string;

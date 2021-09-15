@@ -1,5 +1,6 @@
 import idToCountryName from "@/data/idToCountryName.json";
 import nameToDigit2Data from "@/data/nameToDigit2.json";
+import totalData from "@/data/totalData.json";
 
 interface IItem {
   text: string;
@@ -15,9 +16,19 @@ partnerAreaIDAndNameData.forEach((item: IItem) => {
   iDToNameMap.set(item.id, item.text);
 });
 
+// 14个国家的映射
 const nameToDigit2Map = new Map();
 nameToDigit2Data.results.forEach((item) => {
   nameToDigit2Map.set(item.name, item.iso_2digit_alpha);
 });
 
-export { nameToIDMap, iDToNameMap, nameToDigit2Map };
+// 全部国家的映射
+const nameToDigit2TotalMap = new Map();
+Object.keys((totalData as any)["1995"]).forEach((item) => {
+  nameToDigit2TotalMap.set(
+    (totalData as any)["1995"][item]["country_name_abbreviation"],
+    (totalData as any)["1995"][item]["iso_2digit_alpha"]
+  );
+});
+
+export { nameToIDMap, iDToNameMap, nameToDigit2Map, nameToDigit2TotalMap };

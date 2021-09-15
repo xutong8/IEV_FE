@@ -14,7 +14,6 @@
   }
 
   .search_list {
-    /* overflow: auto; */
     flex: 1 0 0;
     overflow: hidden;
     display: flex;
@@ -25,4 +24,18 @@
       overflow: auto;
     }
   }
+
+  :global {
+    .ant-table-cell-fix-right {
+      white-space: nowrap;
+    }
+  }
+}
+
+.tooltipText {
+  margin-right: 2px;
+}
+
+.hover {
+  cursor: pointer;
 }

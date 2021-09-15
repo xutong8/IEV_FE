@@ -11,7 +11,6 @@ import Path from "../Path";
 import Legend from "../Legend";
 import { brushX } from "d3-brush";
 import { select } from "d3-selection";
-import styles from "./index.less";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import { processTicks } from "@/utils/processTicks";
 import { colorMap } from "@/utils/generateCountryColor";
@@ -21,6 +20,7 @@ import {
   namesToNations,
   nationsToNames,
 } from "@/utils/namesToColumns";
+import styles from "./index.less";
 
 export interface IStackChartProps {
   width: number | string;
@@ -44,7 +44,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     () => [40, computedHeight - 70],
     [computedHeight]
   );
-
+  console.log(areaDataRaw);
   const [areaData, setAreaData] = useState<IStackAreaData[]>(areaDataRaw);
   const [filterList, setFilterList] = useState<Array<string>>([]);
   const [hoverCountry, setHoverCountry] = useState<string>("");
@@ -123,7 +123,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         .call(brush)
         .call(brush.move, xScale.range());
     }
-  }, [computedWidth]);
+  }, [computedWidth, brush, xScale]);
 
   // 最后一行的数据
   const lastItems = series[series.length - 1].map((item) => item[1]);
@@ -144,6 +144,10 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const onMouseEnter = useCallback((hoverName) => {
     setHoverCountry(hoverName);
   }, []);
+
+  const onLegendMouseEnter = (hoverName: string) => {
+    setHoverCountry(namesToColumns.get(nationsToNames.get(hoverName)));
+  };
 
   const onMouseLeave = useCallback(() => {
     setHoverCountry("");
@@ -191,7 +195,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               return colorMap.get(item?.iso_2digit_alpha ?? "") ?? "";
             }}
             onClick={onClick}
-            onMouseEnter={onMouseEnter}
+            onMouseEnter={onLegendMouseEnter}
             onMouseLeave={onMouseLeave}
           />
         </div>

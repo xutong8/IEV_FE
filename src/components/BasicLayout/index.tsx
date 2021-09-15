@@ -9,6 +9,7 @@ import StackChart from "../StackChart";
 import ProgressBar from "../ProgressBar";
 import TopMap from "../TopMap";
 import PieMap from "../PieMap";
+import Choropleth from "../Choropleth";
 
 const BasicLayout = () => {
   return (
@@ -34,7 +35,7 @@ const BasicLayout = () => {
             <Images
               imageList={icons}
               column={5}
-              imgStyle={{ boxShadow: "none", width: "40%" }}
+              imgStyle={{ boxShadow: "none", width: "30%" }}
               style={{
                 boxShadow: "1px 1px 1px 1px rgba(0, 0, 0, 0.1)",
                 borderRadius: 4,
@@ -46,7 +47,9 @@ const BasicLayout = () => {
         <div className={styles["bottom"]}>
           <div className={styles.first}>
             <div className={styles.firstLeft}>
-              <TopMap />
+              <div className={styles.topMap}>
+                <TopMap year="1995" />
+              </div>
             </div>
             <div className={styles.firstRight}>
               <div className={styles.force}>

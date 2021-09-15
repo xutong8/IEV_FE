@@ -21,6 +21,7 @@ export interface IGraphData {
   nodes: IGraphNode[];
   links: IGraphLink[];
   colorMap: Map<string, string>;
+  continents: string[];
 }
 
 function initializeData(year: number, data: any) {
@@ -48,34 +49,46 @@ function initializeData(year: number, data: any) {
     return total;
   }, [] as IGraphLink[]);
 
+  const continentsSet = new Set<string>();
+  for (const node of nodes) {
+    continentsSet.add(node.continent);
+  }
+  const continents = Array.from(continentsSet);
+
   gData.nodes = nodes;
   gData.links = links;
+  gData.continents = continents;
   gData.colorMap = getNodeColor(nodes);
 
   return gData;
 }
 
+const graphNodeColopMap = new Map();
+
 function getNodeColor(nodes: IGraphNode[]) {
+  if (graphNodeColopMap.size !== 0) {
+    return graphNodeColopMap;
+  }
+
   const continents = new Set();
   for (const node of nodes) {
     continents.add(node.continent);
   }
 
   const filteredContinents = Array.from(continents);
-  const colorMap = new Map();
 
   const colors = randomcolor({
     count: filteredContinents.length,
   });
 
   filteredContinents.forEach((continent, index) => {
-    colorMap.set(continent, colors[index]);
+    graphNodeColopMap.set(continent, colors[index]);
   });
 
-  return colorMap;
+  return graphNodeColopMap;
 }
 
 const processGraphData: (year: number) => IGraphData = (year: number) =>
   initializeData(year, totalData);
 
-export { getNodeColor, processGraphData };
+export { getNodeColor, processGraphData, graphNodeColopMap };
