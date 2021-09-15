@@ -20,12 +20,14 @@ export const columns = (valueType: ValueType, maxAmount: number) => {
       dataIndex: "year",
       key: "year",
       width: 70,
+      fixed: false,
     },
     {
       title: "ImportCountry",
       dataIndex: "importCountry",
       key: "importCountry",
       width: 135,
+      fixed: false,
       render: (importCountry: string) => {
         return (
           <div>
@@ -44,6 +46,7 @@ export const columns = (valueType: ValueType, maxAmount: number) => {
       dataIndex: "exportCountry",
       key: "exportCountry",
       width: 135,
+      fixed: false,
       render: (exportCountry: string) => {
         return (
           <div>
@@ -62,6 +65,7 @@ export const columns = (valueType: ValueType, maxAmount: number) => {
       dataIndex: "category",
       key: "category",
       width: 130,
+      fixed: false,
       render: (category: string) => {
         return (
           <div>
@@ -87,6 +91,7 @@ export const columns = (valueType: ValueType, maxAmount: number) => {
         );
       },
       dataIndex: "amount",
+      fixed: "right" as const,
       key: "amount",
       width: AmountWidth,
       render: (amount: number) => {

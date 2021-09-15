@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from "react";
 import styles from "./index.less";
-import { Table } from "antd";
+import { Table, TableColumnType } from "antd";
 import { ValueType } from "@/types";
 import { columns } from "./columns";
 import { ITableCountry, processTableData } from "@/utils/processTableData";
 import SearchInput from "../SearchInput";
+import { TableRowSelection } from "antd/lib/table/interface";
 
 export interface ISearchTableProps {
   valueType: ValueType;
@@ -59,6 +60,9 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
             pagination={{
               showSizeChanger: false,
               pageSize: 12,
+            }}
+            scroll={{
+              x: true,
             }}
           />
         </div>
