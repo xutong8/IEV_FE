@@ -15,7 +15,7 @@ export interface IAxisProps {
   scale: AxisScale<number>;
   ticks?: number;
   tickValues?: number[];
-  tickFormat?: () => void;
+  tickFormat?: (tick: number) => void;
   attributes?: SVGAttributes<SVGGElement>;
 }
 
@@ -28,7 +28,7 @@ const Axis: React.FC<IAxisProps> = (props) => {
     scale,
     tickValues = null,
     ticks = 10,
-    tickFormat,
+    tickFormat = null,
     attributes = {},
   } = props;
 
@@ -38,26 +38,31 @@ const Axis: React.FC<IAxisProps> = (props) => {
         case DirectionValue.TOP:
           return axisTop(scale)
             .ticks(ticks)
-            .tickValues(tickValues as any);
+            .tickValues(tickValues as any)
+            .tickFormat(tickFormat as any);
         case DirectionValue.BOTTOM:
           return axisBottom(scale)
             .ticks(ticks)
-            .tickValues(tickValues as any);
+            .tickValues(tickValues as any)
+            .tickFormat(tickFormat as any);
         case DirectionValue.LEFT:
           return axisLeft(scale)
             .ticks(ticks)
-            .tickValues(tickValues as any);
+            .tickValues(tickValues as any)
+            .tickFormat(tickFormat as any);
         case DirectionValue.RIGHT:
           return axisRight(scale)
             .ticks(ticks)
-            .tickValues(tickValues as any);
+            .tickValues(tickValues as any)
+            .tickFormat(tickFormat as any);
         default:
           return axisTop(scale)
             .ticks(ticks)
-            .tickValues(tickValues as any);
+            .tickValues(tickValues as any)
+            .tickFormat(tickFormat as any);
       }
     },
-    [scale, tickValues, ticks]
+    [scale, tickValues, ticks, tickFormat]
   );
 
   // TODO: Selection ts类型

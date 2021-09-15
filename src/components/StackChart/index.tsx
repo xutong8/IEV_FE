@@ -11,7 +11,7 @@ import Path from "../Path";
 import Legend from "../Legend";
 import { brushX } from "d3-brush";
 import { select } from "d3-selection";
-import { processTicks } from "@/utils/processTicks";
+import { processTicks, processTicksByMax } from "@/utils/processTicks";
 import { colorMap } from "@/utils/generateCountryColor";
 import dataSource from "@/data/nameToDigit2.json";
 import {
@@ -20,6 +20,7 @@ import {
   nationsToNames,
 } from "@/utils/namesToColumns";
 import styles from "./index.less";
+import ceil from "lodash/ceil";
 
 export interface IStackChartProps {
   width: number;
@@ -122,7 +123,13 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const lastItems = series[series.length - 1].map((item) => item[1]);
 
   // y的最大值
-  const maxY = useMemo(() => Math.max(...lastItems), [lastItems]);
+  const maxY = useMemo(() => ceil(Math.max(...lastItems)), [lastItems]);
+
+  // y轴的刻度数量
+  const Y_TICKS = 8;
+
+  // 处理ticks
+  const yTicks = processTicksByMax(maxY, Y_TICKS);
 
   // y轴的scale
   const yScale = scaleLinear()
@@ -237,7 +244,13 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
           scale={yScale}
           position={[zeroPosition[0], 0]}
           direction={DirectionValue.LEFT}
+          ticks={Y_TICKS}
+          tickValues={yTicks}
+          tickFormat={(tick) => Math.round(tick / 100000)}
         />
+        <text x={zeroPosition[0] - 30} y={legendHeight - 12}>
+          单位：十万
+        </text>
         <g clipPath="url(#clip-path)">
           {series.map((item: any, index: number) => {
             return (
