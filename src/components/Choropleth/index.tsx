@@ -14,6 +14,7 @@ export interface IChoropleth {
 const Choropleth: React.FC<IChoropleth> = (props) => {
   const { data, selectedCountries, selectedColors, parentClass } = props;
   useEffect(() => {
+    console.log(data);
     Object.keys(data).forEach((id) => {
       const fullName = iDToNameMap.get(id);
       let curDigit2;

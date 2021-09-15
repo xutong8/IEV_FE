@@ -20,6 +20,7 @@ import {
   namesToNations,
   nationsToNames,
 } from "@/utils/namesToColumns";
+import styles from "./index.less";
 
 export interface IStackChartProps {
   width: number | string;
@@ -43,7 +44,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     () => [40, computedHeight - 70],
     [computedHeight]
   );
-
+  console.log(areaDataRaw);
   const [areaData, setAreaData] = useState<IStackAreaData[]>(areaDataRaw);
   const [filterList, setFilterList] = useState<Array<string>>([]);
   const [hoverCountry, setHoverCountry] = useState<string>("");
