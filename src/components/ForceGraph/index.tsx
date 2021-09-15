@@ -1,4 +1,9 @@
-import { processGraphData, graphNodeColopMap } from "@/utils/processGraphData";
+import {
+  processGraphData,
+  graphNodeColopMap,
+  IGraphNode,
+  IGraphLink,
+} from "@/utils/processGraphData";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ForceNode from "./ForceNode";
 import styles from "./index.less";
@@ -36,6 +41,12 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   const [year, setYear] = useState<number>(1995);
   const graphData = useMemo(() => processGraphData(year), [year]);
   const { nodes, links, continents } = graphData;
+
+  // nodes的state
+  const [nodesState, setNodesState] = useState<IGraphNode[]>(nodes);
+  // links的state
+  const [linksState, setLinksState] = useState<IGraphLink[]>(links);
+
   const legendHeight = 125;
 
   const svgRef = useRef<SVGSVGElement>(null);
@@ -63,10 +74,10 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   const linkScale = scaleLinear().domain([minLink, maxLink]).range([4, 8]);
 
   // 设置布局算法
-  const simulation = forceSimulation(nodes as any)
+  const simulation = forceSimulation(nodesState as any)
     .force(
       "link",
-      forceLink(links as any)
+      forceLink(linksState as any)
         .id((d: any) => d.id)
         .distance((d) => linkScale((d as any)?.value ?? 1))
     )
@@ -77,18 +88,18 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   useEffect(() => {
     simulation.on("tick", () => {
       selectAll(`.${styles.node}`)
-        .data(nodes)
+        .data(nodesState)
         .attr("cx", (d) => d.x as number)
         .attr("cy", (d) => d.y as number);
 
       selectAll(`.${styles.link}`)
-        .data(links)
+        .data(linksState)
         .attr("x1", (d) => d.source.x as number)
         .attr("y1", (d) => d.source.y as number)
         .attr("x2", (d) => d.target.x as number)
         .attr("y2", (d) => d.target.y as number);
     });
-  }, [simulation, width, height, nodes, links]);
+  }, [simulation, width, height, nodesState, linksState]);
 
   // enter node高亮
   const nodeMouseEnterHandler = (event: MouseEvent) => {
@@ -141,7 +152,40 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     unhighlightNodeById(graphData, targetNodeId);
   };
 
-  const handleClick = () => {};
+  // 过滤的列表
+  const [filterList, setFilterList] = useState<string[]>([]);
+  // 绑定click事件
+  const handleClick = (continent: string, state: boolean) => {
+    if (state) {
+      const newFilterList = [...filterList, continent];
+      setFilterList(newFilterList);
+      setNodesState(
+        nodes.filter((node) => !newFilterList.includes(node.continent))
+      );
+      setLinksState(
+        links.filter(
+          (link) =>
+            !newFilterList.includes(link.source.continent) &&
+            !newFilterList.includes(link.target.continent)
+        )
+      );
+    } else {
+      const newFilterList = filterList
+        .slice()
+        .filter((filter) => filter !== continent);
+      setFilterList([...newFilterList]);
+      setNodesState(
+        nodes.filter((node) => !newFilterList.includes(node.continent))
+      );
+      setLinksState(
+        links.filter(
+          (link) =>
+            !newFilterList.includes(link.source.continent) &&
+            !newFilterList.includes(link.target.continent)
+        )
+      );
+    }
+  };
 
   return (
     <svg width={width} height={height} ref={svgRef}>
@@ -151,14 +195,14 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
             orient="row"
             data={continents}
             color={(continent: string) => graphNodeColopMap.get(continent)}
-            onClick={() => {}}
+            onClick={handleClick}
             onMouseEnter={() => {}}
             onMouseLeave={() => {}}
           />
         </div>
       </foreignObject>
       <g className={styles.links} stroke="#999">
-        {links.map((link, index: number) => {
+        {linksState.map((link, index: number) => {
           return (
             <ForceLink
               handlers={{
@@ -180,7 +224,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
         })}
       </g>
       <g className={styles.nodes}>
-        {nodes.map((node, index: number) => {
+        {nodesState.map((node, index: number) => {
           return (
             <ForceNode
               handlers={{

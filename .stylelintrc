@@ -2,7 +2,8 @@
   "rules": {
     "string-quotes": "double",
     "declaration-colon-newline-after": null,
-    "value-list-comma-newline-after": null
+    "value-list-comma-newline-after": null,
+    "selector-pseudo-class-no-unknown": null
   },
   "extends": "stylelint-config-standard",
   "plugins": [
