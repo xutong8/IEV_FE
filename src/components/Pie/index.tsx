@@ -1,12 +1,11 @@
 import { pie, arc } from "d3";
 import Wedge from "./Wedge";
 import { IItemPieData, pieData, selectCountries } from "@/utils/processPieData";
-import { useMemo, useRef } from "react";
-import { useSVGSize } from "@/hooks/useSVGSize";
+import { useMemo } from "react";
 
 export interface IPie {
-  width: number | string;
-  height: number | string;
+  width: number;
+  height: number;
 }
 
 export interface IPieData {
@@ -23,15 +22,10 @@ const Pie: React.FC<IPie> = (prop) => {
 
   const data = useMemo(() => pieData, [pieData]);
 
-  const svgRef = useRef<SVGSVGElement>(null);
-
-  // 计算出来的宽度和高度
-  const [computedWidth, computedHeight] = useSVGSize(svgRef);
-
   const [innerRadius, outerRadius] = useMemo(() => {
-    const radius = Math.min(computedWidth - 20, computedHeight - 20) / 2;
+    const radius = Math.min(width - 20, height - 20) / 2;
     return [radius * 0.75, radius - 10];
-  }, [computedWidth, computedHeight]);
+  }, [width, height]);
 
   const pieDrawData = useMemo(
     () =>
@@ -47,12 +41,12 @@ const Pie: React.FC<IPie> = (prop) => {
     [innerRadius, outerRadius]
   );
   const translation = useMemo(
-    () => `translate(${computedWidth / 2}, ${computedHeight / 2})`,
-    [computedWidth, computedHeight]
+    () => `translate(${width / 2}, ${height / 2})`,
+    [width, height]
   );
 
   return (
-    <svg width={width} height={height} ref={svgRef}>
+    <svg width={width} height={height}>
       <g transform={translation}>
         {pieDrawData.map((item, index) => {
           const itemCenter = arcData.centroid(item);

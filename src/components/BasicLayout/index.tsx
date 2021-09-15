@@ -2,16 +2,20 @@ import SearchTableWithStore from "@/containers/SearchTableWithStore";
 import LeftMenu from "../LeftMenu";
 import styles from "./index.less";
 import ForceGraph from "../ForceGraph";
-
 import Images from "../Images";
 import { Nations, icons } from "../../assets/images";
 import StackChart from "../StackChart";
 import ProgressBar from "../ProgressBar";
 import TopMap from "../TopMap";
 import PieMap from "../PieMap";
-import Choropleth from "../Choropleth";
+import { useRef } from "react";
+import { useSVGSize } from "@/hooks/useSVGSize";
 
 const BasicLayout = () => {
+  // stack container的ref
+  const stackContainerRef = useRef<HTMLDivElement>(null);
+  const [stackWidth, stackHeight] = useSVGSize(stackContainerRef);
+
   return (
     <div className={styles["basic_layout"]}>
       <div className={styles["left_menu"]}>
@@ -64,8 +68,8 @@ const BasicLayout = () => {
               </div>
             </div>
             <div className={styles.secondRight}>
-              <div className={styles.stack}>
-                <StackChart width="100%" height="100%" />
+              <div className={styles.stack} ref={stackContainerRef}>
+                <StackChart width={stackWidth} height={stackHeight} />
               </div>
             </div>
           </div>

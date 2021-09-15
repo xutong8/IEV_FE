@@ -11,7 +11,6 @@ import Path from "../Path";
 import Legend from "../Legend";
 import { brushX } from "d3-brush";
 import { select } from "d3-selection";
-import { useSVGSize } from "@/hooks/useSVGSize";
 import { processTicks } from "@/utils/processTicks";
 import { colorMap } from "@/utils/generateCountryColor";
 import dataSource from "@/data/nameToDigit2.json";
@@ -23,8 +22,8 @@ import {
 import styles from "./index.less";
 
 export interface IStackChartProps {
-  width: number | string;
-  height: number | string;
+  width: number;
+  height: number;
 }
 const StackChart: React.FC<IStackChartProps> = (props) => {
   const { width, height } = props;
@@ -32,19 +31,13 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const [computedWidth, computedHeight] = useSVGSize(svgRef);
-
   const legendHeight = 125;
 
   // brush在Y轴上的偏移
   const BrushYOffset = 25;
 
   // (0, 0)点的位置
-  const zeroPosition = useMemo(
-    () => [40, computedHeight - 70],
-    [computedHeight]
-  );
-  console.log(areaDataRaw);
+  const zeroPosition = useMemo(() => [40, height - 70], [height]);
   const [areaData, setAreaData] = useState<IStackAreaData[]>(areaDataRaw);
   const [filterList, setFilterList] = useState<Array<string>>([]);
   const [hoverCountry, setHoverCountry] = useState<string>("");
@@ -67,8 +60,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     () =>
       scaleLinear()
         .domain([minYear, maxYear])
-        .range([zeroPosition[0], computedWidth - 20]),
-    [minYear, maxYear, zeroPosition, computedWidth]
+        .range([zeroPosition[0], width - 20]),
+    [minYear, maxYear, zeroPosition, width]
   );
 
   // brush的scale
@@ -76,8 +69,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     () =>
       scaleLinear()
         .domain([minYear, maxYear])
-        .range([zeroPosition[0], computedWidth - 20]),
-    [minYear, maxYear, zeroPosition, computedWidth]
+        .range([zeroPosition[0], width - 20]),
+    [minYear, maxYear, zeroPosition, width]
   );
 
   // brush ref
@@ -111,19 +104,19 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       brushX()
         .extent([
           [zeroPosition[0], -20],
-          [computedWidth - 20, 0],
+          [width - 20, 0],
         ])
         .on("brush end", brushed),
-    [computedWidth, zeroPosition, brushed]
+    [width, zeroPosition, brushed]
   );
 
   useEffect(() => {
-    if (computedWidth !== 0) {
+    if (width !== 0) {
       select(brushRef.current as SVGGElement)
         .call(brush)
         .call(brush.move, xScale.range());
     }
-  }, [computedWidth, brush, xScale]);
+  }, [width, brush, xScale]);
 
   // 最后一行的数据
   const lastItems = series[series.length - 1].map((item) => item[1]);
@@ -206,9 +199,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             x={zeroPosition[0]}
             y={legendHeight}
             width={
-              computedWidth - 20 - zeroPosition[0] < 0
+              width - 20 - zeroPosition[0] < 0
                 ? 0
-                : computedWidth - 20 - zeroPosition[0]
+                : width - 20 - zeroPosition[0]
             }
             height={
               zeroPosition[1] - legendHeight < 0
@@ -222,9 +215,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             x={zeroPosition[0] - 10}
             y={zeroPosition[1]}
             width={
-              computedWidth - 20 - zeroPosition[0] + 25 < 0
+              width - 20 - zeroPosition[0] + 25 < 0
                 ? 0
-                : computedWidth - 20 - zeroPosition[0] + 25
+                : width - 20 - zeroPosition[0] + 25
             }
             height={20}
           />

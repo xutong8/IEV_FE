@@ -96,12 +96,22 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
     selectAll(`.${styles.countryMap} svg`).attr("height", barHeight / 2);
   }, [barHeight]);
 
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [mapWidth, mapHeight] = useSVGSize(mapRef);
+
   return (
     <div className={styles.topmap}>
       <div className={styles.container} ref={containerRef}>
         <div className={styles.left}>
-          <div className={styles.map}>
-            <CountryMap name="World" className={styles.countryMap} />
+          <div className={styles.map} ref={mapRef}>
+            <CountryMap
+              name="World"
+              className={styles.countryMap}
+              style={{
+                width: mapWidth,
+                height: mapHeight,
+              }}
+            />
             {coordinatesData.coordinates.map((item) => {
               return (
                 <div
@@ -113,7 +123,14 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
             })}
           </div>
           <div className={styles.map}>
-            <CountryMap name="World" className={styles.countryMap} />
+            <CountryMap
+              name="World"
+              className={styles.countryMap}
+              style={{
+                width: mapWidth,
+                height: mapHeight,
+              }}
+            />
             {coordinatesData.coordinates.map((item) => {
               return (
                 <div

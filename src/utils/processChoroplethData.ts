@@ -36,7 +36,6 @@ const processData = (
         ? { [selectedCountries[0]]: imp1 / total }
         : { [selectedCountries[1]]: imp2 / total };
   });
-  console.log(choroplethData);
   return choroplethData;
 };
 
