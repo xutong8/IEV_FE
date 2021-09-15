@@ -1,27 +1,36 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ComposedBarChart from "../ComposedBarChart";
 import CountryMap from "../CountryMap";
 import HeatMap from "../HeatMap";
 import styles from "./index.less";
 import coordinatesData from "@/data/coordinates.json";
 import cn from "classnames";
-
+import { useSVGSize } from "@/hooks/useSVGSize";
+import { selectAll } from "d3-selection";
 export interface IPoint {
   x: number;
   y: number;
 }
 
-const TopMap = () => {
+export interface ITopMapProps {
+  year: string;
+}
+
+const TopMap: React.FC<ITopMapProps> = (props) => {
+  // 年份
+  const { year } = props;
+
   // 圆的半径
   const circleRadius = 6;
   // 柱状图的宽度
   const barWidth = 80;
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
   // 柱状图的高度
-  const barHeight = 300;
+  const [, barHeight] = useSVGSize(containerRef);
   // 热力图的宽度和高度
   const heatmapHeight = barHeight / Math.sqrt(2);
-  // 年份
-  const year = "1995";
   // 种类
   const category = "Rice";
   // 国家的列表
@@ -83,12 +92,16 @@ const TopMap = () => {
   //   getLinesCoordinates();
   // }, []);
 
+  useEffect(() => {
+    selectAll(`.${styles.countryMap} svg`).attr("height", barHeight / 2);
+  }, [barHeight]);
+
   return (
     <div className={styles.topmap}>
-      <div className={styles.container}>
+      <div className={styles.container} ref={containerRef}>
         <div className={styles.left}>
           <div className={styles.map}>
-            <CountryMap name="World" />
+            <CountryMap name="World" className={styles.countryMap} />
             {coordinatesData.coordinates.map((item) => {
               return (
                 <div
@@ -100,7 +113,7 @@ const TopMap = () => {
             })}
           </div>
           <div className={styles.map}>
-            <CountryMap name="World" />
+            <CountryMap name="World" className={styles.countryMap} />
             {coordinatesData.coordinates.map((item) => {
               return (
                 <div

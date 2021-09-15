@@ -19,6 +19,10 @@ const useHighlight: (
     } else {
       select(`#${sourceId}`).on("mouseenter", null).on("mouseleave", null);
     }
+
+    return () => {
+      select(`#${sourceId}`).on("mouseenter", null).on("mouseleave", null);
+    };
   }, [needHighlight, handlers, sourceId]);
 };
 

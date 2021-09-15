@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import styles from "./index.less";
 import { Table } from "antd";
 import { ValueType } from "@/types";
-import { columns } from "./columns";
+import { customColumnsFunc } from "./columns";
 import { ITableCountry, processTableData } from "@/utils/processTableData";
 import SearchInput from "../SearchInput";
 
@@ -53,12 +53,15 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
       <div className={styles["search_list"]}>
         <div className={styles["search_container"]}>
           <Table
-            columns={columns(valueType, maxAmount)}
+            columns={customColumnsFunc(valueType, maxAmount)}
             dataSource={dataSource}
             rowKey={(record) => record.id}
             pagination={{
               showSizeChanger: false,
               pageSize: 12,
+            }}
+            scroll={{
+              x: true,
             }}
           />
         </div>
