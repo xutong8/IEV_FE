@@ -32,8 +32,17 @@ const findNodeById = (nodes: IGraphNode[], id: string) => {
 };
 
 // 高亮节点
-const highlightNodeById = (id: string) => {
-  select(`#${getNodeId(id)}`).attr("fill", "purple");
+const highlightNodeById = (filteredNodes: IGraphNode[], id: string) => {
+  // 高亮节点为紫色
+  const circle = select(`#${getNodeId(id)}`);
+  circle.attr("fill", "purple");
+  // 添加国家的名称
+  const node = findNodeById(filteredNodes, id);
+  select(`#forceNodes`)
+    .append("text")
+    .attr("x", Number.parseFloat(circle.attr("cx") ?? 0) + 10)
+    .attr("y", Number.parseFloat(circle.attr("cy") ?? 0) + 2)
+    .text(node?.name ?? "");
 };
 
 // 取消高亮节点
@@ -44,6 +53,7 @@ const unhighlightNodeById = (graphData: IGraphData, id: string) => {
     "fill",
     getNodeColor(nodes).get((findNodeById(nodes, id) as IGraphNode).continent)
   );
+  select(`#forceNodes`).select("text").remove();
 };
 
 export {

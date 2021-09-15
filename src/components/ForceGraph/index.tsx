@@ -13,12 +13,11 @@ import {
   forceCenter,
   forceCollide,
 } from "d3-force";
-import { selectAll } from "d3-selection";
+import { selectAll, select } from "d3-selection";
 import { scaleLinear } from "d3-scale";
 import ForceLink from "./ForceLink";
 import { forceManyBody } from "d3";
 import {
-  findNodes,
   getNodeId,
   highlightNodeById,
   unhighlightNodeById,
@@ -30,6 +29,7 @@ import {
 } from "@/utils/linkUtils";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import Legend from "../Legend";
+import { zoom, zoomTransform } from "d3-zoom";
 
 export interface IForceGraphProps {
   width: number | string;
@@ -103,33 +103,13 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
 
   // enter node高亮
   const nodeMouseEnterHandler = (event: MouseEvent) => {
-    const filteredNodes = findNodes(event, links);
-    for (const nodeId of filteredNodes) {
-      highlightNodeById(nodeId);
-    }
-    const filteredLinks = links.filter(
-      (link) =>
-        filteredNodes.includes(link.source.id) &&
-        filteredNodes.includes(link.target.id)
-    );
-    for (const link of filteredLinks) {
-      highlightLink(link);
-    }
+    const nodeId = (event.target as HTMLElement).id.slice(4);
+    highlightNodeById(nodes, nodeId);
   };
   // leave node取消高亮
   const nodeMouseLeaveHandler = (event: MouseEvent) => {
-    const filteredNodes = findNodes(event, links);
-    for (const nodeId of filteredNodes) {
-      unhighlightNodeById(graphData, nodeId);
-    }
-    const filteredLinks = links.filter(
-      (link) =>
-        filteredNodes.includes(link.source.id) &&
-        filteredNodes.includes(link.target.id)
-    );
-    for (const link of filteredLinks) {
-      unhighlightLink(link);
-    }
+    const nodeId = (event.target as HTMLElement).id.slice(4);
+    unhighlightNodeById(graphData, nodeId);
   };
 
   // enter link高亮
@@ -138,8 +118,8 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     const sourceNodeId = link.source.id;
     const targetNodeId = link.target.id;
     highlightLink(link);
-    highlightNodeById(sourceNodeId);
-    highlightNodeById(targetNodeId);
+    highlightNodeById(nodes, sourceNodeId);
+    highlightNodeById(nodes, targetNodeId);
   };
 
   // leave link取消高亮
@@ -187,64 +167,83 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     }
   };
 
+  // 处理zoom事件
+  const handleZoom = (event: any) => {
+    select("#graphRoot").attr("transform", event.transform);
+  };
+
+  useEffect(() => {
+    // 支持zoom交互
+    const customZoom = zoom().on("zoom", handleZoom) as any;
+    select(svgRef.current).call(customZoom);
+
+    return () => {
+      customZoom.on("zoom", null);
+      select(svgRef.current).call(customZoom);
+    };
+  }, []);
+
   return (
-    <svg width={width} height={height} ref={svgRef}>
-      <foreignObject width="100%" height={legendHeight}>
-        <div className={styles.legends}>
-          <Legend
-            orient="row"
-            data={continents}
-            color={(continent: string) => graphNodeColopMap.get(continent)}
-            onClick={handleClick}
-            onMouseEnter={() => {}}
-            onMouseLeave={() => {}}
-          />
-        </div>
-      </foreignObject>
-      <g className={styles.links} stroke="#999">
-        {linksState.map((link, index: number) => {
-          return (
-            <ForceLink
-              handlers={{
-                mouseEnterHandler: linkMouseEnterHandler,
-                mouseLeaveHandler: linkMouseLeaveHandler,
-              }}
-              id={`link${link.source.id}_${link.target.id}`}
-              className={styles.link}
-              key={index}
-              x1={link.source.x as number}
-              y1={link.source.y as number}
-              x2={link.target.x as number}
-              y2={link.target.y as number}
-              attributes={{
-                strokeWidth: 2,
-              }}
-            />
-          );
-        })}
-      </g>
-      <g className={styles.nodes}>
-        {nodesState.map((node, index: number) => {
-          return (
-            <ForceNode
-              handlers={{
-                mouseEnterHandler: nodeMouseEnterHandler,
-                mouseLeaveHandler: nodeMouseLeaveHandler,
-              }}
-              id={`${getNodeId(node.id)}`}
-              className={styles.node}
-              key={node.id}
-              r={nodeScale(node.expsum)}
-              cx={node.x as number}
-              cy={node.y as number}
-              attributes={{
-                fill: graphNodeColopMap.get(node.continent),
-              }}
-            />
-          );
-        })}
-      </g>
-    </svg>
+    <div className={styles.forceGraph}>
+      <div className={styles.legends}>
+        <Legend
+          orient="row"
+          data={continents}
+          color={(continent: string) => graphNodeColopMap.get(continent)}
+          onClick={handleClick}
+          onMouseEnter={() => {}}
+          onMouseLeave={() => {}}
+        />
+      </div>
+      <svg width={width} height={height} ref={svgRef}>
+        <g id="graphRoot">
+          <g className={styles.links} stroke="#999">
+            {linksState.map((link, index: number) => {
+              return (
+                <ForceLink
+                  handlers={{
+                    mouseEnterHandler: linkMouseEnterHandler,
+                    mouseLeaveHandler: linkMouseLeaveHandler,
+                  }}
+                  id={`link${link.source.id}_${link.target.id}`}
+                  className={styles.link}
+                  key={index}
+                  x1={link.source.x as number}
+                  y1={link.source.y as number}
+                  x2={link.target.x as number}
+                  y2={link.target.y as number}
+                  attributes={{
+                    strokeWidth: 2,
+                  }}
+                />
+              );
+            })}
+          </g>
+          <g className={styles.nodes} id="forceNodes">
+            {nodesState.map((node, index: number) => {
+              return (
+                <g key={node.id} id={`${getNodeId(node.id)}Group`}>
+                  <ForceNode
+                    handlers={{
+                      mouseEnterHandler: nodeMouseEnterHandler,
+                      mouseLeaveHandler: nodeMouseLeaveHandler,
+                    }}
+                    id={`${getNodeId(node.id)}`}
+                    className={styles.node}
+                    r={nodeScale(node.expsum)}
+                    cx={node.x as number}
+                    cy={node.y as number}
+                    attributes={{
+                      fill: graphNodeColopMap.get(node.continent),
+                    }}
+                  />
+                </g>
+              );
+            })}
+          </g>
+        </g>
+      </svg>
+    </div>
   );
 };
 
