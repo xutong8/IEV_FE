@@ -4604,11 +4604,6 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-countup.js@^2.0.8:
-  version "2.0.8"
-  resolved "https://registry.nlark.com/countup.js/download/countup.js-2.0.8.tgz#eca0c31c9db3f7769cba494d9315cd52dbaaf1b9"
-  integrity sha1-7KDDHJ2z93acuklNkxXNUtuq8bk=
-
 create-ecdh@^4.0.0:
   version "4.0.4"
   resolved "https://registry.npm.taobao.org/create-ecdh/download/create-ecdh-4.0.4.tgz?cache=0&sync_timestamp=1596557810113&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcreate-ecdh%2Fdownload%2Fcreate-ecdh-4.0.4.tgz#d6e7f4bffa66736085a0762fd3a632684dabcc4e"
@@ -11685,13 +11680,6 @@ react-app-polyfill@^2.0.0:
     raf "^3.4.1"
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
-
-react-countup@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.nlark.com/react-countup/download/react-countup-5.2.0.tgz#58be5d97acebf767d5c61df5c3a3417b95c45a16"
-  integrity sha1-WL5dl6zr92fVxh31w6NBe5XEWhY=
-  dependencies:
-    countup.js "^2.0.8"
 
 react-dev-utils@^11.0.3:
   version "11.0.4"
