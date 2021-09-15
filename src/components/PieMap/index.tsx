@@ -5,6 +5,8 @@ import cn from "classnames";
 import CountryMap from "../CountryMap";
 import { Select } from "antd";
 import { projectContext } from "@/context/projectData";
+import Choropleth from "../Choropleth";
+import { data } from "@/utils/processChoroplethData";
 
 const { Option } = Select;
 
@@ -25,7 +27,7 @@ const PieMap = () => {
           })}
         >
           <CountryMap
-            className={styles.countryMap}
+            className={styles.sourceCountryMap}
             name={sourceCountry}
             style={{ transform: "translate(0, 10%)" }}
           />
@@ -45,14 +47,11 @@ const PieMap = () => {
         </div>
         <div className={styles.middleMap}>
           <Pie width="100%" height="100%" />
-          <CountryMap
-            name="World"
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
+          <Choropleth
+            data={data}
+            selectedCountries={["156", "842"]}
+            selectedColors={["red", "blue"]}
+            parentClass={styles.middleMap}
           />
         </div>
         <div
@@ -63,7 +62,7 @@ const PieMap = () => {
         >
           <CountryMap
             name={targetCountry}
-            className={styles.countryMap}
+            className={styles.targetCountryMap}
             style={{ transform: "translate(0, 10%)" }}
           />
           <Select

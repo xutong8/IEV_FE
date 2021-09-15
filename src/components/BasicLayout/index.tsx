@@ -9,6 +9,7 @@ import StackChart from "../StackChart";
 import ProgressBar from "../ProgressBar";
 import TopMap from "../TopMap";
 import PieMap from "../PieMap";
+import Choropleth from "../Choropleth";
 
 const BasicLayout = () => {
   return (
