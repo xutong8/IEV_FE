@@ -1,8 +1,4 @@
-import {
-  processGraphData,
-  getNodeColor,
-  graphNodeColopMap,
-} from "@/utils/processGraphData";
+import { processGraphData, graphNodeColopMap } from "@/utils/processGraphData";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ForceNode from "./ForceNode";
 import styles from "./index.less";
@@ -28,6 +24,7 @@ import {
   unhighlightLink,
 } from "@/utils/linkUtils";
 import { useSVGSize } from "@/hooks/useSVGSize";
+import Legend from "../Legend";
 
 export interface IForceGraphProps {
   width: number | string;
@@ -38,13 +35,8 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   const { width, height } = props;
   const [year, setYear] = useState<number>(1995);
   const graphData = useMemo(() => processGraphData(year), [year]);
-  const { nodes, links } = graphData;
-
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     setYear((year) => year + 1);
-  //   }, 15000);
-  // }, []);
+  const { nodes, links, continents } = graphData;
+  const legendHeight = 125;
 
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -139,8 +131,6 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     highlightNodeById(targetNodeId);
   };
 
-  const colorMap = useMemo(() => getNodeColor(nodes), [nodes]);
-
   // leave link取消高亮
   const linkMouseLeaveHandler = (event: MouseEvent) => {
     const link = findLinkById(event, links);
@@ -151,8 +141,22 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     unhighlightNodeById(graphData, targetNodeId);
   };
 
+  const handleClick = () => {};
+
   return (
     <svg width={width} height={height} ref={svgRef}>
+      <foreignObject width="100%" height={legendHeight}>
+        <div className={styles.legends}>
+          <Legend
+            orient="row"
+            data={continents}
+            color={(continent: string) => graphNodeColopMap.get(continent)}
+            onClick={() => {}}
+            onMouseEnter={() => {}}
+            onMouseLeave={() => {}}
+          />
+        </div>
+      </foreignObject>
       <g className={styles.links} stroke="#999">
         {links.map((link, index: number) => {
           return (

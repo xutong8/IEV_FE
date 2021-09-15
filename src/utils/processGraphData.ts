@@ -21,6 +21,7 @@ export interface IGraphData {
   nodes: IGraphNode[];
   links: IGraphLink[];
   colorMap: Map<string, string>;
+  continents: string[];
 }
 
 function initializeData(year: number, data: any) {
@@ -48,8 +49,15 @@ function initializeData(year: number, data: any) {
     return total;
   }, [] as IGraphLink[]);
 
+  const continentsSet = new Set<string>();
+  for (const node of nodes) {
+    continentsSet.add(node.continent);
+  }
+  const continents = Array.from(continentsSet);
+
   gData.nodes = nodes;
   gData.links = links;
+  gData.continents = continents;
   gData.colorMap = getNodeColor(nodes);
 
   return gData;

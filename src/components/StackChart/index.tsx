@@ -145,6 +145,10 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     setHoverCountry(hoverName);
   }, []);
 
+  const onLegendMouseEnter = (hoverName: string) => {
+    setHoverCountry(namesToColumns.get(nationsToNames.get(hoverName)));
+  };
+
   const onMouseLeave = useCallback(() => {
     setHoverCountry("");
   }, []);
@@ -191,7 +195,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               return colorMap.get(item?.iso_2digit_alpha ?? "") ?? "";
             }}
             onClick={onClick}
-            onMouseEnter={onMouseEnter}
+            onMouseEnter={onLegendMouseEnter}
             onMouseLeave={onMouseLeave}
           />
         </div>
