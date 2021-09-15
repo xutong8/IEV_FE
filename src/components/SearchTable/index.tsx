@@ -59,6 +59,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
             pagination={{
               showSizeChanger: false,
               pageSize: 12,
+              size: "small",
             }}
             scroll={{
               x: true,
