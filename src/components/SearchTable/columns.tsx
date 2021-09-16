@@ -140,12 +140,18 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
       },
       dataIndex: "category",
       key: "category",
-      width: 130,
+      width: 140,
       fixed: false,
       className: "category",
       render: (category: string) => {
         return (
-          <div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "nowrap",
+              alignItems: "center",
+            }}
+          >
             <span className={styles.tooltipText}>{category.slice(0, 5)}</span>
             {category.length > 5 ? (
               <Tooltip title={category}>

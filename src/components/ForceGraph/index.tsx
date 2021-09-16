@@ -85,7 +85,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
             .distance((d) => linkScale((d as any)?.value ?? 1))
         )
         .force("charge", forceManyBody().distanceMax(30))
-        .force("collide", forceCollide().radius(5))
+        .force("collide", forceCollide().radius(8))
         .force("center", forceCenter(computedWidth / 2, computedHeight / 2)),
     [computedWidth, computedHeight]
   );
