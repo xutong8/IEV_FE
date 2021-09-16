@@ -1,7 +1,8 @@
 import { pie, arc } from "d3";
 import Wedge from "./Wedge";
 import { IItemPieData, pieData, selectCountries } from "@/utils/processPieData";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
+import Tooltip from "@/components/Tooltip";
 
 export interface IPie {
   width: number;
@@ -17,8 +18,10 @@ export interface IPieData {
   value: number;
 }
 
-const Pie: React.FC<IPie> = (prop) => {
-  const { width, height } = prop;
+const Pie: React.FC<IPie> = (props) => {
+  const { width, height } = props;
+
+  const toolTipRef = useRef<any>();
 
   const data = useMemo(() => pieData, [pieData]);
 
@@ -45,37 +48,50 @@ const Pie: React.FC<IPie> = (prop) => {
     [width, height]
   );
 
+  // // tooltip hook
+  // const [show, onMouseMove, onMouseLeave, Tooltip] = useTooltip({htmlTemplate: () => 'tooltip'})
+  console.log("update");
   return (
-    <svg width={width} height={height}>
-      <g transform={translation}>
-        {pieDrawData.map((item, index) => {
-          const itemCenter = arcData.centroid(item);
-          return (
-            <g key={item.index}>
-              <Wedge
-                d={arcData(item)}
-                fill={
-                  item.data.country === selectCountries[0]
-                    ? "#508bbb"
-                    : "#d2796f"
-                }
-              />
-              <text
-                x={itemCenter[0]}
-                y={itemCenter[1]}
-                style={{ transformBox: "fill-box", transformOrigin: "center" }}
-                textAnchor="middle"
-                transform={`rotate(${
-                  (180 * (item.startAngle + item.endAngle)) / 2 / Math.PI
-                }) translate(10, -18)`}
-              >
-                {item.data.type}
-              </text>
-            </g>
-          );
-        })}
-      </g>
-    </svg>
+    <>
+      {/* {show? Tooltip:null} */}
+      {/* <div ref={toolTipRef} style={show? undefined:{display: 'none'}}/> */}
+      <Tooltip ref={toolTipRef} />
+      <svg width={width} height={height}>
+        <g transform={translation}>
+          {pieDrawData.map((item, index) => {
+            const itemCenter = arcData.centroid(item);
+            return (
+              <g key={item.index}>
+                <Wedge
+                  d={arcData(item)}
+                  fill={
+                    item.data.country === selectCountries[0]
+                      ? "#508bbb"
+                      : "#d2796f"
+                  }
+                  onMouseMove={() => toolTipRef.current.onMouseMove()}
+                  onMouseLeave={() => toolTipRef.current.onMouseLeave()}
+                />
+                <text
+                  x={itemCenter[0]}
+                  y={itemCenter[1]}
+                  style={{
+                    transformBox: "fill-box",
+                    transformOrigin: "center",
+                  }}
+                  textAnchor="middle"
+                  transform={`rotate(${
+                    (180 * (item.startAngle + item.endAngle)) / 2 / Math.PI
+                  }) translate(10, -18)`}
+                >
+                  {item.data.type}
+                </text>
+              </g>
+            );
+          })}
+        </g>
+      </svg>
+    </>
   );
 };
 
