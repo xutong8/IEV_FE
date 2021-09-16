@@ -2,7 +2,6 @@ import ForceGraph from "@/components/ForceGraph";
 import React from "react";
 import styles from "./index.less";
 import { connect } from "react-redux";
-import SearchTable from "../../components/SearchTable";
 import { IStore } from "@/reducers";
 
 export interface IForceGraphWithStoreProps {
