@@ -1,9 +1,4 @@
-import {
-  processGraphData,
-  graphNodeColopMap,
-  IGraphNode,
-  IGraphLink,
-} from "@/utils/processGraphData";
+import { IGraphNode, IGraphLink } from "@/utils/processGraphData";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ForceNode from "./ForceNode";
 import styles from "./index.less";
@@ -18,6 +13,7 @@ import { scaleLinear } from "d3-scale";
 import ForceLink from "./ForceLink";
 import { forceManyBody } from "d3";
 import {
+  findNodeById,
   getNodeId,
   highlightNodeById,
   unhighlightNodeById,
@@ -29,26 +25,73 @@ import {
 } from "@/utils/linkUtils";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import Legend from "../Legend";
-import { zoom, zoomTransform } from "d3-zoom";
+import { zoom } from "d3-zoom";
+import { httpRequest } from "@/services";
+import { unstable_batchedUpdates } from "react-dom";
+import randomcolor from "randomcolor";
 
 export interface IForceGraphProps {
   width: number | string;
   height: number | string;
   radius: number;
+  year: number;
 }
 
 const ForceGraph: React.FC<IForceGraphProps> = (props) => {
-  const { width, height, radius } = props;
-  const [year, setYear] = useState<number>(1995);
-  const graphData = useMemo(() => processGraphData(year), [year]);
-  const { nodes, links, continents } = graphData;
+  const { width, height, radius, year } = props;
+
+  // 节点
+  const [graphNodes, setGraphNodes] = useState<IGraphNode[]>([]);
+  // 边
+  const [graphLinks, setGraphLinks] = useState<IGraphLink[]>([]);
 
   // nodes的state
-  const [nodesState, setNodesState] = useState<IGraphNode[]>(nodes);
+  const [nodesState, setNodesState] = useState<IGraphNode[]>([]);
   // links的state
-  const [linksState, setLinksState] = useState<IGraphLink[]>(links);
+  const [linksState, setLinksState] = useState<IGraphLink[]>([]);
 
-  const legendHeight = 125;
+  // continents
+  const [continents, setContinents] = useState<string[]>([]);
+  // colorMap
+  const [colorMap, setColorMap] = useState<Map<string, string>>();
+
+  useEffect(() => {
+    httpRequest
+      .get(`/force_graph?year=${year}&category=[]`)
+      .then((res: any) => {
+        const nodes = (res?.data?.nodes ?? []) as IGraphNode[];
+        const links = (res?.data?.links ?? []).map((link: IGraphLink) => {
+          return {
+            value: link.value,
+            source: findNodeById(nodes, link.source.id),
+            target: findNodeById(nodes, link.target.id),
+          };
+        });
+        const continentsSet = new Set<string>();
+        for (const node of nodes) {
+          continentsSet.add(node.continent);
+        }
+        const continents = Array.from(continentsSet);
+        const colorMap = new Map<string, string>();
+
+        const colors = randomcolor({
+          count: continents.length,
+        });
+
+        continents.forEach((continent, index) => {
+          colorMap.set(continent, colors[index]);
+        });
+
+        unstable_batchedUpdates(() => {
+          setColorMap(colorMap);
+          setContinents(continents);
+          setGraphNodes(nodes);
+          setNodesState(nodes);
+          setGraphLinks(links);
+          setLinksState(links);
+        });
+      });
+  }, [year]);
 
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -56,39 +99,37 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
 
   // 按照expsum的值来映射节点的半径
   const minNode = useMemo(() => {
-    return Math.min(...nodes.map((node) => node.expsum));
-  }, [nodes]);
+    return Math.min(...graphNodes.map((node) => node.expsum));
+  }, [graphNodes]);
   const maxNode = useMemo(() => {
-    return Math.max(...nodes.map((node) => node.expsum));
-  }, [nodes]);
+    return Math.max(...graphNodes.map((node) => node.expsum));
+  }, [graphNodes]);
 
   const nodeScale = scaleLinear().domain([minNode, maxNode]).range([3, radius]);
 
   // 按照value值来映射边的长短
   const minLink = useMemo(() => {
-    return Math.min(...links.map((link) => link.value));
-  }, [links]);
+    return Math.min(...graphLinks.map((link) => link.value));
+  }, [graphLinks]);
   const maxLink = useMemo(() => {
-    return Math.max(...links.map((link) => link.value));
-  }, [links]);
+    return Math.max(...graphLinks.map((link) => link.value));
+  }, [graphLinks]);
 
   const linkScale = scaleLinear().domain([minLink, maxLink]).range([4, 8]);
 
   // 设置布局算法
-  const simulation = useMemo(
-    () =>
-      forceSimulation(nodesState as any)
-        .force(
-          "link",
-          forceLink(linksState as any)
-            .id((d: any) => d.id)
-            .distance((d) => linkScale((d as any)?.value ?? 1))
-        )
-        .force("charge", forceManyBody().distanceMax(30))
-        .force("collide", forceCollide().radius(8))
-        .force("center", forceCenter(computedWidth / 2, computedHeight / 2)),
-    [computedWidth, computedHeight]
-  );
+  const simulation = useMemo(() => {
+    return forceSimulation(nodesState as any)
+      .force(
+        "link",
+        forceLink(linksState as any)
+          .id((d: any) => d.id)
+          .distance((d) => linkScale((d as any)?.value ?? 1))
+      )
+      .force("charge", forceManyBody().distanceMax(30))
+      .force("collide", forceCollide().radius(8))
+      .force("center", forceCenter(computedWidth / 2, computedHeight / 2));
+  }, [computedWidth, computedHeight, nodesState, linksState, linkScale]);
 
   useEffect(() => {
     simulation.on("tick", () => {
@@ -109,32 +150,32 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   // enter node高亮
   const nodeMouseEnterHandler = (event: MouseEvent) => {
     const nodeId = (event.target as HTMLElement).id.slice(4);
-    highlightNodeById(nodes, nodeId);
+    highlightNodeById(graphNodes, nodeId);
   };
   // leave node取消高亮
   const nodeMouseLeaveHandler = (event: MouseEvent) => {
     const nodeId = (event.target as HTMLElement).id.slice(4);
-    unhighlightNodeById(graphData, nodeId);
+    unhighlightNodeById(graphNodes, nodeId);
   };
 
   // enter link高亮
   const linkMouseEnterHandler = (event: MouseEvent) => {
-    const link = findLinkById(event, links);
+    const link = findLinkById(event, graphLinks);
     const sourceNodeId = link.source.id;
     const targetNodeId = link.target.id;
     highlightLink(link);
-    highlightNodeById(nodes, sourceNodeId);
-    highlightNodeById(nodes, targetNodeId);
+    highlightNodeById(graphNodes, sourceNodeId);
+    highlightNodeById(graphNodes, targetNodeId);
   };
 
   // leave link取消高亮
   const linkMouseLeaveHandler = (event: MouseEvent) => {
-    const link = findLinkById(event, links);
+    const link = findLinkById(event, graphLinks);
     const sourceNodeId = link.source.id;
     const targetNodeId = link.target.id;
     unhighlightLink(link);
-    unhighlightNodeById(graphData, sourceNodeId);
-    unhighlightNodeById(graphData, targetNodeId);
+    unhighlightNodeById(graphNodes, sourceNodeId);
+    unhighlightNodeById(graphNodes, targetNodeId);
   };
 
   // 过滤的列表
@@ -145,10 +186,10 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
       const newFilterList = [...filterList, continent];
       setFilterList(newFilterList);
       setNodesState(
-        nodes.filter((node) => !newFilterList.includes(node.continent))
+        graphNodes.filter((node) => !newFilterList.includes(node.continent))
       );
       setLinksState(
-        links.filter(
+        graphLinks.filter(
           (link) =>
             !newFilterList.includes(link.source.continent) &&
             !newFilterList.includes(link.target.continent)
@@ -160,10 +201,10 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
         .filter((filter) => filter !== continent);
       setFilterList([...newFilterList]);
       setNodesState(
-        nodes.filter((node) => !newFilterList.includes(node.continent))
+        graphNodes.filter((node) => !newFilterList.includes(node.continent))
       );
       setLinksState(
-        links.filter(
+        graphLinks.filter(
           (link) =>
             !newFilterList.includes(link.source.continent) &&
             !newFilterList.includes(link.target.continent)
@@ -194,7 +235,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
         <Legend
           orient="row"
           data={continents}
-          color={(continent: string) => graphNodeColopMap.get(continent)}
+          color={(continent: string) => colorMap?.get(continent) ?? ""}
           onClick={handleClick}
           onMouseEnter={() => {}}
           onMouseLeave={() => {}}
@@ -239,7 +280,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
                     cx={node.x as number}
                     cy={node.y as number}
                     attributes={{
-                      fill: graphNodeColopMap.get(node.continent),
+                      fill: colorMap?.get(node.continent) ?? "",
                     }}
                   />
                 </g>

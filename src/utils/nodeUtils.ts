@@ -47,8 +47,7 @@ const highlightNodeById = (filteredNodes: IGraphNode[], id: string) => {
 
 // 取消高亮节点
 // TODO: 不需要nodes参数
-const unhighlightNodeById = (graphData: IGraphData, id: string) => {
-  const { nodes } = graphData;
+const unhighlightNodeById = (nodes: IGraphNode[], id: string) => {
   select(`#${getNodeId(id)}`).attr(
     "fill",
     getNodeColor(nodes).get((findNodeById(nodes, id) as IGraphNode).continent)
