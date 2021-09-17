@@ -13,7 +13,7 @@ const ValueTypeButton: React.FC<IValueTypeButtonProps> = (props) => {
   const { handleUpdateValueType } = props;
   return (
     <Button type="primary" onClick={handleUpdateValueType}>
-      修改ValueType
+      Text/Rect
     </Button>
   );
 };

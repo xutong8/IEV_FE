@@ -19,4 +19,14 @@ const processTicks = <T extends BaseTick>(
   return result;
 };
 
-export { processTicks };
+const processTicksByMax = (maxValue: number, ticks: number): number[] => {
+  const result = [] as number[];
+
+  for (let i = 0; i <= ticks; i++) {
+    result.push((maxValue / ticks) * i);
+  }
+
+  return result;
+};
+
+export { processTicks, processTicksByMax };
