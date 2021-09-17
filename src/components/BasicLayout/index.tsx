@@ -1,21 +1,50 @@
 import SearchTableWithStore from "@/containers/SearchTableWithStore";
 import LeftMenu from "../LeftMenu";
 import styles from "./index.less";
-import ForceGraph from "../ForceGraph";
 import Images from "../Images";
-import { Nations, icons } from "../../assets/images";
 import StackChart from "../StackChart";
 import ProgressBar from "../ProgressBar";
 import TopMap from "../TopMap";
 import PieMap from "../PieMap";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import ForceGraphWithStore from "@/containers/ForceGraphWithStore";
+import { Image } from "../Images/ImageItem";
+import { httpRequest } from "@/services";
+import { unstable_batchedUpdates } from "react-dom";
+import { image } from "d3-fetch";
 
 const BasicLayout = () => {
   // stack container的ref
   const stackContainerRef = useRef<HTMLDivElement>(null);
   const [stackWidth, stackHeight] = useSVGSize(stackContainerRef);
+
+  // country images
+  const [countryImages, setCountryImages] = useState<Image[]>([]);
+  // category images
+  const [categoryImages, setCategoryImages] = useState<Image[]>([]);
+
+  const fetchList = () => {
+    Promise.all([
+      httpRequest.get("/country_list"),
+      httpRequest.get("/category_list"),
+    ]).then((res: any) => {
+      const countryImages = (
+        res && res.length >= 0 ? res[0]?.data ?? [] : []
+      ) as Image[];
+      const categoryImages = (
+        res && res.length >= 0 ? res[1]?.data ?? [] : []
+      ) as Image[];
+      unstable_batchedUpdates(() => {
+        setCountryImages(countryImages);
+        setCategoryImages(categoryImages);
+      });
+    });
+  };
+
+  useEffect(() => {
+    fetchList();
+  }, []);
 
   return (
     <div className={styles["basic_layout"]}>
@@ -27,20 +56,20 @@ const BasicLayout = () => {
         <div className={styles["middle"]}>
           <div className={styles["item"]}>
             <Images
-              imageList={Nations}
+              imageList={countryImages}
               column={7}
               bordered={true}
               imgStyle={{
-                width: 36,
-                height: 24,
+                width: 60,
+                margin: "4px 0",
               }}
             />
           </div>
           <div className={styles["item"]}>
             <Images
-              imageList={icons}
+              imageList={categoryImages}
               column={5}
-              imgStyle={{ boxShadow: "none", width: "30%" }}
+              imgStyle={{ boxShadow: "none", width: 40 }}
               style={{
                 boxShadow: "1px 1px 1px 1px rgba(0, 0, 0, 0.1)",
                 borderRadius: 4,

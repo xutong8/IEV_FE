@@ -1,4 +1,4 @@
-import { IGraphNode, IGraphLink } from "@/utils/processGraphData";
+import { IGraphNode, IGraphLink } from "@/types/forceGraph";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ForceNode from "./ForceNode";
 import styles from "./index.less";
@@ -155,7 +155,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   // leave node取消高亮
   const nodeMouseLeaveHandler = (event: MouseEvent) => {
     const nodeId = (event.target as HTMLElement).id.slice(4);
-    unhighlightNodeById(graphNodes, nodeId);
+    unhighlightNodeById(graphNodes, nodeId, colorMap as Map<string, string>);
   };
 
   // enter link高亮
@@ -174,8 +174,16 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     const sourceNodeId = link.source.id;
     const targetNodeId = link.target.id;
     unhighlightLink(link);
-    unhighlightNodeById(graphNodes, sourceNodeId);
-    unhighlightNodeById(graphNodes, targetNodeId);
+    unhighlightNodeById(
+      graphNodes,
+      sourceNodeId,
+      colorMap as Map<string, string>
+    );
+    unhighlightNodeById(
+      graphNodes,
+      targetNodeId,
+      colorMap as Map<string, string>
+    );
   };
 
   // 过滤的列表

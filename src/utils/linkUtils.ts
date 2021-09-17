@@ -1,5 +1,5 @@
 import { select } from "d3-selection";
-import { IGraphLink } from "./processGraphData";
+import { IGraphLink } from "@/types/forceGraph";
 
 // 根据id来查找link
 const findLinkById = (event: MouseEvent, links: IGraphLink[]) => {
