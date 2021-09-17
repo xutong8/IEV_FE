@@ -102,53 +102,82 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
   const getLinesCoordinates = () => {
     const namesLen = countryNames.length;
 
-    // TODO: 终点位置需要重新计算
-    const yStart = -4;
-    const xStart = 1003;
+    const yStart1 = -4;
+    const xStart1 = 1003;
     const linesCoordinates = [];
     const coordinates = coordinatesData.coordinates;
-    // TODO: 考虑另外一边
+
     for (let i = 0; i < namesLen; i++) {
+      const country = coordinates[i];
+      const startPointX = country?.x ?? 0;
+      const startPointY = country?.y ?? 0;
       const lineCoordinates = [];
-      if (i < namesLen) {
-        const country = coordinates[i];
-        const startPointX = country?.x ?? 0;
-        const startPointY = country?.y ?? 0;
 
-        // 地图上的点
-        lineCoordinates.push({
-          x: startPointX + Math.floor(circleRadius / 2),
-          y: startPointY + Math.floor(circleRadius / 2),
-        });
+      // 地图上的点
+      lineCoordinates.push({
+        x: startPointX + Math.floor(circleRadius / 2),
+        y: startPointY + Math.floor(circleRadius / 2),
+      });
 
-        // 中间点
-        const midPointY =
-          yStart + ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1);
-        const midPointX = Math.abs(startPointY - midPointY) + startPointX;
-        lineCoordinates.push({
-          x: midPointX,
-          y: midPointY,
-        });
+      // 中间点
+      const midPointY =
+        yStart1 + ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1);
+      const midPointX = Math.abs(startPointY - midPointY) + startPointX;
+      lineCoordinates.push({
+        x: midPointX,
+        y: midPointY,
+      });
 
-        const endPointX =
-          xStart - ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1);
-        const endPointY = midPointY;
+      const endPointX =
+        xStart1 - ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1);
+      const endPointY = midPointY;
 
-        // 热力图上的点
-        lineCoordinates.push({
-          x: endPointX,
-          y: endPointY,
-        });
-      } else {
-        const country = coordinates[namesLen * 2 - i];
-      }
+      // 热力图上的点
+      lineCoordinates.push({
+        x: endPointX,
+        y: endPointY,
+      });
       linesCoordinates.push(lineCoordinates);
     }
 
+    const firstMapHeight = 237;
+    const yStart2 = 480;
+    const xStart2 = 1005;
+
+    for (let i = namesLen - 1; i >= 0; i--) {
+      const country = coordinates[i];
+      const startPointX = country?.x ?? 0;
+      const startPointY = (country?.y ?? 0) + firstMapHeight;
+      const lineCoordinates = [];
+
+      // 地图上的点
+      lineCoordinates.push({
+        x: startPointX + Math.floor(circleRadius / 2),
+        y: startPointY + Math.floor(circleRadius / 2),
+      });
+
+      // 中间点
+      const midPointY =
+        yStart2 - ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1);
+      const midPointX = Math.abs(startPointY - midPointY) + startPointX;
+      lineCoordinates.push({
+        x: midPointX,
+        y: midPointY,
+      });
+
+      const endPointX =
+        xStart2 - ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1);
+      const endPointY = midPointY;
+
+      // 热力图上的点
+      lineCoordinates.push({
+        x: endPointX,
+        y: endPointY,
+      });
+      linesCoordinates.push(lineCoordinates);
+    }
     setLines(linesCoordinates);
   };
-
-  console.log("countryNames: ", countryNames);
 
   // 计算线上的各个点
   const getLineD = (line: IPoint[]) => {
