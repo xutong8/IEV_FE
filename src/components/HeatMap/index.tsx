@@ -1,27 +1,34 @@
-import { processHeatMapData } from "@/utils/processHeatMapData";
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import { scaleBand, scaleLinear } from "d3-scale";
+import { IRow } from "@/types/heatmap";
 export interface IHeatMapProps {
   width: number;
   height: number;
-  countryNames: string[];
-  year: string;
-  category: string;
+  dataSource: IRow[];
 }
 
 const HeatMap: React.FC<IHeatMapProps> = (props) => {
-  const { width, height, countryNames, year, category } = props;
+  const { width, height, dataSource } = props;
 
-  const { dataSource, maxValue } = processHeatMapData(
-    countryNames,
-    year,
-    category
+  const maxValue = useMemo(
+    () =>
+      Math.max(
+        ...dataSource.map((item) =>
+          Math.max(...item.explist.map((exp) => exp.expvalue))
+        )
+      ),
+    [dataSource]
   );
 
   // color scale
   const colorScale = scaleLinear<string>()
     .domain([0, maxValue])
     .range(["gray", "#A3320B"]);
+
+  const countryNames = useMemo(
+    () => dataSource.map((item) => item.countryName),
+    [dataSource]
+  );
 
   // x scale
   const xScale = scaleBand().domain(countryNames).range([0, width]);
@@ -33,15 +40,15 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
     <svg width={width} height={height} transform="rotate(45)">
       {dataSource.map((row) => {
         return (
-          <g key={row.name}>
+          <g key={row.countryName}>
             {row.explist.map((item) => {
               return (
                 <rect
-                  id={item.name}
-                  key={item.name}
-                  x={xScale(item.name)}
-                  y={yScale(row.name)}
-                  fill={colorScale(item.value)}
+                  id={item.countryName}
+                  key={item.countryName}
+                  x={xScale(item.countryName)}
+                  y={yScale(row.countryName)}
+                  fill={colorScale(item.expvalue)}
                   width={width / countryNames.length}
                   height={height / countryNames.length}
                 />
