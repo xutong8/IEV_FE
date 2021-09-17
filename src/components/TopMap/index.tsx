@@ -13,7 +13,7 @@ export interface IPoint {
 }
 
 export interface ITopMapProps {
-  year: string;
+  year: number;
 }
 
 export interface ICountryItem {

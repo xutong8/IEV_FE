@@ -1,6 +1,7 @@
 import { CSSProperties } from "react";
 import LegendItem from "./LegendItem";
 import styles from "./index.less";
+import cn from "classnames";
 
 export interface ILegend {
   color: (key: string) => string;
@@ -10,10 +11,19 @@ export interface ILegend {
   onClick: (digit2: string, state: boolean) => void;
   onMouseEnter: (hoverName: string) => void;
   onMouseLeave: () => void;
+  itemClassName?: string;
 }
 
 const Legend: React.FC<ILegend> = (props) => {
-  const { color, orient, data, onClick, onMouseEnter, onMouseLeave } = props;
+  const {
+    color,
+    orient,
+    data,
+    onClick,
+    onMouseEnter,
+    onMouseLeave,
+    itemClassName = "",
+  } = props;
   const style = { flexDirection: orient };
 
   return (
@@ -26,6 +36,7 @@ const Legend: React.FC<ILegend> = (props) => {
           onClick={onClick}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
+          itemClassName={itemClassName}
         />
       ))}
     </div>

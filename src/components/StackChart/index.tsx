@@ -32,7 +32,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const legendHeight = 125;
+  const legendHeight = height * 0.4;
 
   // brush在Y轴上的偏移
   const BrushYOffset = 25;
@@ -134,7 +134,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // y轴的scale
   const yScale = scaleLinear()
     .domain([0, maxY])
-    .range([zeroPosition[1], legendHeight]);
+    .range([zeroPosition[1], legendHeight + 30]);
 
   const areaFunc = area()
     .x((d: any) => xScale(Number(d.data.date)))
@@ -248,7 +248,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
           tickValues={yTicks}
           tickFormat={(tick) => Math.round(tick / 100000)}
         />
-        <text x={zeroPosition[0] - 30} y={legendHeight - 12}>
+        <text x={zeroPosition[0] - 30} y={legendHeight + 16} fontSize={10}>
           单位：十万
         </text>
         <g clipPath="url(#clip-path)">
