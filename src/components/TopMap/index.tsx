@@ -117,7 +117,10 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
                 <div
                   key={item.name}
                   className={styles.circle}
-                  style={{ left: item.x, top: item.y }}
+                  style={{
+                    left: `${(item.x / 576) * 100}%`,
+                    top: `${(item.y / 237) * 100}%`,
+                  }}
                 />
               );
             })}
@@ -138,7 +141,10 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
                   className={cn({
                     [styles.circle]: true,
                   })}
-                  style={{ left: item.x, top: item.y }}
+                  style={{
+                    left: `${(item.x / 576) * 100}%`,
+                    top: `${(item.y / 237) * 100}%`,
+                  }}
                 />
               );
             })}
