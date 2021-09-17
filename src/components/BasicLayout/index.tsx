@@ -24,6 +24,7 @@ const BasicLayout = () => {
   // category images
   const [categoryImages, setCategoryImages] = useState<Image[]>([]);
 
+  // 获取国家列表和种类列表
   const fetchList = () => {
     Promise.all([
       httpRequest.get("/country_list"),
