@@ -1,10 +1,5 @@
 import { select } from "d3-selection";
-import {
-  getNodeColor,
-  IGraphData,
-  IGraphLink,
-  IGraphNode,
-} from "./processGraphData";
+import { IGraphLink, IGraphNode } from "@/types/forceGraph";
 
 // 获取节点的完整id
 const getNodeId = (id: string) => `node${id}`;
@@ -47,11 +42,14 @@ const highlightNodeById = (filteredNodes: IGraphNode[], id: string) => {
 
 // 取消高亮节点
 // TODO: 不需要nodes参数
-const unhighlightNodeById = (graphData: IGraphData, id: string) => {
-  const { nodes } = graphData;
+const unhighlightNodeById = (
+  nodes: IGraphNode[],
+  id: string,
+  colorMap: Map<string, string>
+) => {
   select(`#${getNodeId(id)}`).attr(
     "fill",
-    getNodeColor(nodes).get((findNodeById(nodes, id) as IGraphNode).continent)
+    colorMap?.get((findNodeById(nodes, id) as IGraphNode).continent) ?? ""
   );
   select(`#forceNodes`).select("text").remove();
 };

@@ -57,7 +57,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
           <Table
             columns={customColumnsFunc(valueType, maxAmount)}
             dataSource={dataSource}
-            rowKey={(record, index: any) => index}
+            rowKey={(record) => record.id}
             pagination={{
               showSizeChanger: false,
               pageSize: 12,

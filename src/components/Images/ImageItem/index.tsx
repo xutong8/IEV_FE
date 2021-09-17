@@ -1,8 +1,9 @@
 import { CSSProperties } from "react";
 import styles from "./index.less";
 import cn from "classnames";
+import { Tooltip } from "antd";
 export interface IImageItem {
-  image: Image;
+  imageObj: Image;
   style: CSSProperties;
   bordered?: boolean;
   imgStyle?: CSSProperties;
@@ -11,12 +12,12 @@ export interface IImageItem {
 export interface Image {
   name?: string;
   key?: string;
-  img: string;
+  image: string;
 }
 
 const ImageItem: React.FC<IImageItem> = (props) => {
-  const { image, style, bordered = false, imgStyle = {} } = props;
-  const { name = "", img } = image;
+  const { imageObj, style, bordered = false, imgStyle = {} } = props;
+  const { name = "", image } = imageObj;
   return (
     <div
       className={cn({
@@ -26,8 +27,14 @@ const ImageItem: React.FC<IImageItem> = (props) => {
       key={name}
       style={style}
     >
-      <img className={styles["image"]} src={img} alt={name} style={imgStyle} />
-      <div className={styles["image_name"]}>{name}</div>
+      <Tooltip title={name}>
+        <img
+          className={styles["image"]}
+          src={`data:image/jpg;base64,${image}`}
+          alt={name}
+          style={imgStyle}
+        />
+      </Tooltip>
     </div>
   );
 };

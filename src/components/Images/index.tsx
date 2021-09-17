@@ -31,7 +31,7 @@ const Images: React.FC<IImagesProps> = (props) => {
       {imageList.map((item: any, index: number) => (
         <ImageItem
           key={index}
-          image={item}
+          imageObj={item}
           style={{ ...style, ...innerStyle }}
           bordered={bordered}
           imgStyle={imgStyle}
