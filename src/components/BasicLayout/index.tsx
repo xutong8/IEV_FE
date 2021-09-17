@@ -10,6 +10,7 @@ import TopMap from "../TopMap";
 import PieMap from "../PieMap";
 import { useRef } from "react";
 import { useSVGSize } from "@/hooks/useSVGSize";
+import ForceGraphWithStore from "@/containers/ForceGraphWithStore";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -57,7 +58,7 @@ const BasicLayout = () => {
             </div>
             <div className={styles.firstRight}>
               <div className={styles.force}>
-                <ForceGraph width="100%" height="100%" />
+                <ForceGraphWithStore />
               </div>
             </div>
           </div>

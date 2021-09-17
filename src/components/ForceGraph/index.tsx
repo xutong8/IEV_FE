@@ -34,10 +34,11 @@ import { zoom, zoomTransform } from "d3-zoom";
 export interface IForceGraphProps {
   width: number | string;
   height: number | string;
+  radius: number;
 }
 
 const ForceGraph: React.FC<IForceGraphProps> = (props) => {
-  const { width, height } = props;
+  const { width, height, radius } = props;
   const [year, setYear] = useState<number>(1995);
   const graphData = useMemo(() => processGraphData(year), [year]);
   const { nodes, links, continents } = graphData;
@@ -61,7 +62,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     return Math.max(...nodes.map((node) => node.expsum));
   }, [nodes]);
 
-  const nodeScale = scaleLinear().domain([minNode, maxNode]).range([3, 12]);
+  const nodeScale = scaleLinear().domain([minNode, maxNode]).range([3, radius]);
 
   // 按照value值来映射边的长短
   const minLink = useMemo(() => {
@@ -74,16 +75,20 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   const linkScale = scaleLinear().domain([minLink, maxLink]).range([4, 8]);
 
   // 设置布局算法
-  const simulation = forceSimulation(nodesState as any)
-    .force(
-      "link",
-      forceLink(linksState as any)
-        .id((d: any) => d.id)
-        .distance((d) => linkScale((d as any)?.value ?? 1))
-    )
-    .force("charge", forceManyBody().distanceMax(30))
-    .force("collide", forceCollide().radius(5))
-    .force("center", forceCenter(computedWidth / 2, computedHeight / 2));
+  const simulation = useMemo(
+    () =>
+      forceSimulation(nodesState as any)
+        .force(
+          "link",
+          forceLink(linksState as any)
+            .id((d: any) => d.id)
+            .distance((d) => linkScale((d as any)?.value ?? 1))
+        )
+        .force("charge", forceManyBody().distanceMax(30))
+        .force("collide", forceCollide().radius(8))
+        .force("center", forceCenter(computedWidth / 2, computedHeight / 2)),
+    [computedWidth, computedHeight]
+  );
 
   useEffect(() => {
     simulation.on("tick", () => {

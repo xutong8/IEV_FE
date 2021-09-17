@@ -11,6 +11,8 @@ import { years } from "@/constants/years";
 import { processTicks } from "@/utils/processTicks";
 import { colorMap } from "@/utils/generateCountryColor";
 import dataSource from "@/data/nameToDigit2.json";
+import { useDispatch } from "react-redux";
+import { UPDATE_YEAR } from "@/constants/year";
 export interface IProgressBarProps {
   width: number | string;
   height: number | string;
@@ -18,6 +20,8 @@ export interface IProgressBarProps {
 
 const ProgressBar: React.FC<IProgressBarProps> = (props) => {
   const { width, height } = props;
+
+  const dispatch = useDispatch();
 
   const axisHeight = 20;
 
@@ -71,6 +75,10 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
       const mouseX = pointer(event)[0];
       const newYear = Math.round(xScale.invert(mouseX));
       setLineX(xScale(newYear));
+      dispatch({
+        type: UPDATE_YEAR,
+        payload: newYear,
+      });
     });
   };
 
