@@ -12,7 +12,6 @@ import ForceGraphWithStore from "@/containers/ForceGraphWithStore";
 import { Image } from "../Images/ImageItem";
 import { httpRequest } from "@/services";
 import { unstable_batchedUpdates } from "react-dom";
-import { image } from "d3-fetch";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -83,7 +82,7 @@ const BasicLayout = () => {
           <div className={styles.first}>
             <div className={styles.firstLeft}>
               <div className={styles.topMap}>
-                <TopMap year="1995" />
+                <TopMap year="2015" />
               </div>
             </div>
             <div className={styles.firstRight}>

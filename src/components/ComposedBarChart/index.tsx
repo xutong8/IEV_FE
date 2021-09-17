@@ -14,9 +14,6 @@ export interface IComposedBarChartProps {
 const ComposedBarChart: React.FC<IComposedBarChartProps> = (props) => {
   const { width, height, dataSource } = props;
 
-  // 根据countries、year和category拿到数据
-  // const [dataSource, setDataSource] = useState<ITradeItem[]>([]);
-
   // 获取最大的exptotal
   const maxExpTotal = useMemo(
     () => Math.max(...dataSource.map((item) => item.exptotal)),
