@@ -53,13 +53,16 @@ const Pie: React.FC<IPie> = (props) => {
   console.log("update");
   return (
     <>
-      {/* {show? Tooltip:null} */}
-      {/* <div ref={toolTipRef} style={show? undefined:{display: 'none'}}/> */}
-      <Tooltip ref={toolTipRef} />
+      <Tooltip ref={toolTipRef}>
+        {({ country, type, value }: any) =>
+          `<div><div>${country} ${type}:</div><div>value: ${value}</div></div>`
+        }
+      </Tooltip>
       <svg width={width} height={height}>
         <g transform={translation}>
           {pieDrawData.map((item, index) => {
             const itemCenter = arcData.centroid(item);
+            console.log(item);
             return (
               <g key={item.index}>
                 <Wedge
@@ -69,7 +72,10 @@ const Pie: React.FC<IPie> = (props) => {
                       ? "#508bbb"
                       : "#d2796f"
                   }
-                  onMouseMove={() => toolTipRef.current.onMouseMove()}
+                  tipMessage={item}
+                  onMouseMove={(e: any) =>
+                    toolTipRef.current.onMouseMove(e, item.data)
+                  }
                   onMouseLeave={() => toolTipRef.current.onMouseLeave()}
                 />
                 <text
