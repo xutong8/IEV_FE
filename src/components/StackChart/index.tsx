@@ -32,7 +32,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const legendHeight = height * 0.4;
+  const legendHeight = height * 0.25;
 
   // brush在Y轴上的偏移
   const BrushYOffset = 25;

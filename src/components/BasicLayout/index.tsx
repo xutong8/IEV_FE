@@ -4,7 +4,6 @@ import styles from "./index.less";
 import Images from "../Images";
 import StackChart from "../StackChart";
 import ProgressBar from "../ProgressBar";
-import TopMap from "../TopMap";
 import PieMap from "../PieMap";
 import { useRef, useState, useEffect } from "react";
 import { useSVGSize } from "@/hooks/useSVGSize";
