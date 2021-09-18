@@ -5,7 +5,7 @@ const Tooltip: React.FC<any> = React.forwardRef((props, ref) => {
   // hoverState
   const [show, setShow] = useState(false);
   const tooltipRef = useRef<any>();
-  const offset = { top: -20 };
+  const offset = { top: -60 };
 
   useImperativeHandle(ref, () => ({
     onMouseMove: (evt: any, messages: any) => {
@@ -14,11 +14,11 @@ const Tooltip: React.FC<any> = React.forwardRef((props, ref) => {
         setShow(true);
       }
       const { clientX, clientY } = evt;
-      console.log(props.children, messages);
+
       tooltipRef.current.style.display = "block";
       tooltipRef.current.style.left = `${clientX}px`;
       tooltipRef.current.style.top = `${clientY + offset.top}px`;
-      console.log(props.children(messages));
+
       tooltipRef.current.innerHTML = props.children(messages); // htmlTemplate()
       // htmlTemplate
       // // 处理显示文本， 以及处理定位信息

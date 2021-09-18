@@ -55,14 +55,14 @@ const Pie: React.FC<IPie> = (props) => {
     <>
       <Tooltip ref={toolTipRef}>
         {({ country, type, value }: any) =>
-          `<div><div>${country} ${type}:</div><div>value: ${value}</div></div>`
+          `<div>${country} ${type}:</div><div>value: ${value}</div>`
         }
       </Tooltip>
       <svg width={width} height={height}>
         <g transform={translation}>
           {pieDrawData.map((item, index) => {
             const itemCenter = arcData.centroid(item);
-            console.log(item);
+
             return (
               <g key={item.index}>
                 <Wedge
