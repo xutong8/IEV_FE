@@ -154,7 +154,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const onMouseMove = useCallback((hoverName, coordinates, e) => {
     const year = Math.round(xScale.invert(coordinates[0]));
     const value = areaData[year - 1995][hoverName].toFixed(3);
-    console.log(year, value);
+
     toolTipRef.current.onMouseMove(e, { year, country: hoverName, value });
     // const value =
   }, []);
@@ -164,7 +164,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   };
 
   const onMouseLeave = useCallback(() => {
-    console.log("leave");
     setHoverCountry("");
     toolTipRef.current.onMouseLeave();
   }, []);
