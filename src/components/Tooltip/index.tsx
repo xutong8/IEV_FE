@@ -5,7 +5,7 @@ const Tooltip: React.FC<any> = React.forwardRef((props, ref) => {
   // hoverState
   const [show, setShow] = useState(false);
   const tooltipRef = useRef<any>();
-  const offset = { top: -60 };
+  const offset = { top: -65 };
 
   useImperativeHandle(ref, () => ({
     onMouseMove: (evt: any, messages: any) => {
