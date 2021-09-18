@@ -55,7 +55,7 @@ const Pie: React.FC<IPie> = (props) => {
     <>
       <Tooltip ref={toolTipRef}>
         {({ country, type, value }: any) =>
-          `<div>${country} ${type}:</div><div>value: ${value}</div>`
+          `<div>${country} ${type} </div><div>value: ${value}</div>`
         }
       </Tooltip>
       <svg width={width} height={height}>

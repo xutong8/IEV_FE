@@ -15,7 +15,6 @@ const Tooltip: React.FC<any> = React.forwardRef((props, ref) => {
       }
       const { clientX, clientY } = evt;
 
-      tooltipRef.current.style.display = "block";
       tooltipRef.current.style.left = `${clientX}px`;
       tooltipRef.current.style.top = `${clientY + offset.top}px`;
 
@@ -25,11 +24,17 @@ const Tooltip: React.FC<any> = React.forwardRef((props, ref) => {
       // tooltipRef.current;
     },
     onMouseLeave: () => {
-      tooltipRef.current.style.display = "none";
+      setShow(false);
     },
   }));
 
-  return <div className={styles.tooltip} ref={tooltipRef} />;
+  return (
+    <div
+      className={styles.tooltip}
+      ref={tooltipRef}
+      style={show ? { display: "block" } : { display: "none" }}
+    />
+  );
 });
 
 export default Tooltip;
