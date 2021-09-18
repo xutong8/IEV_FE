@@ -21,6 +21,7 @@ import {
 } from "@/utils/namesToColumns";
 import styles from "./index.less";
 import ceil from "lodash/ceil";
+import Tooltip from "../Tooltip";
 
 export interface IStackChartProps {
   width: number;
@@ -31,6 +32,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
+  // tooltip ref
+  const toolTipRef = useRef<any>();
 
   const legendHeight = height * 0.25;
 
@@ -141,9 +144,22 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     .y0((d) => yScale(d[0]))
     .y1((d) => yScale(d[1]));
 
-  const onMouseEnter = useCallback((hoverName) => {
-    setHoverCountry(hoverName);
-  }, []);
+  const onMouseEnter = useCallback(
+    (hoverName) => {
+      setHoverCountry(hoverName);
+    },
+    [xScale, areaData]
+  );
+
+  const onMouseMove = useCallback(
+    (hoverName, coordinates, e) => {
+      const year = Math.round(xScale.invert(coordinates[0]));
+      const value = areaData[year - 1995][hoverName].toFixed(3);
+
+      toolTipRef.current.onMouseMove(e, { year, country: hoverName, value });
+    },
+    [xScale]
+  );
 
   const onLegendMouseEnter = (hoverName: string) => {
     setHoverCountry(namesToColumns.get(nationsToNames.get(hoverName)));
@@ -151,6 +167,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   const onMouseLeave = useCallback(() => {
     setHoverCountry("");
+    toolTipRef.current.onMouseLeave();
   }, []);
 
   const onClick = useCallback(
@@ -180,108 +197,116 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   );
 
   return (
-    <svg width={width} height={height} ref={svgRef}>
-      <foreignObject width="100%" height={legendHeight}>
-        <div className={styles.legends}>
-          <Legend
-            orient="row"
-            data={dataSource.results.map((item) =>
-              namesToNations.get(item.name)
-            )}
-            color={(label: string) => {
-              const item = dataSource.results.find(
-                (item) => item.name === nationsToNames.get(label)
-              );
-              return colorMap.get(item?.iso_2digit_alpha ?? "") ?? "";
-            }}
-            onClick={onClick}
-            onMouseEnter={onLegendMouseEnter}
-            onMouseLeave={onMouseLeave}
-          />
-        </div>
-      </foreignObject>
-      <defs>
-        <clipPath id="clip-path">
-          <rect
-            x={zeroPosition[0]}
-            y={legendHeight}
-            width={
-              width - 20 - zeroPosition[0] < 0
-                ? 0
-                : width - 20 - zeroPosition[0]
-            }
-            height={
-              zeroPosition[1] - legendHeight < 0
-                ? 0
-                : zeroPosition[1] - legendHeight
-            }
-          />
-        </clipPath>
-        <clipPath id="clip-axis">
-          <rect
-            x={zeroPosition[0] - 10}
-            y={zeroPosition[1]}
-            width={
-              width - 20 - zeroPosition[0] + 25 < 0
-                ? 0
-                : width - 20 - zeroPosition[0] + 25
-            }
-            height={20}
-          />
-        </clipPath>
-      </defs>
-      <g>
-        <g clipPath="url(#clip-axis)">
+    <>
+      <Tooltip ref={toolTipRef}>
+        {({ year, country, value }: any) =>
+          `<div>${year} ${country} </div><div>value: ${value}</div>`
+        }
+      </Tooltip>
+      <svg width={width} height={height} ref={svgRef}>
+        <foreignObject width="100%" height={legendHeight}>
+          <div className={styles.legends}>
+            <Legend
+              orient="row"
+              data={dataSource.results.map((item) =>
+                namesToNations.get(item.name)
+              )}
+              color={(label: string) => {
+                const item = dataSource.results.find(
+                  (item) => item.name === nationsToNames.get(label)
+                );
+                return colorMap.get(item?.iso_2digit_alpha ?? "") ?? "";
+              }}
+              onClick={onClick}
+              onMouseEnter={onLegendMouseEnter}
+              onMouseLeave={onMouseLeave}
+            />
+          </div>
+        </foreignObject>
+        <defs>
+          <clipPath id="clip-path">
+            <rect
+              x={zeroPosition[0]}
+              y={legendHeight}
+              width={
+                width - 20 - zeroPosition[0] < 0
+                  ? 0
+                  : width - 20 - zeroPosition[0]
+              }
+              height={
+                zeroPosition[1] - legendHeight < 0
+                  ? 0
+                  : zeroPosition[1] - legendHeight
+              }
+            />
+          </clipPath>
+          <clipPath id="clip-axis">
+            <rect
+              x={zeroPosition[0] - 10}
+              y={zeroPosition[1]}
+              width={
+                width - 20 - zeroPosition[0] + 25 < 0
+                  ? 0
+                  : width - 20 - zeroPosition[0] + 25
+              }
+              height={20}
+            />
+          </clipPath>
+        </defs>
+        <g>
+          <g clipPath="url(#clip-axis)">
+            <Axis
+              scale={xScale}
+              position={[0, zeroPosition[1]]}
+              direction={DirectionValue.BOTTOM}
+              tickValues={yearTicks}
+              ticks={X_TICKS}
+            />
+          </g>
           <Axis
-            scale={xScale}
-            position={[0, zeroPosition[1]]}
+            scale={yScale}
+            position={[zeroPosition[0], 0]}
+            direction={DirectionValue.LEFT}
+            ticks={Y_TICKS}
+            tickValues={yTicks}
+            tickFormat={(tick) => Math.round(tick / 100000)}
+          />
+          <text x={zeroPosition[0] - 30} y={legendHeight + 18} fontSize={12}>
+            单位：十万
+          </text>
+          <g clipPath="url(#clip-path)">
+            {series.map((item: any, index: number) => {
+              return (
+                <Path
+                  id={item.key as string}
+                  key={index}
+                  attributes={{
+                    fill:
+                      hoverCountry && item.key === hoverCountry
+                        ? "#8fce74"
+                        : colorMap.get(item.key),
+                    d: areaFunc(item) as string,
+                  }}
+                  onMouseEnter={onMouseEnter}
+                  onMouseLeave={onMouseLeave}
+                  onMouseMove={onMouseMove}
+                />
+              );
+            })}
+          </g>
+        </g>
+        <g transform={`translate(0, ${zeroPosition[1] + BrushYOffset + 20})`}>
+          <Axis
+            scale={brushScale}
+            position={[0, 0]}
             direction={DirectionValue.BOTTOM}
             tickValues={yearTicks}
             ticks={X_TICKS}
           />
+          <g ref={brushRef} />
         </g>
-        <Axis
-          scale={yScale}
-          position={[zeroPosition[0], 0]}
-          direction={DirectionValue.LEFT}
-          ticks={Y_TICKS}
-          tickValues={yTicks}
-          tickFormat={(tick) => Math.round(tick / 100000)}
-        />
-        <text x={zeroPosition[0] - 30} y={legendHeight + 16} fontSize={10}>
-          单位：十万
-        </text>
-        <g clipPath="url(#clip-path)">
-          {series.map((item: any, index: number) => {
-            return (
-              <Path
-                id={item.key as string}
-                key={index}
-                attributes={{
-                  fill:
-                    hoverCountry && item.key === hoverCountry
-                      ? "#8fce74"
-                      : colorMap.get(item.key),
-                  d: areaFunc(item) as string,
-                }}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-              />
-            );
-          })}
-        </g>
-      </g>
-      <g transform={`translate(0, ${zeroPosition[1] + BrushYOffset + 20})`}>
-        <Axis
-          scale={brushScale}
-          position={[0, 0]}
-          direction={DirectionValue.BOTTOM}
-          tickValues={yearTicks}
-          ticks={X_TICKS}
-        />
-        <g ref={brushRef} />
-      </g>
-    </svg>
+      </svg>
+    </>
   );
 };
 
