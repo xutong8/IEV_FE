@@ -6,7 +6,6 @@ import CountryMap from "../CountryMap";
 import { Select } from "antd";
 import { projectContext } from "@/context/projectData";
 import Choropleth from "../Choropleth";
-import { data } from "@/utils/processChoroplethData";
 import { useSVGSize } from "@/hooks/useSVGSize";
 
 const { Option } = Select;
@@ -64,7 +63,6 @@ const PieMap = () => {
         <div className={styles.middleMap} ref={middleMapRef}>
           <Pie width={middleMapWidth} height={middleMapHeight} />
           <Choropleth
-            data={data}
             selectedCountries={["156", "842"]}
             selectedColors={["red", "blue"]}
             parentClass={styles.middleMap}

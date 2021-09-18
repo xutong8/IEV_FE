@@ -1,8 +1,9 @@
 import { pie, arc } from "d3";
 import Wedge from "./Wedge";
 import { IItemPieData, pieData, selectCountries } from "@/utils/processPieData";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Tooltip from "@/components/Tooltip";
+import { reqDonutChartData } from "@/services/api";
 
 export interface IPie {
   width: number;
@@ -22,8 +23,21 @@ const Pie: React.FC<IPie> = (props) => {
   const { width, height } = props;
 
   const toolTipRef = useRef<any>();
+  const [data, setData] = useState<any>();
 
-  const data = useMemo(() => pieData, [pieData]);
+  const handleData = async () => {
+    const res: any = await reqDonutChartData({
+      year: "2019",
+      category: ["1", "2", "3", "4", "5", "6", "7"],
+      countries: ["842", "156"],
+    });
+
+    setData(res.data);
+  };
+
+  useEffect(() => {
+    handleData();
+  }, []);
 
   const [innerRadius, outerRadius] = useMemo(() => {
     const radius = Math.min(width - 20, height - 20) / 2;
@@ -32,10 +46,12 @@ const Pie: React.FC<IPie> = (props) => {
 
   const pieDrawData = useMemo(
     () =>
-      pie<IItemPieData>()
-        .padAngle(0.01)
-        .value((d) => d.value)
-        .sort(null)(data),
+      data
+        ? pie<IItemPieData>()
+            .padAngle(0.01)
+            .value((d) => d.value)
+            .sort(null)(data)
+        : undefined,
     [data]
   );
   // sort
@@ -49,10 +65,6 @@ const Pie: React.FC<IPie> = (props) => {
   );
 
   console.log("update");
-
-  // // tooltip hook
-  // const [show, onMouseMove, onMouseLeave, Tooltip] = useTooltip({htmlTemplate: () => 'tooltip'})
-  console.log("update");
   return (
     <>
       <Tooltip ref={toolTipRef}>
@@ -62,7 +74,7 @@ const Pie: React.FC<IPie> = (props) => {
       </Tooltip>
       <svg width={width} height={height}>
         <g transform={translation}>
-          {pieDrawData.map((item, index) => {
+          {pieDrawData?.map((item: any, index: number) => {
             const itemCenter = arcData.centroid(item);
 
             return (
