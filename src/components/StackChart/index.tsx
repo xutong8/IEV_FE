@@ -146,25 +146,28 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   const onMouseEnter = useCallback(
     (hoverName) => {
-      setHoverCountry(hoverName);
+      // setHoverCountry(hoverName);
     },
     [xScale, areaData]
   );
 
-  const onMouseMove = useCallback((hoverName, coordinates, e) => {
-    const year = Math.round(xScale.invert(coordinates[0]));
-    const value = areaData[year - 1995][hoverName].toFixed(3);
-    console.log(year, value);
-    toolTipRef.current.onMouseMove(e, { year, country: hoverName, value });
-    // const value =
-  }, []);
+  const onMouseMove = useCallback(
+    (hoverName, coordinates, e) => {
+      console.log(coordinates, xScale.range());
+      const year = Math.round(xScale.invert(coordinates[0]));
+      const value = areaData[year - 1995][hoverName].toFixed(3);
+
+      toolTipRef.current.onMouseMove(e, { year, country: hoverName, value });
+      // const value =
+    },
+    [xScale]
+  );
 
   const onLegendMouseEnter = (hoverName: string) => {
     setHoverCountry(namesToColumns.get(nationsToNames.get(hoverName)));
   };
 
   const onMouseLeave = useCallback(() => {
-    console.log("leave");
     setHoverCountry("");
     toolTipRef.current.onMouseLeave();
   }, []);

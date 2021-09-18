@@ -48,6 +48,8 @@ const Pie: React.FC<IPie> = (props) => {
     [width, height]
   );
 
+  console.log("update");
+
   // // tooltip hook
   // const [show, onMouseMove, onMouseLeave, Tooltip] = useTooltip({htmlTemplate: () => 'tooltip'})
   console.log("update");
