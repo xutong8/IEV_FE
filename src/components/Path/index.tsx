@@ -6,7 +6,7 @@ export interface IPathProps {
   id: string;
   onMouseEnter: (hoverName: string) => void;
   onMouseLeave: () => void;
-  onMouseMove?: (
+  onMouseMove: (
     hoverName: string,
     coordinates: Array<number>,
     event: any

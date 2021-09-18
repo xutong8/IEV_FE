@@ -16,18 +16,13 @@ const useTooltip: (props: {
       setShow(true);
     }
     const { clientX, clientY } = evt;
-    console.log(tooltipRef, Tooltip);
     tooltipRef.current.style.position = "fixed";
     tooltipRef.current.style.left = `${clientX}px`;
     tooltipRef.current.style.top = `${clientY}px`;
-    tooltipRef.current.innerText = "tooltip"; // htmlTemplate()
-    // htmlTemplate
-    // // 处理显示文本， 以及处理定位信息
-    // tooltipRef.current;
+    tooltipRef.current.innerText = "tooltip";
   };
 
   const onMouseLeave = () => {
-    console.log("leave");
     setShow(false);
   };
 
