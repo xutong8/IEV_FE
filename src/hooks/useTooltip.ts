@@ -1,12 +1,8 @@
-import { useState, useRef, createElement, ReactPortal } from "react";
-import Tooltip from "@/components/Tooltip";
-import ReactDOM from "react-dom";
+import { useState, useRef } from "react";
 
-// TODO: SingleTon tooltip
 const useTooltip: (props: {
   htmlTemplate: (...params: Array<string>) => string;
 }) => any = ({ htmlTemplate }) => {
-  // hoverState
   const [show, setShow] = useState(false);
   const tooltipRef = useRef<any>(document.createElement("div"));
 

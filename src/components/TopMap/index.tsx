@@ -93,13 +93,24 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
   // heatmap父容器div
   const heatmapContainerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    console.log(heatmapContainerRef.current?.getBoundingClientRect());
+    console.log(containerRef.current?.getBoundingClientRect());
+    console.log(
+      "left: ",
+      (heatmapContainerRef?.current?.getBoundingClientRect()?.left ?? 0) -
+        (containerRef?.current?.getBoundingClientRect()?.left ?? 0)
+    );
+  }, []);
+
   // 计算线的坐标
-  const getLinesCoordinates = () => {
+  const drawLines = () => {
     const namesLen = countryNames.length;
 
     const yStart1 = -5;
     const xStart1 =
-      (heatmapContainerRef.current?.getBoundingClientRect().left ?? 0) - 80;
+      (heatmapContainerRef.current?.getBoundingClientRect().left ?? 0) -
+      (containerRef.current?.getBoundingClientRect().left ?? 0);
     const linesCoordinates = [];
     const coordinates = coordinatesData.coordinates;
 
@@ -140,7 +151,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
     const yStart2 =
       (heatmapContainerRef.current?.getBoundingClientRect().height ?? 0) + 6;
     const xStart2 =
-      (heatmapContainerRef.current?.getBoundingClientRect().left ?? 0) - 78;
+      (heatmapContainerRef.current?.getBoundingClientRect().left ?? 0) -
+      (containerRef.current?.getBoundingClientRect().left ?? 0);
 
     for (let i = namesLen - 1; i >= 0; i--) {
       const country = coordinates[i];
@@ -190,7 +202,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
   const [mapWidth, mapHeight] = useSVGSize(mapRef);
 
   useEffect(() => {
-    getLinesCoordinates();
+    drawLines();
   }, [countryNames]);
 
   return (

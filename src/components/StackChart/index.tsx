@@ -267,7 +267,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             tickValues={yTicks}
             tickFormat={(tick) => Math.round(tick / 100000)}
           />
-          <text x={zeroPosition[0] - 30} y={legendHeight - 12}>
+          <text x={zeroPosition[0] - 30} y={legendHeight + 18} fontSize={12}>
             单位：十万
           </text>
           <g clipPath="url(#clip-path)">
