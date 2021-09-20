@@ -2,13 +2,73 @@
   "coordinates": [
     {
       "name": "China",
-      "x": 275,
+      "x": 270,
       "y": 125
     },
     {
-      "name": "Usa",
-      "x": 70,
-      "y": 75
+      "name": "United Kingdom",
+      "x": 165,
+      "y": 95
+    },
+    {
+      "name": "India",
+      "x": 245,
+      "y": 140
+    },
+    {
+      "name": "USA",
+      "x": 75,
+      "y": 120
+    },
+    {
+      "name": "Japan",
+      "x": 305,
+      "y": 125
+    },
+    {
+      "name": "Germany",
+      "x": 175,
+      "y": 105
+    },
+    {
+      "name": "Russian Federation",
+      "x": 270,
+      "y": 80
+    },
+    {
+      "name": "Indonesia",
+      "x": 282,
+      "y": 162
+    },
+    {
+      "name": "Brazil",
+      "x": 115,
+      "y": 170
+    },
+    {
+      "name": "France",
+      "x": 170,
+      "y": 110
+    },
+    {
+      "name": "Mexico",
+      "x": 65,
+      "y": 138
+    },
+    {
+      "name": "Italy",
+      "x": 184,
+      "y": 112
+    },
+    {
+      "name": "Turkey",
+      "x": 200,
+      "y": 120
+    },
+    {
+      "name": "Rep. of Korea",
+      "x": 295,
+      "y": 122
     }
   ]
 }

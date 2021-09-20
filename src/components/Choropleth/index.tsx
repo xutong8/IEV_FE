@@ -15,14 +15,12 @@ export interface IChoropleth {
 // TODO: 统一数据输入; 解决列表中国家的处理
 const Choropleth: React.FC<IChoropleth> = (props) => {
   const { data, selectedCountries, selectedColors, parentClass } = props;
-  console.log("enter");
   const handleData = async () => {
     const data = await reqChoroplethMapData({
       year: "2019",
       category: ["1", "2", "3"],
       countries: selectedCountries,
     });
-    console.log(data);
   };
   useEffect(() => {
     handleData();

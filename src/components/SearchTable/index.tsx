@@ -18,8 +18,8 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
   // 条件数组
   const [query_conditions, setQueryConditions] = useState<string[]>([]);
 
-  // 每当query_conditions变更时，请求接口
-  useEffect(() => {
+  // 获取数据
+  const fetchData = () => {
     httpRequest
       .post(
         "/table",
@@ -35,6 +35,11 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
       .then((res: any) => {
         setDataSource(res?.data ?? []);
       });
+  };
+
+  // 每当query_conditions变更时，请求接口
+  useEffect(() => {
+    fetchData();
   }, [query_conditions]);
 
   const maxAmount = useMemo(

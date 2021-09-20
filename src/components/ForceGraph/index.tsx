@@ -55,7 +55,8 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   // colorMap
   const [colorMap, setColorMap] = useState<Map<string, string>>();
 
-  useEffect(() => {
+  // 获取数据
+  const fetchData = () => {
     httpRequest
       .get(`/force_graph?year=${year}&category=[]`)
       .then((res: any) => {
@@ -91,6 +92,10 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
           setLinksState(links);
         });
       });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, [year]);
 
   const svgRef = useRef<SVGSVGElement>(null);
