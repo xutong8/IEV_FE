@@ -5,10 +5,11 @@ export interface IHeatMapProps {
   width: number;
   height: number;
   dataSource: IRow[];
+  className?: string;
 }
 
 const HeatMap: React.FC<IHeatMapProps> = (props) => {
-  const { width, height, dataSource } = props;
+  const { width, height, dataSource, className = "" } = props;
 
   const maxValue = useMemo(
     () =>
@@ -37,7 +38,12 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
   const yScale = scaleBand().domain(countryNames).range([0, height]);
 
   return (
-    <svg width={width} height={height} transform="rotate(45)">
+    <svg
+      width={width}
+      height={height}
+      transform="rotate(45)"
+      className={className}
+    >
       {dataSource.map((row) => {
         return (
           <g key={row.countryName}>

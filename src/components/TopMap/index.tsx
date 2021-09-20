@@ -98,16 +98,19 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
     const namesLen = countryNames.length;
 
     const yStart1 = -5;
+
+    const heatmapRect = document
+      .querySelectorAll(".heatmap")[0]
+      .getBoundingClientRect();
+
     const xStart1 =
-      (heatmapContainerRef.current?.getBoundingClientRect().left ?? 0) - 80;
+      (heatmapRect.left ?? 0) -
+      (containerRef.current?.getBoundingClientRect().left ?? 0) +
+      heatmapRect.width / 2 +
+      5;
+
     const linesCoordinates = [];
     const coordinates = coordinatesData.coordinates;
-
-    console.log(
-      "xStart1: ",
-      heatmapContainerRef.current?.getBoundingClientRect()
-    );
-    console.log("x: ", containerRef.current?.getBoundingClientRect());
 
     for (let i = 0; i < namesLen; i++) {
       const country = coordinates[i];
@@ -147,7 +150,10 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
     const yStart2 =
       (heatmapContainerRef.current?.getBoundingClientRect().height ?? 0) + 6;
     const xStart2 =
-      (heatmapContainerRef.current?.getBoundingClientRect().left ?? 0) - 80;
+      (heatmapRect.left ?? 0) -
+      (containerRef.current?.getBoundingClientRect().left ?? 0) +
+      heatmapRect.width / 2 +
+      5;
 
     for (let i = namesLen - 1; i >= 0; i--) {
       const country = coordinates[i];
@@ -264,6 +270,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
             width={heatmapHeight}
             height={heatmapHeight}
             dataSource={heatmapDataSource}
+            className="heatmap"
           />
         </div>
       </div>
