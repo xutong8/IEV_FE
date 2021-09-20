@@ -4,7 +4,6 @@ import styles from "./index.less";
 import Images from "../Images";
 import StackChart from "../StackChart";
 import ProgressBar from "../ProgressBar";
-import TopMap from "../TopMap";
 import PieMap from "../PieMap";
 import { useRef, useState, useEffect } from "react";
 import { useSVGSize } from "@/hooks/useSVGSize";
@@ -12,6 +11,7 @@ import ForceGraphWithStore from "@/containers/ForceGraphWithStore";
 import { Image } from "../Images/ImageItem";
 import { httpRequest } from "@/services";
 import { unstable_batchedUpdates } from "react-dom";
+import TopMapWithStore from "@/containers/TopMapWithStore";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -82,7 +82,7 @@ const BasicLayout = () => {
           <div className={styles.first}>
             <div className={styles.firstLeft}>
               <div className={styles.topMap}>
-                <TopMap year="2015" />
+                <TopMapWithStore />
               </div>
             </div>
             <div className={styles.firstRight}>

@@ -3,6 +3,8 @@ import { select } from "d3-selection";
 import { iDToNameMap, nameToDigit2TotalMap } from "@/utils/processCountriesMap";
 import CountryMap from "../CountryMap";
 import styles from "./index.less";
+import { reqChoroplethMapData } from "@/services/api";
+
 export interface IChoropleth {
   data: any;
   selectedCountries: Array<string>;
@@ -13,8 +15,15 @@ export interface IChoropleth {
 // TODO: 统一数据输入; 解决列表中国家的处理
 const Choropleth: React.FC<IChoropleth> = (props) => {
   const { data, selectedCountries, selectedColors, parentClass } = props;
-
+  const handleData = async () => {
+    const data = await reqChoroplethMapData({
+      year: "2019",
+      category: ["1", "2", "3"],
+      countries: selectedCountries,
+    });
+  };
   useEffect(() => {
+    handleData();
     Object.keys(data).forEach((id) => {
       const fullName = iDToNameMap.get(id);
       let curDigit2;
