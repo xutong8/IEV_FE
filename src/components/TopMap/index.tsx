@@ -93,37 +93,34 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
   // heatmap父容器div
   const heatmapContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    console.log(heatmapContainerRef.current?.getBoundingClientRect());
-    console.log(containerRef.current?.getBoundingClientRect());
-    console.log(
-      "left: ",
-      (heatmapContainerRef?.current?.getBoundingClientRect()?.left ?? 0) -
-        (containerRef?.current?.getBoundingClientRect()?.left ?? 0)
-    );
-  }, []);
-
   // 计算线的坐标
   const drawLines = () => {
     const namesLen = countryNames.length;
 
     const yStart1 = -5;
     const xStart1 =
-      (heatmapContainerRef.current?.getBoundingClientRect().left ?? 0) -
-      (containerRef.current?.getBoundingClientRect().left ?? 0);
+      (heatmapContainerRef.current?.getBoundingClientRect().left ?? 0) - 80;
     const linesCoordinates = [];
     const coordinates = coordinatesData.coordinates;
 
+    console.log(
+      "xStart1: ",
+      heatmapContainerRef.current?.getBoundingClientRect()
+    );
+    console.log("x: ", containerRef.current?.getBoundingClientRect());
+
     for (let i = 0; i < namesLen; i++) {
       const country = coordinates[i];
-      const startPointX = country?.x ?? 0;
-      const startPointY = country?.y ?? 0;
+      const startPointX =
+        (((country?.x ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) / 237;
+      const startPointY =
+        (((country?.y ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) / 237;
       const lineCoordinates = [];
 
       // 地图上的点
       lineCoordinates.push({
-        x: startPointX + Math.floor(circleRadius / 2),
-        y: startPointY + Math.floor(circleRadius / 2),
+        x: startPointX,
+        y: startPointY,
       });
 
       // 中间点
@@ -147,23 +144,24 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
       linesCoordinates.push(lineCoordinates);
     }
 
-    const firstMapHeight = 237;
     const yStart2 =
       (heatmapContainerRef.current?.getBoundingClientRect().height ?? 0) + 6;
     const xStart2 =
-      (heatmapContainerRef.current?.getBoundingClientRect().left ?? 0) -
-      (containerRef.current?.getBoundingClientRect().left ?? 0);
+      (heatmapContainerRef.current?.getBoundingClientRect().left ?? 0) - 80;
 
     for (let i = namesLen - 1; i >= 0; i--) {
       const country = coordinates[i];
-      const startPointX = country?.x ?? 0;
-      const startPointY = (country?.y ?? 0) + firstMapHeight;
+      const startPointX =
+        (((country?.x ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) / 237;
+      const startPointY =
+        ((country?.y ?? 0 + Math.floor(circleRadius / 2)) * mapHeight) / 237 +
+        mapHeight;
       const lineCoordinates = [];
 
       // 地图上的点
       lineCoordinates.push({
-        x: startPointX + Math.floor(circleRadius / 2),
-        y: startPointY + Math.floor(circleRadius / 2),
+        x: startPointX,
+        y: startPointY,
       });
 
       // 中间点
@@ -224,8 +222,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
                   key={item.name}
                   className={styles.circle}
                   style={{
-                    left: `${(item.x / 533) * 100}%`,
-                    top: `${(item.y / 237) * 100}%`,
+                    left: (item.x * mapHeight) / 237,
+                    top: (item.y * mapHeight) / 237,
                   }}
                 />
               );
@@ -246,8 +244,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
                   key={item.name}
                   className={styles.circle}
                   style={{
-                    left: `${(item.x / 533) * 100}%`,
-                    top: `${(item.y / 237) * 100}%`,
+                    left: (item.x * mapHeight) / 237,
+                    top: (item.y * mapHeight) / 237,
                   }}
                 />
               );
