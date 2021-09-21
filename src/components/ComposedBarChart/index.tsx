@@ -1,24 +1,18 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./index.less";
 import { scaleLinear } from "d3-scale";
-import { getLittleTradeData } from "@/utils/tradeUtil";
+import { ITradeItem } from "@/utils/tradeUtil";
 import BarChart from "./BarChart";
-
 export interface IComposedBarChartProps {
-  countryNames: string[];
-  year: string;
-  category: string;
   isReverse?: boolean;
   position?: [number, number];
   width: number;
   height: number;
+  dataSource: ITradeItem[];
 }
 
 const ComposedBarChart: React.FC<IComposedBarChartProps> = (props) => {
-  const { countryNames, year, category, width, height } = props;
-
-  // 根据countries、year和category拿到数据
-  const dataSource = getLittleTradeData(countryNames, year, category);
+  const { width, height, dataSource } = props;
 
   // 获取最大的exptotal
   const maxExpTotal = useMemo(

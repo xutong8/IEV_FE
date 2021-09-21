@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styles from "./index.less";
-
+import cn from "classnames";
 export interface ILegendItem {
   label: string;
   fill: string;
@@ -8,10 +8,12 @@ export interface ILegendItem {
   onClick: (digit2: string, state: boolean) => void;
   onMouseEnter: (hoverName: string) => void;
   onMouseLeave: () => void;
+  itemClassName: string;
 }
 
 const LegendItem: React.FC<ILegendItem> = (props) => {
-  const { label, fill, onClick, onMouseEnter, onMouseLeave } = props;
+  const { label, fill, onClick, onMouseEnter, onMouseLeave, itemClassName } =
+    props;
   const [selected, setSelected] = useState<boolean>(false);
 
   const onClickLegend = useCallback(() => {
@@ -22,7 +24,10 @@ const LegendItem: React.FC<ILegendItem> = (props) => {
 
   return (
     <div
-      className={styles["legend_item"]}
+      className={cn({
+        [styles["legend_item"]]: true,
+        [itemClassName]: true,
+      })}
       onClick={onClickLegend}
       onMouseEnter={() => onMouseEnter(label)}
       onMouseLeave={onMouseLeave}

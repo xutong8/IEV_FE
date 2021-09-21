@@ -23,6 +23,8 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
       countries: selectedCountries,
     });
     const data = res.data;
+    console.log(data);
+    // calc color for each nation
     Object.keys(data).forEach((id) => {
       const fullName = iDToNameMap.get(id);
       let curDigit2;

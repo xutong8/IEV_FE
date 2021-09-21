@@ -30,7 +30,7 @@ const ImageItem: React.FC<IImageItem> = (props) => {
       <Tooltip title={name}>
         <img
           className={styles["image"]}
-          src={`data:image/jpg;base64,${image}`}
+          src={`${image}`}
           alt={name}
           style={imgStyle}
         />
