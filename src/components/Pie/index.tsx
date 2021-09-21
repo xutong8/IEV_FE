@@ -31,7 +31,7 @@ const Pie: React.FC<IPie> = (props) => {
       category: ["1", "2", "3", "4", "5", "6", "7"],
       countries: ["842", "156"],
     });
-
+    console.log(res.data);
     setData(res.data);
   };
 
@@ -59,12 +59,12 @@ const Pie: React.FC<IPie> = (props) => {
     () => arc<IPieData>().innerRadius(innerRadius).outerRadius(outerRadius),
     [innerRadius, outerRadius]
   );
+
   const translation = useMemo(
     () => `translate(${width / 2}, ${height / 2})`,
     [width, height]
   );
 
-  console.log("update");
   return (
     <>
       <Tooltip ref={toolTipRef}>
@@ -92,20 +92,19 @@ const Pie: React.FC<IPie> = (props) => {
                   }
                   onMouseLeave={() => toolTipRef.current.onMouseLeave()}
                 />
-                <text
-                  x={itemCenter[0]}
-                  y={itemCenter[1]}
-                  style={{
-                    transformBox: "fill-box",
-                    transformOrigin: "center",
-                  }}
-                  textAnchor="middle"
-                  transform={`rotate(${
-                    (180 * (item.startAngle + item.endAngle)) / 2 / Math.PI
-                  }) translate(10, -18)`}
-                >
-                  {item.data.type}
-                </text>
+                {item.endAngle - item.startAngle > 0.6 && (
+                  <text
+                    x={itemCenter[0]}
+                    y={itemCenter[1]}
+                    dominantBaseline="central"
+                    textAnchor="middle"
+                    transform={`rotate(${
+                      (180 * (item.startAngle + item.endAngle)) / 2 / Math.PI
+                    }, ${itemCenter[0]}, ${itemCenter[1]}) translate(0, -18)`}
+                  >
+                    {item.data.type}
+                  </text>
+                )}
               </g>
             );
           })}

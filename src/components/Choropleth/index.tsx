@@ -23,7 +23,7 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
       countries: selectedCountries,
     });
     const data = res.data;
-    console.log(data);
+
     // TODO: map data
     // calc color for each nation
     Object.keys(data).forEach((id) => {
@@ -37,7 +37,6 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
       const impCountry = Object.keys(data[id])[0];
 
       try {
-        console.log(parentClass, curDigit2);
         select(`.${parentClass} #${curDigit2}`)
           .attr(
             "fill",
