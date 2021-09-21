@@ -24,7 +24,7 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
   // color scale
   const colorScale = scaleLinear<string>()
     .domain([0, maxValue])
-    .range(["gray", "#A3320B"]);
+    .range(["#f8d06b", "#eb7f3e"]);
 
   const countryNames = useMemo(
     () => dataSource.map((item) => item.countryName),
@@ -54,7 +54,13 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                   key={item.countryName}
                   x={xScale(item.countryName)}
                   y={yScale(row.countryName)}
-                  fill={colorScale(item.expvalue)}
+                  fill={
+                    row.countryName === item.countryName
+                      ? "#ffffff"
+                      : colorScale(item.expvalue)
+                  }
+                  strokeWidth={1}
+                  stroke="#d3d3d2"
                   width={width / countryNames.length}
                   height={height / countryNames.length}
                 />

@@ -35,6 +35,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
   const circleRadius = 4;
   // 柱状图的宽度
   const barWidth = 200;
+  // 高度的基准值
+  const fixedHeight = 237;
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -63,7 +65,12 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
     httpRequest
       .get(`/base_chart?year=${year}&category=${JSON.stringify(category)}`)
       .then((res: any) => {
-        setDataSource(res?.data ?? []);
+        const newDataSource = coordinatesData.coordinates.map((item) => {
+          return (res.data ?? []).find(
+            (country: ICountry) => country.countryName === item.name
+          );
+        });
+        setDataSource(newDataSource);
       });
   };
 
@@ -115,9 +122,11 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
     for (let i = 0; i < namesLen; i++) {
       const country = coordinates[i];
       const startPointX =
-        (((country?.x ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) / 237;
+        (((country?.x ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) /
+        fixedHeight;
       const startPointY =
-        (((country?.y ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) / 237;
+        (((country?.y ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) /
+        fixedHeight;
       const lineCoordinates = [];
 
       // 地图上的点
@@ -155,12 +164,14 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
       heatmapRect.width / 2 +
       5;
 
-    for (let i = namesLen - 1; i >= 0; i--) {
+    for (let i = 0; i < namesLen; i++) {
       const country = coordinates[i];
       const startPointX =
-        (((country?.x ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) / 237;
+        (((country?.x ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) /
+        fixedHeight;
       const startPointY =
-        ((country?.y ?? 0 + Math.floor(circleRadius / 2)) * mapHeight) / 237 +
+        ((country?.y ?? 0 + Math.floor(circleRadius / 2)) * mapHeight) /
+          fixedHeight +
         mapHeight;
       const lineCoordinates = [];
 
@@ -172,7 +183,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
 
       // 中间点
       const midPointY =
-        yStart2 - ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1);
+        yStart2 -
+        ((barHeight + 20) / (2 * (namesLen + 1))) * (namesLen - 1 - i + 1);
       const midPointX = Math.abs(startPointY - midPointY) + startPointX;
       lineCoordinates.push({
         x: midPointX,
@@ -180,7 +192,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
       });
 
       const endPointX =
-        xStart2 - ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1);
+        xStart2 -
+        ((barHeight + 20) / (2 * (namesLen + 1))) * (namesLen - 1 - i + 1);
       const endPointY = midPointY;
 
       // 热力图上的点
@@ -228,8 +241,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
                   key={item.name}
                   className={styles.circle}
                   style={{
-                    left: (item.x * mapHeight) / 237,
-                    top: (item.y * mapHeight) / 237,
+                    left: (item.x * mapHeight) / fixedHeight,
+                    top: (item.y * mapHeight) / fixedHeight,
                   }}
                 />
               );
@@ -250,8 +263,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
                   key={item.name}
                   className={styles.circle}
                   style={{
-                    left: (item.x * mapHeight) / 237,
-                    top: (item.y * mapHeight) / 237,
+                    left: (item.x * mapHeight) / fixedHeight,
+                    top: (item.y * mapHeight) / fixedHeight,
                   }}
                 />
               );
