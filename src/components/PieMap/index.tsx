@@ -41,9 +41,8 @@ const PieMap = () => {
             name={sourceCountry}
             style={{
               width: sourceMapWidth,
-              height: sourceMapHeight - 44,
-              overflow: "hidden",
-              transform: "translate(0, 20%)",
+              height: sourceMapHeight - 60,
+              overflow: "auto",
             }}
           />
           <Select
@@ -80,9 +79,8 @@ const PieMap = () => {
             className={styles.targetCountryMap}
             style={{
               width: targetMapWidth,
-              height: targetMapHeight - 44,
-              overflow: "hidden",
-              transform: "translate(0, 20%)",
+              height: sourceMapHeight - 60,
+              overflow: "auto",
             }}
           />
           <Select

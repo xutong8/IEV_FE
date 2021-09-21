@@ -76,11 +76,18 @@ const Pie: React.FC<IPie> = (props) => {
         <g transform={translation}>
           {pieDrawData?.map((item: any, index: number) => {
             const itemCenter = arcData.centroid(item);
+            const d = arcData(item)?.toString();
+            const firstArcSection = /(^.+?)L/;
+
+            let newArc = firstArcSection.exec(d)[1];
+
+            newArc = newArc.replace(/,/g, " ");
 
             return (
               <g key={item.index}>
                 <Wedge
-                  d={arcData(item)}
+                  id={`arc${item.index}`}
+                  d={d}
                   fill={
                     item.data.country === selectCountries[0]
                       ? "#508bbb"
@@ -92,7 +99,12 @@ const Pie: React.FC<IPie> = (props) => {
                   }
                   onMouseLeave={() => toolTipRef.current.onMouseLeave()}
                 />
-                {item.endAngle - item.startAngle > 0.6 && (
+                <path
+                  id={`donutArc${item.index}`}
+                  d={newArc}
+                  style={{ fill: "none" }}
+                />
+                {/* {item.endAngle - item.startAngle > 0.6 && (
                   <text
                     x={itemCenter[0]}
                     y={itemCenter[1]}
@@ -104,7 +116,16 @@ const Pie: React.FC<IPie> = (props) => {
                   >
                     {item.data.type}
                   </text>
-                )}
+                )} */}
+                <text>
+                  <textPath
+                    xlinkHref={`#donutArc${item.index}`}
+                    startOffset="50%"
+                    textAnchor="middle"
+                  >
+                    {item.data.type}
+                  </textPath>
+                </text>
               </g>
             );
           })}
