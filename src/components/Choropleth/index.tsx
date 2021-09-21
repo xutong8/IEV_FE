@@ -24,6 +24,7 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
     });
     const data = res.data;
     console.log(data);
+    // TODO: map data
     // calc color for each nation
     Object.keys(data).forEach((id) => {
       const fullName = iDToNameMap.get(id);
