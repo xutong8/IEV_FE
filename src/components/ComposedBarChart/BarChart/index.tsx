@@ -35,7 +35,7 @@ const BarChart: React.FC<IBarChartProps> = (props) => {
         >
           <div className={styles.left} style={{ flexDirection: direction }}>
             <div
-              style={{ background: "gray", width: scale(country.exptotal) }}
+              style={{ background: "#c8c8c8", width: scale(country.exptotal) }}
             />
           </div>
           <div
@@ -43,7 +43,7 @@ const BarChart: React.FC<IBarChartProps> = (props) => {
             style={{ flexDirection: reverseDirection }}
           >
             <div
-              style={{ background: "brown", width: scale(country.imptotal) }}
+              style={{ background: "#636363", width: scale(country.imptotal) }}
             />
           </div>
         </div>

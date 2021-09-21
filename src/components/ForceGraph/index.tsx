@@ -73,18 +73,21 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
           continentsSet.add(node.continent);
         }
         const continents = Array.from(continentsSet);
-        const colorMap = new Map<string, string>();
 
-        const colors = randomcolor({
-          count: continents.length,
-        });
+        if ((colorMap?.size ?? 0) === 0) {
+          const newColorMap = new Map<string, string>();
 
-        continents.forEach((continent, index) => {
-          colorMap.set(continent, colors[index]);
-        });
+          const colors = randomcolor({
+            count: continents.length,
+          });
+
+          continents.forEach((continent, index) => {
+            newColorMap.set(continent, colors[index]);
+          });
+          setColorMap(newColorMap);
+        }
 
         unstable_batchedUpdates(() => {
-          setColorMap(colorMap);
           setContinents(continents);
           setGraphNodes(nodes);
           setNodesState(nodes);
