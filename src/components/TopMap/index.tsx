@@ -155,7 +155,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
       heatmapRect.width / 2 +
       5;
 
-    for (let i = namesLen - 1; i >= 0; i--) {
+    for (let i = 0; i < namesLen; i++) {
       const country = coordinates[i];
       const startPointX =
         (((country?.x ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) / 237;
@@ -172,7 +172,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
 
       // 中间点
       const midPointY =
-        yStart2 - ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1);
+        yStart2 -
+        ((barHeight + 20) / (2 * (namesLen + 1))) * (namesLen - 1 - i + 1);
       const midPointX = Math.abs(startPointY - midPointY) + startPointX;
       lineCoordinates.push({
         x: midPointX,
@@ -180,7 +181,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
       });
 
       const endPointX =
-        xStart2 - ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1);
+        xStart2 -
+        ((barHeight + 20) / (2 * (namesLen + 1))) * (namesLen - 1 - i + 1);
       const endPointY = midPointY;
 
       // 热力图上的点
