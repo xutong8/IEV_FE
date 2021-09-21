@@ -48,11 +48,6 @@ const Pie: React.FC<IPie> = (props) => {
     [width, height]
   );
 
-  console.log("update");
-
-  // // tooltip hook
-  // const [show, onMouseMove, onMouseLeave, Tooltip] = useTooltip({htmlTemplate: () => 'tooltip'})
-  console.log("update");
   return (
     <>
       <Tooltip ref={toolTipRef}>
@@ -68,6 +63,7 @@ const Pie: React.FC<IPie> = (props) => {
             return (
               <g key={item.index}>
                 <Wedge
+                  id={`arc${item.index}`}
                   d={arcData(item)}
                   fill={
                     item.data.country === selectCountries[0]
@@ -80,19 +76,10 @@ const Pie: React.FC<IPie> = (props) => {
                   }
                   onMouseLeave={() => toolTipRef.current.onMouseLeave()}
                 />
-                <text
-                  x={itemCenter[0]}
-                  y={itemCenter[1]}
-                  style={{
-                    transformBox: "fill-box",
-                    transformOrigin: "center",
-                  }}
-                  textAnchor="middle"
-                  transform={`rotate(${
-                    (180 * (item.startAngle + item.endAngle)) / 2 / Math.PI
-                  }) translate(10, -18)`}
-                >
-                  {item.data.type}
+                <text>
+                  <textPath xlinkHref={`#arc${item.index}`} startOffset="15%">
+                    {item.data.type}
+                  </textPath>
                 </text>
               </g>
             );

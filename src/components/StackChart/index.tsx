@@ -35,7 +35,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // tooltip ref
   const toolTipRef = useRef<any>();
 
-  const legendHeight = 125;
+  const legendHeight = height * 0.25;
 
   // brush在Y轴上的偏移
   const BrushYOffset = 25;
@@ -137,7 +137,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // y轴的scale
   const yScale = scaleLinear()
     .domain([0, maxY])
-    .range([zeroPosition[1], legendHeight]);
+    .range([zeroPosition[1], legendHeight + 30]);
 
   const areaFunc = area()
     .x((d: any) => xScale(Number(d.data.date)))
@@ -146,19 +146,17 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   const onMouseEnter = useCallback(
     (hoverName) => {
-      // setHoverCountry(hoverName);
+      setHoverCountry(hoverName);
     },
     [xScale, areaData]
   );
 
   const onMouseMove = useCallback(
     (hoverName, coordinates, e) => {
-      console.log(coordinates, xScale.range());
       const year = Math.round(xScale.invert(coordinates[0]));
       const value = areaData[year - 1995][hoverName].toFixed(3);
 
       toolTipRef.current.onMouseMove(e, { year, country: hoverName, value });
-      // const value =
     },
     [xScale]
   );
@@ -273,7 +271,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
             tickValues={yTicks}
             tickFormat={(tick) => Math.round(tick / 100000)}
           />
-          <text x={zeroPosition[0] - 30} y={legendHeight - 12}>
+          <text x={zeroPosition[0] - 30} y={legendHeight + 18} fontSize={12}>
             单位：十万
           </text>
           <g clipPath="url(#clip-path)">

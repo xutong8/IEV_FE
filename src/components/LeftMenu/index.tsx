@@ -21,6 +21,11 @@ const LeftMenu = () => {
       </div>
       <div className={styles.basic}>
         <Tag color="geekblue" className={styles.text}>
+          Current Categories:
+        </Tag>
+      </div>
+      <div className={styles.basic}>
+        <Tag color="geekblue" className={styles.text}>
           Force Node Radius:
         </Tag>
         <RadiusSlider />
