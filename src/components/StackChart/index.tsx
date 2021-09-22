@@ -70,7 +70,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     easingFunction: easeLinear,
   });
 
-  console.log(series, seriesAttrState);
   // x轴的scale
   const xScale = useMemo(
     () =>

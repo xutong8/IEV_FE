@@ -152,8 +152,8 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
               alignItems: "center",
             }}
           >
-            <span className={styles.tooltipText}>{category.slice(0, 5)}</span>
-            {category.length > 5 ? (
+            <span className={styles.tooltipText}>{category?.slice(0, 5)}</span>
+            {category?.length > 5 ? (
               <Tooltip title={category}>
                 <QuestionCircleOutlined />
               </Tooltip>

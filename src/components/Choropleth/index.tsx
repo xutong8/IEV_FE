@@ -3,7 +3,7 @@ import { select } from "d3-selection";
 import { iDToNameMap, nameToDigit2TotalMap } from "@/utils/processCountriesMap";
 import CountryMap from "../CountryMap";
 import styles from "./index.less";
-import { reqChoroplethMapData } from "@/services/api";
+import { reqChoroplethMapData, reqCountryData } from "@/services/api";
 
 export interface IChoropleth {
   selectedCountries: Array<string>;
@@ -24,30 +24,35 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
     });
     const data = res.data;
 
-    // TODO: map data
+    const reqAllCountries: any = await reqCountryData();
+    const allCountries = reqAllCountries.data;
+
     // calc color for each nation
     Object.keys(data).forEach((id) => {
-      const fullName = iDToNameMap.get(id);
-      let curDigit2;
-      try {
-        curDigit2 = nameToDigit2TotalMap.get(fullName).toLowerCase();
-      } catch {
-        console.log(fullName);
-      }
-      const impCountry = Object.keys(data[id])[0];
-
-      try {
-        select(`.${parentClass} #${curDigit2}`)
-          .attr(
-            "fill",
-            `${selectedColors[selectedCountries.indexOf(impCountry)]}`
-          )
-          .attr("opacity", data[id][impCountry] / 2 + 0.5);
-      } catch {
-        console.log(fullName);
+      // 过滤掉Asia经济体
+      if (id == "490") {
         return;
       }
+      let curDigit2;
+
+      curDigit2 = allCountries[id]["iso_2digit_alpha"].toLowerCase();
+
+      select(`.${parentClass} #${curDigit2}`)
+        .style("fill", `${selectedColors[data[id] > 0 ? 0 : 1]}`)
+        .attr("opacity", Math.abs(data[id]));
     });
+
+    // draw color for selected country
+    select(
+      `.${parentClass} #${allCountries[selectedCountries[0]][
+        "iso_2digit_alpha"
+      ].toLowerCase()}`
+    ).style("fill", `${selectedColors[0]}`);
+    select(
+      `.${parentClass} #${allCountries[selectedCountries[1]][
+        "iso_2digit_alpha"
+      ].toLowerCase()}`
+    ).style("fill", `${selectedColors[1]}`);
   };
 
   useEffect(() => {
