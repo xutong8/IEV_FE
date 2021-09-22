@@ -11,7 +11,7 @@ export interface IPie {
 }
 
 export interface IPieData {
-  data: IItemPieData;
+  data: any; // IItemPieData;
   endAngle: number;
   index: number;
   padAngle: number;
@@ -74,14 +74,11 @@ const Pie: React.FC<IPie> = (props) => {
       </Tooltip>
       <svg width={width} height={height}>
         <g transform={translation}>
-          {pieDrawData?.map((item: any, index: number) => {
-            const itemCenter = arcData.centroid(item);
-            const d = arcData(item)?.toString();
+          {pieDrawData?.map((item: IPieData, index: number) => {
+            // const itemCenter = arcData.centroid(item);
+            const d = arcData(item);
             const firstArcSection = /(^.+?)L/;
-
-            let newArc = firstArcSection.exec(d)[1];
-
-            newArc = newArc.replace(/,/g, " ");
+            const newArc = d?.match(firstArcSection)![1];
 
             return (
               <g key={item.index}>
@@ -104,26 +101,13 @@ const Pie: React.FC<IPie> = (props) => {
                   d={newArc}
                   style={{ fill: "none" }}
                 />
-                {/* {item.endAngle - item.startAngle > 0.6 && (
-                  <text
-                    x={itemCenter[0]}
-                    y={itemCenter[1]}
-                    dominantBaseline="central"
-                    textAnchor="middle"
-                    transform={`rotate(${
-                      (180 * (item.startAngle + item.endAngle)) / 2 / Math.PI
-                    }, ${itemCenter[0]}, ${itemCenter[1]}) translate(0, -18)`}
-                  >
-                    {item.data.type}
-                  </text>
-                )} */}
                 <text>
                   <textPath
                     xlinkHref={`#donutArc${item.index}`}
                     startOffset="50%"
                     textAnchor="middle"
                   >
-                    {item.data.type}
+                    {item.data.type_name}
                   </textPath>
                 </text>
               </g>
