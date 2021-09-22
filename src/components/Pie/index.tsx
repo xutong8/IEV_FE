@@ -31,7 +31,7 @@ const Pie: React.FC<IPie> = (props) => {
       category: ["1", "2", "3", "4", "5", "6", "7"],
       countries: ["842", "156"],
     });
-    console.log(res.data);
+
     setData(res.data);
   };
 
@@ -68,8 +68,10 @@ const Pie: React.FC<IPie> = (props) => {
   return (
     <>
       <Tooltip ref={toolTipRef}>
-        {({ country, type, value }: any) =>
-          `<div>${country} ${type} </div><div>value: ${value}</div>`
+        {({ country, type_name, value }: any) =>
+          `<div>${country} ${type_name} </div><div>value: ${value.toFixed(
+            2
+          )}</div>`
         }
       </Tooltip>
       <svg width={width} height={height}>
@@ -79,7 +81,6 @@ const Pie: React.FC<IPie> = (props) => {
             const d = arcData(item);
             const firstArcSection = /(^.+?)L/;
             const newArc = d?.match(firstArcSection)![1];
-
             return (
               <g key={item.index}>
                 <Wedge
