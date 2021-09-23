@@ -27,7 +27,7 @@ const PieMap = () => {
   const [middleMapWidth, middleMapHeight] = useSVGSize(middleMapRef);
   // target map的ref
   const targetMapRef = useRef<HTMLDivElement>(null);
-  const [targetMapWidth, targetMapHeight] = useSVGSize(targetMapRef);
+  const [targetMapWidth] = useSVGSize(targetMapRef);
 
   // category selector
   const category = useSelector(
