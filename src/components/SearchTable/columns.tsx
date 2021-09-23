@@ -132,18 +132,18 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
         return (
           <div
             className={styles.hover}
-            onClick={() => handleColumnClick("category")}
+            onClick={() => handleColumnClick("industry_category")}
           >
-            Category
+            industryCategory
           </div>
         );
       },
-      dataIndex: "category",
-      key: "category",
+      dataIndex: "industry_category",
+      key: "industry_category",
       width: 140,
       fixed: false,
-      className: "category",
-      render: (category: string) => {
+      className: "industry_category",
+      render: (industry_category: string) => {
         return (
           <div
             style={{
@@ -152,9 +152,46 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
               alignItems: "center",
             }}
           >
-            <span className={styles.tooltipText}>{category?.slice(0, 5)}</span>
-            {category?.length > 5 ? (
-              <Tooltip title={category}>
+            <span className={styles.tooltipText}>
+              {industry_category?.slice(0, 5)}
+            </span>
+            {industry_category?.length > 5 ? (
+              <Tooltip title={industry_category}>
+                <QuestionCircleOutlined />
+              </Tooltip>
+            ) : null}
+          </div>
+        );
+      },
+    },
+    {
+      title: () => {
+        return (
+          <div
+            className={styles.hover}
+            onClick={() => handleColumnClick("product")}
+          >
+            product
+          </div>
+        );
+      },
+      dataIndex: "product",
+      key: "product",
+      width: 140,
+      fixed: false,
+      className: "product",
+      render: (product: string) => {
+        return (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "nowrap",
+              alignItems: "center",
+            }}
+          >
+            <span className={styles.tooltipText}>{product?.slice(0, 5)}</span>
+            {product?.length > 5 ? (
+              <Tooltip title={product}>
                 <QuestionCircleOutlined />
               </Tooltip>
             ) : null}
