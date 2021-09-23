@@ -8,6 +8,8 @@ export interface IImagesProps {
   bordered?: boolean;
   imgStyle?: CSSProperties;
   style?: CSSProperties;
+  onClick?: (image: Image) => void;
+  styleProcessor?: (image: Image) => CSSProperties;
 }
 
 const Images: React.FC<IImagesProps> = (props) => {
@@ -17,6 +19,8 @@ const Images: React.FC<IImagesProps> = (props) => {
     bordered = false,
     imgStyle = {},
     style = {},
+    onClick,
+    styleProcessor,
   } = props;
 
   // 左右margin各为4px
@@ -28,13 +32,14 @@ const Images: React.FC<IImagesProps> = (props) => {
 
   return (
     <div className={styles["image_list"]}>
-      {imageList.map((item: any, index: number) => (
+      {imageList.map((item: Image, index: number) => (
         <ImageItem
           key={index}
           imageObj={item}
-          style={{ ...style, ...innerStyle }}
+          style={{ ...style, ...innerStyle, ...styleProcessor?.(item) }}
           bordered={bordered}
           imgStyle={imgStyle}
+          onClick={onClick}
         />
       ))}
     </div>

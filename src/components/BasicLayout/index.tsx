@@ -12,6 +12,13 @@ import { Image } from "../Images/ImageItem";
 import { httpRequest } from "@/services";
 import { unstable_batchedUpdates } from "react-dom";
 import TopMapWithStore from "@/containers/TopMapWithStore";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addCategoryItem,
+  changeCategoryObj,
+  delCategoryItem,
+} from "@/actions/categoryList";
+import { IStore } from "@/reducers";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -22,6 +29,14 @@ const BasicLayout = () => {
   const [countryImages, setCountryImages] = useState<Image[]>([]);
   // category images
   const [categoryImages, setCategoryImages] = useState<Image[]>([]);
+
+  // dispatch
+  const dispatch = useDispatch();
+
+  // selector
+  const selectedCategory = useSelector(
+    (state: IStore) => state.categoryObj.selectedCategory
+  );
 
   // 获取国家列表和种类列表
   const fetchList = () => {
@@ -38,6 +53,14 @@ const BasicLayout = () => {
       unstable_batchedUpdates(() => {
         setCountryImages(countryImages);
         setCategoryImages(categoryImages);
+        dispatch(
+          changeCategoryObj(
+            categoryImages.map((category) => ({
+              id: category?.id ?? "",
+              name: category?.name ?? "",
+            }))
+          )
+        );
       });
     });
   };
@@ -45,6 +68,19 @@ const BasicLayout = () => {
   useEffect(() => {
     fetchList();
   }, []);
+
+  // 处理种类点击事件
+  const handleCategoryClick = (image: Image) => {
+    const category = {
+      id: image?.id ?? "",
+      name: image?.name ?? "",
+    };
+    dispatch(
+      selectedCategory.find((category) => category.id === image.id)
+        ? delCategoryItem(category)
+        : addCategoryItem(category)
+    );
+  };
 
   return (
     <div className={styles["basic_layout"]}>
@@ -71,10 +107,19 @@ const BasicLayout = () => {
               column={5}
               imgStyle={{ boxShadow: "none", width: 40 }}
               style={{
-                boxShadow: "1px 1px 1px 1px rgba(0, 0, 0, 0.1)",
                 borderRadius: 4,
                 marginTop: 10,
               }}
+              styleProcessor={(image) => {
+                return {
+                  boxShadow: selectedCategory.find(
+                    (cateogory) => image.id === cateogory.id
+                  )
+                    ? "-1px -1px 2px 2px rgba(0, 0, 0, 0.1)"
+                    : "1px 1px 1px 1px rgba(0, 0, 0, 0.1)",
+                };
+              }}
+              onClick={handleCategoryClick}
             />
           </div>
         </div>
