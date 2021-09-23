@@ -303,9 +303,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                   x={zeroPosition[0] - 10}
                   y={zeroPosition[1]}
                   width={
-                    width - 20 - zeroPosition[0] + 25 < 0
+                    width - zeroPosition[0] + 2 < 0
                       ? 0
-                      : width - 20 - zeroPosition[0] + 25
+                      : width - zeroPosition[0] + 2
                   }
                   height={20}
                 />
