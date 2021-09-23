@@ -34,7 +34,7 @@
     },
     {
       "name": "United Kingdom",
-      "iso_2digit_alpha": "UK"
+      "iso_2digit_alpha": "GB"
     },
     {
       "name": "France",
@@ -53,8 +53,8 @@
       "iso_2digit_alpha": "TR"
     },
     {
-      "name": "Dem. People's Rep. of Korea",
-      "iso_2digit_alpha": "KP"
+      "name": "Korea, South",
+      "iso_2digit_alpha": "KR"
     }
   ]
 }

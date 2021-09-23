@@ -1,9 +1,12 @@
 import { pie, arc } from "d3";
 import Wedge from "./Wedge";
-import { IItemPieData, pieData, selectCountries } from "@/utils/processPieData";
+import { IItemPieData, selectCountries } from "@/utils/processPieData";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Tooltip from "@/components/Tooltip";
 import { reqDonutChartData } from "@/services/api";
+import { useSelector } from "react-redux";
+import { isEqual } from "lodash";
+import { IStore } from "@/reducers";
 
 export interface IPie {
   width: number;
@@ -25,10 +28,21 @@ const Pie: React.FC<IPie> = (props) => {
   const toolTipRef = useRef<any>();
   const [data, setData] = useState<any>();
 
+  const { year, category } = useSelector(
+    (state: IStore) => ({
+      year: state.year,
+      category: state.categoryObj.selectedCategory.map((item) => item.id),
+    }),
+    (prev, next) => isEqual(prev, next)
+  );
+
   const handleData = async () => {
+    // 如果category长度为0，则跳过
+    if (category.length === 0) return;
+
     const res: any = await reqDonutChartData({
-      year: "2019",
-      category: ["1", "2", "3", "4", "5", "6", "7"],
+      year,
+      category,
       countries: ["842", "156"],
     });
 
@@ -37,7 +51,7 @@ const Pie: React.FC<IPie> = (props) => {
 
   useEffect(() => {
     handleData();
-  }, []);
+  }, [year, category]);
 
   const [innerRadius, outerRadius] = useMemo(() => {
     const radius = Math.min(width - 20, height - 20) / 2;
