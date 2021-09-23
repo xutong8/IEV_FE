@@ -1,6 +1,5 @@
 import { scaleLinear } from "d3-scale";
 import { area, stack } from "d3-shape";
-import { easeLinear } from "d3";
 import Axis, { DirectionValue } from "../Axis";
 import {
   areaDataRaw,
