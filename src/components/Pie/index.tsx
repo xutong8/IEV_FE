@@ -77,9 +77,8 @@ const Pie: React.FC<IPie> = (props) => {
       <svg width={width} height={height}>
         <g transform={translation}>
           {pieDrawData?.map((item: IPieData, index: number) => {
-            // const itemCenter = arcData.centroid(item);
             const d = arcData(item);
-            const firstArcSection = /(^.+?)L/;
+            const firstArcSection = /(.+?)L/;
             const newArc = d?.match(firstArcSection)![1];
             return (
               <g key={item.index}>

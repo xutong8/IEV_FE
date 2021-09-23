@@ -61,16 +61,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     [areaData]
   );
 
-  // 动画封装series
-  const { attrState: seriesAttrState } = useTransition({
-    className: "stackArea",
-    value: series,
-    deps: series,
-    duration: 500,
-    easingFunction: easeLinear,
-  });
-
-  console.log(series, seriesAttrState);
   // x轴的scale
   const xScale = useMemo(
     () =>

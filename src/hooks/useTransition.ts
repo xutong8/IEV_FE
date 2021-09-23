@@ -39,7 +39,6 @@ const useTransition: (props: {
 
     attrNames.forEach((attrName) => {
       transitions.each((d, index: number) => {
-        console.log(d, index);
         transitions
           .filter((d, idx: number) => index === idx)
           .attr(attrName, value[index][attrName]);

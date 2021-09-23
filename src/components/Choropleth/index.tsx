@@ -24,28 +24,17 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
     });
     const data = res.data;
 
-    // TODO: map data
-    // calc color for each nation
     Object.keys(data).forEach((id) => {
       const fullName = iDToNameMap.get(id);
-      let curDigit2;
-      try {
-        curDigit2 = nameToDigit2TotalMap.get(fullName).toLowerCase();
-      } catch {
-        console.log(fullName);
-      }
+      const curDigit2 = nameToDigit2TotalMap.get(fullName)?.toLowerCase() ?? "";
       const impCountry = Object.keys(data[id])[0];
-
-      try {
+      if (curDigit2 !== "" && curDigit2 !== "n/a") {
         select(`.${parentClass} #${curDigit2}`)
           .attr(
             "fill",
             `${selectedColors[selectedCountries.indexOf(impCountry)]}`
           )
           .attr("opacity", data[id][impCountry] / 2 + 0.5);
-      } catch {
-        console.log(fullName);
-        return;
       }
     });
   };
