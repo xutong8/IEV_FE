@@ -30,7 +30,7 @@ import { httpRequest } from "@/services";
 import { unstable_batchedUpdates } from "react-dom";
 import randomcolor from "randomcolor";
 import { Spin } from "antd";
-import categoryObj from "@/reducers/categoryObj";
+import { isEqual } from "lodash";
 
 export interface IForceGraphProps {
   width: number | string;
@@ -317,4 +317,6 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   );
 };
 
-export default React.memo(ForceGraph);
+export default React.memo(ForceGraph, (prevProps, nextProps) =>
+  isEqual(prevProps, nextProps)
+);
