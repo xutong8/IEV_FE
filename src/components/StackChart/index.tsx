@@ -1,5 +1,6 @@
 import { scaleLinear } from "d3-scale";
 import { area, stack } from "d3-shape";
+import { easeLinear } from "d3";
 import Axis, { DirectionValue } from "../Axis";
 import {
   areaDataRaw,
@@ -19,6 +20,7 @@ import {
   namesToNations,
   nationsToNames,
 } from "@/utils/namesToColumns";
+import { useTransition } from "@/hooks/useTransition";
 import styles from "./index.less";
 import ceil from "lodash/ceil";
 import Tooltip from "../Tooltip";

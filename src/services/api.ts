@@ -1,19 +1,27 @@
 import { httpRequest } from "./index";
 
-export interface IChoroplethMapData {
+export interface IReqWithSCounAndCat {
   year: string;
   category: Array<string>;
   countries: Array<string>;
 }
 
-const reqChoroplethMapData = ({
+export const reqChoroplethMapData = ({
   year,
   category,
   countries,
-}: IChoroplethMapData) => {
+}: IReqWithSCounAndCat) => {
   return httpRequest.get(
     `/choropleth_map?year=${year}&category=[${category}]&selectedCountries=[${countries}]`
   );
 };
 
-export { reqChoroplethMapData };
+export const reqDonutChartData = ({
+  year,
+  category,
+  countries,
+}: IReqWithSCounAndCat) => {
+  return httpRequest.get(
+    `/donut_chart?year=${year}&category=[${category}]&selectedCountries=[${countries}]`
+  );
+};
