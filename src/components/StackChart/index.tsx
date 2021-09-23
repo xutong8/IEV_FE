@@ -1,6 +1,5 @@
 import { scaleLinear } from "d3-scale";
 import { area, stack } from "d3-shape";
-import { easeLinear } from "d3";
 import Axis, { DirectionValue } from "../Axis";
 import {
   areaDataRaw,
@@ -20,7 +19,6 @@ import {
   namesToNations,
   nationsToNames,
 } from "@/utils/namesToColumns";
-import { useTransition } from "@/hooks/useTransition";
 import styles from "./index.less";
 import ceil from "lodash/ceil";
 import Tooltip from "../Tooltip";
@@ -60,15 +58,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     () => stack().keys((areaData as any).columns.slice(1))(areaData),
     [areaData]
   );
-
-  // 动画封装series
-  const { attrState: seriesAttrState } = useTransition({
-    className: "stackArea",
-    value: series,
-    deps: series,
-    duration: 500,
-    easingFunction: easeLinear,
-  });
 
   // x轴的scale
   const xScale = useMemo(

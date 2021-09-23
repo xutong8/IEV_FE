@@ -2,7 +2,8 @@ import axios, { AxiosRequestConfig } from "axios";
 
 const BASE_URL = "http://10.76.0.166:23333/iev";
 
-const TIME_OUT = 2000;
+// TODO: timeline接口响应有点慢，所以设置成25s。如果此时还没有返回，则抛出error。
+const TIME_OUT = 25000;
 
 const instance = axios.create({
   baseURL: BASE_URL,
