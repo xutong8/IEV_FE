@@ -11,12 +11,11 @@ export interface IChoropleth {
   parentClass: string;
 }
 
-// TODO: 统一数据输入; 解决列表中国家的处理
 const Choropleth: React.FC<IChoropleth> = (props) => {
   const { selectedCountries, selectedColors, parentClass } = props;
 
-  // req data
   const handleData = async () => {
+    // req data
     const res: any = await reqChoroplethMapData({
       year: "2019",
       category: ["1", "2", "3"],
