@@ -29,16 +29,19 @@ import { zoom } from "d3-zoom";
 import { httpRequest } from "@/services";
 import { unstable_batchedUpdates } from "react-dom";
 import randomcolor from "randomcolor";
+import { Spin } from "antd";
+import categoryObj from "@/reducers/categoryObj";
 
 export interface IForceGraphProps {
   width: number | string;
   height: number | string;
   radius: number;
   year: number;
+  category: string[];
 }
 
 const ForceGraph: React.FC<IForceGraphProps> = (props) => {
-  const { width, height, radius, year } = props;
+  const { width, height, radius, year, category } = props;
 
   // 节点
   const [graphNodes, setGraphNodes] = useState<IGraphNode[]>([]);
@@ -57,8 +60,11 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
 
   // 获取数据
   const fetchData = () => {
+    // 如果长度为0，则跳过
+    if (category.length === 0) return;
+
     httpRequest
-      .get(`/force_graph?year=${year}&category=[]`)
+      .get(`/force_graph?year=${year}&category=${JSON.stringify(category)}`)
       .then((res: any) => {
         const nodes = (res?.data?.nodes ?? []) as IGraphNode[];
         const links = (res?.data?.links ?? []).map((link: IGraphLink) => {
@@ -99,7 +105,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
 
   useEffect(() => {
     fetchData();
-  }, [year]);
+  }, [year, category]);
 
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -247,64 +253,66 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
 
   return (
     <div className={styles.forceGraph}>
-      <div className={styles.legends}>
-        <Legend
-          orient="row"
-          data={continents}
-          color={(continent: string) => colorMap?.get(continent) ?? ""}
-          onClick={handleClick}
-          onMouseEnter={() => {}}
-          onMouseLeave={() => {}}
-        />
-      </div>
-      <svg width={width} height={height} ref={svgRef}>
-        <g id="graphRoot">
-          <g className={styles.links} stroke="#999">
-            {linksState.map((link, index: number) => {
-              return (
-                <ForceLink
-                  handlers={{
-                    mouseEnterHandler: linkMouseEnterHandler,
-                    mouseLeaveHandler: linkMouseLeaveHandler,
-                  }}
-                  id={`link${link.source.id}_${link.target.id}`}
-                  className={styles.link}
-                  key={index}
-                  x1={link.source.x as number}
-                  y1={link.source.y as number}
-                  x2={link.target.x as number}
-                  y2={link.target.y as number}
-                  attributes={{
-                    strokeWidth: 2,
-                  }}
-                />
-              );
-            })}
-          </g>
-          <g className={styles.nodes} id="forceNodes">
-            {nodesState.map((node, index: number) => {
-              return (
-                <g key={node.id} id={`${getNodeId(node.id)}Group`}>
-                  <ForceNode
+      <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
+        <div className={styles.legends}>
+          <Legend
+            orient="row"
+            data={continents}
+            color={(continent: string) => colorMap?.get(continent) ?? ""}
+            onClick={handleClick}
+            onMouseEnter={() => {}}
+            onMouseLeave={() => {}}
+          />
+        </div>
+        <svg width={width} height={height} ref={svgRef}>
+          <g id="graphRoot">
+            <g className={styles.links} stroke="#999">
+              {linksState.map((link, index: number) => {
+                return (
+                  <ForceLink
                     handlers={{
-                      mouseEnterHandler: nodeMouseEnterHandler,
-                      mouseLeaveHandler: nodeMouseLeaveHandler,
+                      mouseEnterHandler: linkMouseEnterHandler,
+                      mouseLeaveHandler: linkMouseLeaveHandler,
                     }}
-                    id={`${getNodeId(node.id)}`}
-                    className={styles.node}
-                    r={nodeScale(node.expsum)}
-                    cx={node.x as number}
-                    cy={node.y as number}
+                    id={`link${link.source.id}_${link.target.id}`}
+                    className={styles.link}
+                    key={index}
+                    x1={link.source.x as number}
+                    y1={link.source.y as number}
+                    x2={link.target.x as number}
+                    y2={link.target.y as number}
                     attributes={{
-                      fill: colorMap?.get(node.continent) ?? "",
+                      strokeWidth: 2,
                     }}
                   />
-                </g>
-              );
-            })}
+                );
+              })}
+            </g>
+            <g className={styles.nodes} id="forceNodes">
+              {nodesState.map((node, index: number) => {
+                return (
+                  <g key={node.id} id={`${getNodeId(node.id)}Group`}>
+                    <ForceNode
+                      handlers={{
+                        mouseEnterHandler: nodeMouseEnterHandler,
+                        mouseLeaveHandler: nodeMouseLeaveHandler,
+                      }}
+                      id={`${getNodeId(node.id)}`}
+                      className={styles.node}
+                      r={nodeScale(node.expsum)}
+                      cx={node.x as number}
+                      cy={node.y as number}
+                      attributes={{
+                        fill: colorMap?.get(node.continent) ?? "",
+                      }}
+                    />
+                  </g>
+                );
+              })}
+            </g>
           </g>
-        </g>
-      </svg>
+        </svg>
+      </Spin>
     </div>
   );
 };
