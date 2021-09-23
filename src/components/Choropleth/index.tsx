@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { select } from "d3-selection";
 import { iDToNameMap, nameToDigit2TotalMap } from "@/utils/processCountriesMap";
 import CountryMap from "../CountryMap";
 import styles from "./index.less";
 import { reqChoroplethMapData, reqCountryData } from "@/services/api";
-
+import { isEqual } from "lodash";
 export interface IChoropleth {
   selectedCountries: Array<string>;
   selectedColors: Array<string>;
@@ -87,4 +87,6 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
   );
 };
 
-export default Choropleth;
+export default React.memo(Choropleth, (prevProps, nextProps) =>
+  isEqual(prevProps, nextProps)
+);

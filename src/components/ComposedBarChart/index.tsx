@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import styles from "./index.less";
 import { scaleLinear } from "d3-scale";
 import { ITradeItem } from "@/utils/tradeUtil";

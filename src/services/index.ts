@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 
 const BASE_URL = "http://10.76.0.166:23333/iev";
 
-const TIME_OUT = 2000;
+const TIME_OUT = 5000;
 
 const instance = axios.create({
   baseURL: BASE_URL,
