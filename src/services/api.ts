@@ -25,3 +25,7 @@ export const reqDonutChartData = ({
     `/donut_chart?year=${year}&category=[${category}]&selectedCountries=[${countries}]`
   );
 };
+
+export const reqCountryData = () => {
+  return httpRequest.get("/all_countries");
+};
