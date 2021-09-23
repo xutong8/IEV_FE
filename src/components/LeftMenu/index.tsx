@@ -3,6 +3,7 @@ import styles from "./index.less";
 import { Tag } from "antd";
 import DisplayYear from "@/containers/DisplayYear";
 import RadiusSlider from "@/containers/RadiusSlider";
+import CategoryList from "@/containers/CategoryList";
 
 const LeftMenu = () => {
   return (
@@ -20,9 +21,10 @@ const LeftMenu = () => {
         <DisplayYear />
       </div>
       <div className={styles.basic}>
-        <Tag color="geekblue" className={styles.text}>
+        <Tag color="geekblue" className={styles.text} style={{ height: 32 }}>
           Current Categories:
         </Tag>
+        <CategoryList />
       </div>
       <div className={styles.basic}>
         <Tag color="geekblue" className={styles.text}>

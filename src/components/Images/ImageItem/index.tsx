@@ -7,16 +7,17 @@ export interface IImageItem {
   style: CSSProperties;
   bordered?: boolean;
   imgStyle?: CSSProperties;
+  onClick?: (image: Image) => void;
 }
 
 export interface Image {
   name?: string;
-  key?: string;
+  id?: string;
   image: string;
 }
 
 const ImageItem: React.FC<IImageItem> = (props) => {
-  const { imageObj, style, bordered = false, imgStyle = {} } = props;
+  const { imageObj, style, bordered = false, imgStyle = {}, onClick } = props;
   const { name = "", image } = imageObj;
   return (
     <div
@@ -26,6 +27,7 @@ const ImageItem: React.FC<IImageItem> = (props) => {
       })}
       key={name}
       style={style}
+      onClick={() => onClick?.(imageObj)}
     >
       <Tooltip title={name}>
         <img
