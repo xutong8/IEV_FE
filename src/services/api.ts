@@ -1,8 +1,8 @@
 import { httpRequest } from "./index";
 
 export interface IReqWithSCounAndCat {
-  year: string;
-  category: Array<string>;
+  year: number;
+  category: string[];
   countries: Array<string>;
 }
 

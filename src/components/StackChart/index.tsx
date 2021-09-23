@@ -290,6 +290,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
                   onMouseMove={onMouseMove}
+                  style={{ transition: "all .5s ease" }}
                 />
               );
             })}
