@@ -27,15 +27,27 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
     const reqAllCountries: any = await reqCountryData();
     const allCountries = reqAllCountries.data;
 
-    // calc color for each nation
+    Object.keys(data).forEach((id) => {
+      const fullName = iDToNameMap.get(id);
+      const curDigit2 = nameToDigit2TotalMap.get(fullName)?.toLowerCase() ?? "";
+      const impCountry = Object.keys(data[id])[0];
+      if (curDigit2 !== "" && curDigit2 !== "n/a") {
+        select(`.${parentClass} #${curDigit2}`)
+          .attr(
+            "fill",
+            `${selectedColors[selectedCountries.indexOf(impCountry)]}`
+          )
+          .attr("opacity", data[id][impCountry] / 2 + 0.5);
+      }
+    });
+
     Object.keys(data).forEach((id) => {
       // 过滤掉Asia经济体
-      if (id == "490") {
+      if (id === "490") {
         return;
       }
-      let curDigit2;
 
-      curDigit2 = allCountries[id]["iso_2digit_alpha"].toLowerCase();
+      const curDigit2 = allCountries[id]["iso_2digit_alpha"].toLowerCase();
 
       select(`.${parentClass} #${curDigit2}`)
         .style("fill", `${selectedColors[data[id] > 0 ? 0 : 1]}`)
@@ -48,6 +60,7 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
         "iso_2digit_alpha"
       ].toLowerCase()}`
     ).style("fill", `${selectedColors[0]}`);
+
     select(
       `.${parentClass} #${allCountries[selectedCountries[1]][
         "iso_2digit_alpha"
