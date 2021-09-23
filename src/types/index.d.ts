@@ -24,4 +24,5 @@ export interface ICategory {
 export interface ICategoryObj {
   categoryList: ICategory[];
   selectedCategory: ICategory[];
+  displayedCategory: ICategory[];
 }

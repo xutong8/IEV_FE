@@ -19,7 +19,6 @@ import {
   namesToNations,
   nationsToNames,
 } from "@/utils/namesToColumns";
-import { useTransition } from "@/hooks/useTransition";
 import styles from "./index.less";
 import ceil from "lodash/ceil";
 import Tooltip from "../Tooltip";

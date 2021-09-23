@@ -19,6 +19,7 @@ import {
   delCategoryItem,
 } from "@/actions/categoryList";
 import { IStore } from "@/reducers";
+import { isEqual } from "lodash";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -34,8 +35,11 @@ const BasicLayout = () => {
   const dispatch = useDispatch();
 
   // selector
-  const selectedCategory = useSelector(
-    (state: IStore) => state.categoryObj.selectedCategory
+  const categoryObj = useSelector(
+    (state: IStore) => ({
+      displayedCategory: state.categoryObj.displayedCategory,
+    }),
+    (prev, next) => isEqual(prev, next)
   );
 
   // 获取国家列表和种类列表
@@ -76,7 +80,7 @@ const BasicLayout = () => {
       name: image?.name ?? "",
     };
     dispatch(
-      selectedCategory.find((category) => category.id === image.id)
+      categoryObj.displayedCategory.find((category) => category.id === image.id)
         ? delCategoryItem(category)
         : addCategoryItem(category)
     );
@@ -112,7 +116,7 @@ const BasicLayout = () => {
               }}
               styleProcessor={(image) => {
                 return {
-                  boxShadow: selectedCategory.find(
+                  boxShadow: categoryObj.displayedCategory.find(
                     (cateogory) => image.id === cateogory.id
                   )
                     ? "-1px -1px 2px 2px rgba(0, 0, 0, 0.1)"

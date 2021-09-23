@@ -2,6 +2,7 @@ import {
   ADD_CATEGORY,
   CHANGE_CATEGORY_OBJ,
   DEL_CATEGORY,
+  REPLACE_CATEGORY,
 } from "@/constants/categoryObj";
 import { ICategory } from "@/types";
 
@@ -23,5 +24,11 @@ export const delCategoryItem = (payload: ICategory) => {
   return {
     type: DEL_CATEGORY,
     payload,
+  };
+};
+
+export const replaceCategory = () => {
+  return {
+    type: REPLACE_CATEGORY,
   };
 };
