@@ -5,6 +5,9 @@ import CountryMap from "../CountryMap";
 import styles from "./index.less";
 import { reqChoroplethMapData, reqCountryData } from "@/services/api";
 import { isEqual } from "lodash";
+import { useSelector } from "react-redux";
+import { IStore } from "@/reducers";
+import { Spin } from "antd";
 export interface IChoropleth {
   selectedCountries: Array<string>;
   selectedColors: Array<string>;
@@ -15,11 +18,22 @@ export interface IChoropleth {
 const Choropleth: React.FC<IChoropleth> = (props) => {
   const { selectedCountries, selectedColors, parentClass } = props;
 
+  const { year, category } = useSelector(
+    (state: IStore) => ({
+      year: state.year,
+      category: state.categoryObj.selectedCategory.map((item) => item.id),
+    }),
+    (prev, next) => isEqual(prev, next)
+  );
+
   // req data
   const handleData = async () => {
+    // 如果category长度为0，则跳过
+    if (category.length === 0) return;
+
     const res: any = await reqChoroplethMapData({
-      year: "2019",
-      category: ["1", "2", "3"],
+      year,
+      category,
       countries: selectedCountries,
     });
     const data = res.data;
@@ -70,7 +84,7 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
 
   useEffect(() => {
     handleData();
-  }, [selectedCountries, selectedColors]);
+  }, [selectedCountries, selectedColors, year, category]);
 
   return (
     <CountryMap

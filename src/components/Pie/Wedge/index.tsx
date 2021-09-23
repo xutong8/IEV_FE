@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useTransition } from "@/hooks/useTransition";
-import { easeLinear } from "d3";
 
 export interface IWedge {
   d: string | null;
@@ -19,7 +17,6 @@ const Wedge: React.FC<IWedge> = (props) => {
       id={id}
       fill={fill}
       d={d}
-      style={{ transition: "all .5s ease" }}
       opacity={opacity}
       onMouseEnter={() => {
         setOpacity("1");
