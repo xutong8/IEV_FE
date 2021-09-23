@@ -10,7 +10,8 @@ const columns = [
   "year",
   "importCountry",
   "exportCountry",
-  "category",
+  "industry_category",
+  "product",
   "amount",
 ];
 
