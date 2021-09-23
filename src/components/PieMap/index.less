@@ -10,13 +10,14 @@
 
     .select {
       width: 110px;
-      margin-top: 12px;
+      margin-bottom: 12px;
     }
 
     .basicMap {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
     }
 
     .sourceMap {
@@ -25,6 +26,8 @@
 
     .middleMap {
       flex: 1 0 0;
+      display: flex;
+      flex-direction: column;
       position: relative;
     }
 
@@ -35,10 +38,13 @@
 }
 
 .sourceCountryMap {
+  display: flex;
+  justify-content: center;
+  height: 80%;
+
   svg {
     stroke: #fff;
-    width: 100%;
-    height: 260px;
+    height: 100%;
 
     path {
       fill: #a82b2b;
@@ -57,10 +63,13 @@
 }
 
 .targetCountryMap {
+  display: flex;
+  justify-content: center;
+  height: 80%;
+
   svg {
     stroke: #fff;
-    width: 100%;
-    height: 260px;
+    height: 100%;
 
     path {
       fill: #317ebd;

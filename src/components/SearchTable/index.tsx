@@ -1,23 +1,46 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./index.less";
 import { Table } from "antd";
 import { ValueType } from "@/types";
-import { columns } from "./columns";
-import { ITableCountry, processTableData } from "@/utils/processTableData";
+import { customColumnsFunc } from "./columns";
+import { ITableCountry } from "@/utils/processTableData";
 import SearchInput from "../SearchInput";
-
+import { httpRequest } from "@/services";
 export interface ISearchTableProps {
   valueType: ValueType;
 }
 
-// TODO: 支持valueType
-
 const SearchTable: React.FC<ISearchTableProps> = (props) => {
   const { valueType } = props;
 
-  const [dataSource, setDataSource] = useState<ITableCountry[]>(
-    processTableData()
-  );
+  // 数据源
+  const [dataSource, setDataSource] = useState<ITableCountry[]>([]);
+  // 条件数组
+  const [query_conditions, setQueryConditions] = useState<string[]>([]);
+
+  // 获取数据
+  const fetchData = () => {
+    httpRequest
+      .post(
+        "/table",
+        JSON.stringify({
+          query_conditions,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res: any) => {
+        setDataSource(res?.data ?? []);
+      });
+  };
+
+  // 每当query_conditions变更时，请求接口
+  useEffect(() => {
+    fetchData();
+  }, [query_conditions]);
 
   const maxAmount = useMemo(
     () => Math.max(...dataSource.map((item) => item.amount)),
@@ -26,23 +49,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
 
   // 处理搜索逻辑
   const handleSearch = (conditions: string[]) => {
-    if (conditions && conditions.length === 0) {
-      setDataSource(processTableData());
-      return;
-    }
-
-    const newDataSource = dataSource.slice();
-    const filteredDataSource = newDataSource.filter((item) => {
-      return conditions.every((condition) => {
-        return (
-          condition === String(item.year) ||
-          condition === item.exportCountry ||
-          condition === item.importCountry ||
-          condition === item.category
-        );
-      });
-    });
-    setDataSource(filteredDataSource);
+    setQueryConditions(conditions);
   };
 
   return (
@@ -53,12 +60,16 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
       <div className={styles["search_list"]}>
         <div className={styles["search_container"]}>
           <Table
-            columns={columns(valueType, maxAmount)}
+            columns={customColumnsFunc(valueType, maxAmount)}
             dataSource={dataSource}
             rowKey={(record) => record.id}
             pagination={{
               showSizeChanger: false,
               pageSize: 12,
+              size: "small",
+            }}
+            scroll={{
+              x: true,
             }}
           />
         </div>

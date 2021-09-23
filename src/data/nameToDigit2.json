@@ -1,60 +1,60 @@
 {
-    "results": [
-        {
-            "name": "China",
-            "iso_2digit_alpha": "CN"
-        },
-        {
-            "name": "USA",
-            "iso_2digit_alpha": "US"
-        },
-        {
-            "name": "India",
-            "iso_2digit_alpha": "IN"
-        },
-        {
-            "name": "Japan",
-            "iso_2digit_alpha": "JP"
-        },
-        {
-            "name": "Germany",
-            "iso_2digit_alpha": "DE"
-        },
-        {
-            "name": "Russian Federation",
-            "iso_2digit_alpha": "RU"
-        },
-        {
-            "name": "Brazil",
-            "iso_2digit_alpha": "BR"
-        },
-        {
-            "name": "United Kingdom",
-            "iso_2digit_alpha": "UK"
-        },
-        {
-            "name": "Indonesia",
-            "iso_2digit_alpha": "ID"
-        },
-        {
-            "name": "France",
-            "iso_2digit_alpha": "FR"
-        },
-        {
-            "name": "Mexico",
-            "iso_2digit_alpha": "MX"
-        },
-        {
-            "name": "Italy",
-            "iso_2digit_alpha": "IT"
-        },
-        {
-            "name": "Turkey",
-            "iso_2digit_alpha": "TR"
-        },
-        {
-            "name": "Dem. People's Rep. of Korea",
-            "iso_2digit_alpha": "KP"
-        }
-    ]
+  "results": [
+    {
+      "name": "China",
+      "iso_2digit_alpha": "CN"
+    },
+    {
+      "name": "USA",
+      "iso_2digit_alpha": "US"
+    },
+    {
+      "name": "India",
+      "iso_2digit_alpha": "IN"
+    },
+    {
+      "name": "Japan",
+      "iso_2digit_alpha": "JP"
+    },
+    {
+      "name": "Germany",
+      "iso_2digit_alpha": "DE"
+    },
+    {
+      "name": "Russian Federation",
+      "iso_2digit_alpha": "RU"
+    },
+    {
+      "name": "Indonesia",
+      "iso_2digit_alpha": "ID"
+    },
+    {
+      "name": "Brazil",
+      "iso_2digit_alpha": "BR"
+    },
+    {
+      "name": "United Kingdom",
+      "iso_2digit_alpha": "UK"
+    },
+    {
+      "name": "France",
+      "iso_2digit_alpha": "FR"
+    },
+    {
+      "name": "Mexico",
+      "iso_2digit_alpha": "MX"
+    },
+    {
+      "name": "Italy",
+      "iso_2digit_alpha": "IT"
+    },
+    {
+      "name": "Turkey",
+      "iso_2digit_alpha": "TR"
+    },
+    {
+      "name": "Dem. People's Rep. of Korea",
+      "iso_2digit_alpha": "KP"
+    }
+  ]
 }

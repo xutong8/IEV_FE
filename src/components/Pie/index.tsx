@@ -1,16 +1,17 @@
 import { pie, arc } from "d3";
 import Wedge from "./Wedge";
 import { IItemPieData, pieData, selectCountries } from "@/utils/processPieData";
-import { useMemo, useRef } from "react";
-import { useSVGSize } from "@/hooks/useSVGSize";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Tooltip from "@/components/Tooltip";
+import { reqDonutChartData } from "@/services/api";
 
 export interface IPie {
-  width: number | string;
-  height: number | string;
+  width: number;
+  height: number;
 }
 
 export interface IPieData {
-  data: IItemPieData;
+  data: any; // IItemPieData;
   endAngle: number;
   index: number;
   padAngle: number;
@@ -18,27 +19,39 @@ export interface IPieData {
   value: number;
 }
 
-const Pie: React.FC<IPie> = (prop) => {
-  const { width, height } = prop;
+const Pie: React.FC<IPie> = (props) => {
+  const { width, height } = props;
 
-  const data = useMemo(() => pieData, [pieData]);
+  const toolTipRef = useRef<any>();
+  const [data, setData] = useState<any>();
 
-  const svgRef = useRef<SVGSVGElement>(null);
+  const handleData = async () => {
+    const res: any = await reqDonutChartData({
+      year: "2019",
+      category: ["1", "2", "3", "4", "5", "6", "7"],
+      countries: ["842", "156"],
+    });
 
-  // 计算出来的宽度和高度
-  const [computedWidth, computedHeight] = useSVGSize(svgRef);
+    setData(res.data);
+  };
+
+  useEffect(() => {
+    handleData();
+  }, []);
 
   const [innerRadius, outerRadius] = useMemo(() => {
-    const radius = Math.min(computedWidth - 20, computedHeight - 20) / 2;
+    const radius = Math.min(width - 20, height - 20) / 2;
     return [radius * 0.75, radius - 10];
-  }, [computedWidth, computedHeight]);
+  }, [width, height]);
 
   const pieDrawData = useMemo(
     () =>
-      pie<IItemPieData>()
-        .padAngle(0.01)
-        .value((d) => d.value)
-        .sort(null)(data),
+      data
+        ? pie<IItemPieData>()
+            .padAngle(0.01)
+            .value((d) => d.value)
+            .sort(null)(data)
+        : undefined,
     [data]
   );
   // sort
@@ -46,42 +59,64 @@ const Pie: React.FC<IPie> = (prop) => {
     () => arc<IPieData>().innerRadius(innerRadius).outerRadius(outerRadius),
     [innerRadius, outerRadius]
   );
+
   const translation = useMemo(
-    () => `translate(${computedWidth / 2}, ${computedHeight / 2})`,
-    [computedWidth, computedHeight]
+    () => `translate(${width / 2}, ${height / 2})`,
+    [width, height]
   );
 
   return (
-    <svg width={width} height={height} ref={svgRef}>
-      <g transform={translation}>
-        {pieDrawData.map((item, index) => {
-          const itemCenter = arcData.centroid(item);
-          return (
-            <g key={item.index}>
-              <Wedge
-                d={arcData(item)}
-                fill={
-                  item.data.country === selectCountries[0]
-                    ? "#508bbb"
-                    : "#d2796f"
-                }
-              />
-              <text
-                x={itemCenter[0]}
-                y={itemCenter[1]}
-                style={{ transformBox: "fill-box", transformOrigin: "center" }}
-                textAnchor="middle"
-                transform={`rotate(${
-                  (180 * (item.startAngle + item.endAngle)) / 2 / Math.PI
-                }) translate(10, -18)`}
-              >
-                {item.data.type}
-              </text>
-            </g>
-          );
-        })}
-      </g>
-    </svg>
+    <>
+      <Tooltip ref={toolTipRef}>
+        {({ country, type_name, value }: any) =>
+          `<div>${country} ${type_name} </div><div>value: ${value.toFixed(
+            2
+          )}</div>`
+        }
+      </Tooltip>
+      <svg width={width} height={height}>
+        <g transform={translation}>
+          {pieDrawData?.map((item: IPieData, index: number) => {
+            // const itemCenter = arcData.centroid(item);
+            const d = arcData(item);
+            const firstArcSection = /(^.+?)L/;
+            const newArc = d?.match(firstArcSection)![1];
+            return (
+              <g key={item.index}>
+                <Wedge
+                  id={`arc${item.index}`}
+                  d={d}
+                  fill={
+                    item.data.country === selectCountries[0]
+                      ? "#508bbb"
+                      : "#d2796f"
+                  }
+                  tipMessage={item}
+                  onMouseMove={(e: any) =>
+                    toolTipRef.current.onMouseMove(e, item.data)
+                  }
+                  onMouseLeave={() => toolTipRef.current.onMouseLeave()}
+                />
+                <path
+                  id={`donutArc${item.index}`}
+                  d={newArc}
+                  style={{ fill: "none" }}
+                />
+                <text>
+                  <textPath
+                    xlinkHref={`#donutArc${item.index}`}
+                    startOffset="50%"
+                    textAnchor="middle"
+                  >
+                    {item.data.type_name}
+                  </textPath>
+                </text>
+              </g>
+            );
+          })}
+        </g>
+      </svg>
+    </>
   );
 };
 

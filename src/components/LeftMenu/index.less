@@ -4,6 +4,28 @@
   width: 100%;
   height: 100%;
   padding: 8px;
+  display: flex;
+  flex-direction: column;
+
+  .text {
+    line-height: 1.5715;
+    font-weight: 400;
+    white-space: nowrap;
+    border-radius: 4px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI,
+      PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica,
+      Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  }
+
+  .basic {
+    padding: 4px;
+    display: flex;
+    margin: 16px 0;
+  }
 
   &:extend(.block);
 }

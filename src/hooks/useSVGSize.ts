@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useState } from "react";
 
-const useSVGSize = (ref: RefObject<SVGSVGElement>) => {
+const useSVGSize = (ref: RefObject<Element>) => {
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
 

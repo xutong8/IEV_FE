@@ -23,13 +23,13 @@
   }
 
   .middle {
-    flex: 1 0 0;
+    height: 140px;
     display: flex;
     margin: 16px 0;
 
     .item {
       &:first-child {
-        flex: 2 0 0;
+        flex: 1 0 0;
         margin-right: 12px;
       }
 
@@ -55,48 +55,22 @@
 
     .first {
       display: flex;
-      flex-direction: column;
-      height: 212px;
-
-      .topMap {
-        height: 100%;
-      }
-    }
-
-    .second {
-      flex: 1 0 0;
-      margin-top: 12px;
-      display: flex;
       flex-direction: row;
+      flex: 1 0 0;
 
-      .secondLeft {
-        flex: 1 0 0;
-        display: flex;
-        flex-direction: column;
+      .firstLeft {
+        flex: 3 0 0;
+        height: 100%;
 
-        .pieMapContainer {
-          margin-bottom: 12px;
+        .topMap {
           flex: 1 0 0;
-          &:extend(.block);
-
-          .svg {
-            flex: 1 0 0;
-          }
-        }
-
-        .stack {
-          flex: 1 0 0;
+          height: 100%;
           display: flex;
-          &:extend(.block);
-
-          .svg {
-            flex: 1 0 0;
-          }
         }
       }
 
-      .secondRight {
-        width: 318px;
+      .firstRight {
+        flex: 1 0 0;
         height: 100%;
         margin-left: 12px;
 
@@ -108,11 +82,42 @@
         }
       }
     }
+
+    .second {
+      flex: 1 0 0;
+      margin-top: 12px;
+      display: flex;
+      flex-direction: row;
+
+      .secondLeft {
+        flex: 3 0 0;
+        display: flex;
+
+        .pieMapContainer {
+          flex: 1 0 0;
+          display: flex;
+          &:extend(.block);
+        }
+      }
+
+      .secondRight {
+        flex: 1 0 0;
+        display: flex;
+        margin-left: 12px;
+
+        .stack {
+          flex: 1 0 0;
+          display: flex;
+          &:extend(.block);
+        }
+      }
+    }
   }
 }
 
 .right_menu {
   margin: 16px 0;
+  width: 420px;
 
   &:extend(.block);
 }

@@ -11,7 +11,7 @@
     path {
       fill: none;
       stroke-width: 2px;
-      stroke: green;
+      stroke: #595a5a;
     }
   }
 
@@ -19,37 +19,60 @@
     display: flex;
     position: absolute;
     width: 100%;
+    height: 100%;
     z-index: -1;
 
     &:extend(.block);
   }
 
   .left {
-    flex: 2 0 0;
+    flex: 1 0 0;
+    display: flex;
+    flex-direction: column;
 
     .map {
+      flex: 1 0 0;
       position: relative;
 
       .circle {
         position: absolute;
-        width: 6px;
-        height: 6px;
-        background-color: blue;
+        width: 4px;
+        height: 4px;
+        background-color: #7f7f7f;
         border-radius: 50%;
       }
     }
   }
 
   .middle {
-    flex: 1 0 0;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    transform: translateX(-75px);
+    position: relative;
+
+    &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      border-left: 1px dashed #d5d5d5;
+      border-right: 1px dashed #d5d5d5;
+    }
   }
 
   .right {
-    flex: 2 0 0;
+    flex: 1 0 0;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    margin-right: 80px;
   }
+}
+
+.countryMap {
+  height: 100%;
 }
