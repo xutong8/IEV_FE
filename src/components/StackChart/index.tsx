@@ -10,11 +10,7 @@ import { select } from "d3-selection";
 import { processTicks, processTicksByMax } from "@/utils/processTicks";
 import { colorMap } from "@/utils/generateCountryColor";
 import dataSource from "@/data/nameToDigit2.json";
-import {
-  namesToColumns,
-  namesToNations,
-  nationsToNames,
-} from "@/utils/namesToColumns";
+import { namesToColumns, nationsToNames } from "@/utils/namesToColumns";
 import styles from "./index.less";
 import ceil from "lodash/ceil";
 import Tooltip from "../Tooltip";
@@ -250,6 +246,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     }
   };
 
+  // year selector
+  const year = useSelector((state: IStore) => state.year);
+
   return (
     <div className={styles.container}>
       {areaData.length === 0 ? (
@@ -356,6 +355,14 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                 })}
               </g>
             </g>
+            <line
+              x1={xScale(year)}
+              y1={yScale(0)}
+              x2={xScale(year)}
+              y2={yScale(maxY)}
+              strokeWidth={1}
+              stroke="gray"
+            />
             <g
               transform={`translate(0, ${zeroPosition[1] + BrushYOffset + 20})`}
             >
