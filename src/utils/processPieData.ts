@@ -13,6 +13,4 @@ const pieData: Array<IItemPieData> = [
   { country: "China", type: "Textile", value: 18 },
 ];
 
-const selectCountries: Array<string> = ["USA", "China"];
-
-export { pieData, selectCountries };
+export { pieData };
