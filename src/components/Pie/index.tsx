@@ -11,6 +11,8 @@ import { IStore } from "@/reducers";
 export interface IPie {
   width: number;
   height: number;
+  sourceCountry: string;
+  targetCountry: string;
 }
 
 export interface IPieData {
@@ -23,7 +25,7 @@ export interface IPieData {
 }
 
 const Pie: React.FC<IPie> = (props) => {
-  const { width, height } = props;
+  const { width, height, sourceCountry, targetCountry } = props;
 
   const toolTipRef = useRef<any>();
   const [data, setData] = useState<any>();

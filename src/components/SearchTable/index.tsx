@@ -3,7 +3,7 @@ import styles from "./index.less";
 import { Table } from "antd";
 import { ValueType } from "@/types";
 import { customColumnsFunc } from "./columns";
-import { ITableCountry } from "@/utils/processTableData";
+import { ITableCountry } from "@/types/table";
 import SearchInput from "../SearchInput";
 import { httpRequest } from "@/services";
 export interface ISearchTableProps {

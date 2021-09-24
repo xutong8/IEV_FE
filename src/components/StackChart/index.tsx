@@ -266,12 +266,10 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               <div className={styles.legends}>
                 <Legend
                   orient="row"
-                  data={dataSource.results.map((item) =>
-                    namesToNations.get(item.name)
-                  )}
+                  data={dataSource.results.map((item) => item.name)}
                   color={(label: string) => {
                     const item = dataSource.results.find(
-                      (item) => item.name === nationsToNames.get(label)
+                      (item) => item.name === label
                     );
                     return colorMap.get(item?.iso_2digit_alpha ?? "") ?? "";
                   }}

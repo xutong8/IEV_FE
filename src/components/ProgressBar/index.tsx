@@ -13,6 +13,7 @@ import { colorMap } from "@/utils/generateCountryColor";
 import dataSource from "@/data/nameToDigit2.json";
 import { useDispatch } from "react-redux";
 import { UPDATE_YEAR } from "@/constants/year";
+import { httpRequest } from "@/services";
 export interface IProgressBarProps {
   width: number | string;
   height: number | string;
@@ -101,6 +102,11 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     duration: 500,
     easingFunction: easeLinear,
   });
+
+  // 获取timeline接口的数据
+  // const fetchData = () => {
+  //   httpRequest.get(`/timeline?${}`)
+  // };
 
   return (
     <svg

@@ -25,16 +25,16 @@
       "iso_2digit_alpha": "RU"
     },
     {
-      "name": "Indonesia",
-      "iso_2digit_alpha": "ID"
-    },
-    {
       "name": "Brazil",
       "iso_2digit_alpha": "BR"
     },
     {
       "name": "United Kingdom",
       "iso_2digit_alpha": "GB"
+    },
+    {
+      "name": "Indonesia",
+      "iso_2digit_alpha": "ID"
     },
     {
       "name": "France",
@@ -53,7 +53,7 @@
       "iso_2digit_alpha": "TR"
     },
     {
-      "name": "Korea, South",
+      "name": "Rep. of Korea",
       "iso_2digit_alpha": "KR"
     }
   ]

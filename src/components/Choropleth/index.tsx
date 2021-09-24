@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { select } from "d3-selection";
 import { iDToNameMap, nameToDigit2TotalMap } from "@/utils/processCountriesMap";
 import CountryMap from "../CountryMap";
@@ -7,7 +7,7 @@ import { reqChoroplethMapData, reqCountryData } from "@/services/api";
 import { isEqual } from "lodash";
 import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
-import { Spin } from "antd";
+import { scaleLinear } from "d3-scale";
 export interface IChoropleth {
   selectedCountries: Array<string>;
   selectedColors: Array<string>;
@@ -26,6 +26,11 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
     (prev, next) => isEqual(prev, next)
   );
 
+  const colorScale = useMemo(
+    () => scaleLinear<string>().domain([-1, 1]).range(selectedColors),
+    [selectedColors]
+  );
+
   // req data
   const handleData = async () => {
     // 如果category长度为0，则跳过
@@ -42,20 +47,6 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
     const allCountries = reqAllCountries.data;
 
     Object.keys(data).forEach((id) => {
-      const fullName = iDToNameMap.get(id);
-      const curDigit2 = nameToDigit2TotalMap.get(fullName)?.toLowerCase() ?? "";
-      const impCountry = Object.keys(data[id])[0];
-      if (curDigit2 !== "" && curDigit2 !== "n/a") {
-        select(`.${parentClass} #${curDigit2}`)
-          .attr(
-            "fill",
-            `${selectedColors[selectedCountries.indexOf(impCountry)]}`
-          )
-          .attr("opacity", data[id][impCountry] / 2 + 0.5);
-      }
-    });
-
-    Object.keys(data).forEach((id) => {
       // 过滤掉Asia经济体
       if (id === "490") {
         return;
@@ -63,9 +54,10 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
 
       const curDigit2 = allCountries[id]["iso_2digit_alpha"].toLowerCase();
 
-      select(`.${parentClass} #${curDigit2}`)
-        .style("fill", `${selectedColors[data[id] > 0 ? 0 : 1]}`)
-        .attr("opacity", Math.abs(data[id]));
+      select(`.${parentClass} #${curDigit2}`).style(
+        "fill",
+        `${colorScale(data[id])}`
+      );
     });
 
     // draw color for selected country
@@ -73,13 +65,13 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
       `.${parentClass} #${allCountries[selectedCountries[0]][
         "iso_2digit_alpha"
       ].toLowerCase()}`
-    ).style("fill", `${selectedColors[0]}`);
+    ).style("fill", `${selectedColors[1]}`);
 
     select(
       `.${parentClass} #${allCountries[selectedCountries[1]][
         "iso_2digit_alpha"
       ].toLowerCase()}`
-    ).style("fill", `${selectedColors[1]}`);
+    ).style("fill", `${selectedColors[0]}`);
   };
 
   useEffect(() => {
