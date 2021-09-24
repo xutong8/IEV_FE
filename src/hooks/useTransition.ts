@@ -61,6 +61,7 @@ const useTransition: (props: {
 
   return {
     attrState,
+    setAttrState,
   };
 };
 

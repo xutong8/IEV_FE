@@ -59,7 +59,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     setLineX(computedWidth - 30);
   }, [computedWidth]);
 
-  const line = useMemo(
+  const lines = useMemo(
     () => ({
       x1: lineX,
       x2: lineX,
@@ -69,6 +69,11 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
 
   // countries state
   const [countriesId, setCountriesId] = useState<string[]>([]);
+
+  const bars = useMemo(
+    () => countriesId.map(() => ({ width: lineX })),
+    [lineX, countriesId]
+  );
 
   // TODO: 事件解除绑定
   const bindClick = () => {
@@ -87,6 +92,23 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     bindClick();
   }, [xScale.range()]);
 
+  const { attrState: barAttrState, setAttrState: setBarAttrState } =
+    useTransition({
+      className: "bar-transition",
+      value: bars,
+      deps: [bars],
+      duration: 500,
+      easingFunction: easeLinear,
+    });
+
+  const { attrState: lineAttrState } = useTransition({
+    className: "line-transition",
+    value: [lines],
+    deps: [lines],
+    duration: 500,
+    easingFunction: easeLinear,
+  });
+
   const category = useSelector(
     (state: IStore) =>
       state.categoryObj.selectedCategory.map((item) => item.id),
@@ -103,6 +125,9 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
 
   // 获取timeline接口的数据
   const fetchData = () => {
+    // 如果category为空，则跳过；
+    if (category.length === 0) return;
+
     httpRequest
       .get(
         `/timeline?category=${JSON.stringify(
@@ -116,6 +141,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
         const data = res?.data ?? {};
         const newCountriesId = Object.keys(data);
         unstable_batchedUpdates(() => {
+          setBarAttrState(newCountriesId.map(() => ({ width: lineX })));
           setCountriesId(newCountriesId);
           setTimelineData(data);
         });
@@ -134,16 +160,13 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
       ref={svgRef}
     >
       <foreignObject width="100%" height="100%">
-        {countriesId.map((item, index) => {
+        {(barAttrState as { width: number }[]).map((item, index) => {
           return (
             <div
-              className={cn({
-                "bar-transition": true,
-                [styles.transition]: true,
-              })}
+              className="bar-transition"
               key={index}
               style={{
-                width: lineX - 10,
+                width: item.width - 10,
                 height:
                   countriesId.length !== 0
                     ? (computedHeight - axisHeight) / countriesId.length
@@ -160,11 +183,10 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
         className={cn({
           [styles.tooltip]: true,
           "line-transition": true,
-          [styles.transition]: true,
         })}
-        x1={line.x1 as number}
+        x1={lineAttrState.x1 as number}
         y1={0}
-        x2={line.x2 as number}
+        x2={lineAttrState.x2 as number}
         y2={computedHeight - axisHeight}
         strokeWidth={4}
       />
