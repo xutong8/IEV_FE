@@ -86,7 +86,6 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
             />
             <Choropleth
               selectedCountries={["156", "842"]}
-              selectedColors={["blue", "red"]}
               parentClass={styles.middleMap}
             />
           </Spin>

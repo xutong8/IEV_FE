@@ -89,7 +89,7 @@ const BasicLayout = () => {
   // 对比国家
   const [sourceCountry, setSourceCountry] = useState<string>("China");
   // 参照国家
-  const [targetCountry, setTargetCountry] = useState<string>("USA");
+  const [targetCountry, setTargetCountry] = useState<string>("Turkey");
 
   return (
     <div className={styles["basic_layout"]}>
@@ -163,7 +163,12 @@ const BasicLayout = () => {
             </div>
           </div>
           <div className={styles.progress}>
-            <ProgressBar width="100%" height="100%" />
+            <ProgressBar
+              width="100%"
+              height="100%"
+              sourceCountry={sourceCountry}
+              targetCountry={targetCountry}
+            />
           </div>
         </div>
       </div>

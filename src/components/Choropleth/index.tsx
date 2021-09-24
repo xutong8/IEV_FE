@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from "react";
 import { select } from "d3-selection";
-import { iDToNameMap, nameToDigit2TotalMap } from "@/utils/processCountriesMap";
 import CountryMap from "../CountryMap";
 import styles from "./index.less";
 import { reqChoroplethMapData, reqCountryData } from "@/services/api";
@@ -8,15 +7,15 @@ import { isEqual } from "lodash";
 import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
 import { scaleLinear } from "d3-scale";
+import { colorDomain, colorRange } from "@/constants/colorScale";
 export interface IChoropleth {
   selectedCountries: Array<string>;
-  selectedColors: Array<string>;
   parentClass: string;
 }
 
 // TODO: 统一数据输入; 解决列表中国家的处理
 const Choropleth: React.FC<IChoropleth> = (props) => {
-  const { selectedCountries, selectedColors, parentClass } = props;
+  const { selectedCountries, parentClass } = props;
 
   const { year, category } = useSelector(
     (state: IStore) => ({
@@ -27,8 +26,8 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
   );
 
   const colorScale = useMemo(
-    () => scaleLinear<string>().domain([-1, 1]).range(selectedColors),
-    [selectedColors]
+    () => scaleLinear<string>().domain(colorDomain).range(colorRange),
+    []
   );
 
   // req data
@@ -65,18 +64,18 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
       `.${parentClass} #${allCountries[selectedCountries[0]][
         "iso_2digit_alpha"
       ].toLowerCase()}`
-    ).style("fill", `${selectedColors[1]}`);
+    ).style("fill", `${colorRange[1]}`);
 
     select(
       `.${parentClass} #${allCountries[selectedCountries[1]][
         "iso_2digit_alpha"
       ].toLowerCase()}`
-    ).style("fill", `${selectedColors[0]}`);
+    ).style("fill", `${colorRange[0]}`);
   };
 
   useEffect(() => {
     handleData();
-  }, [selectedCountries, selectedColors, year, category]);
+  }, [selectedCountries, year, category]);
 
   return (
     <CountryMap

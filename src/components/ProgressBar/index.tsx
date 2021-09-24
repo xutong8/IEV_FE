@@ -11,28 +11,27 @@ import { years } from "@/constants/years";
 import { processTicks } from "@/utils/processTicks";
 import { colorMap } from "@/utils/generateCountryColor";
 import dataSource from "@/data/nameToDigit2.json";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UPDATE_YEAR } from "@/constants/year";
 import { httpRequest } from "@/services";
+import { IStore } from "@/reducers";
+import { isEqual } from "lodash";
+import { findCountryIdByName } from "@/utils/findCountryIdByName";
+import { colorDomain, colorRange } from "@/constants/colorScale";
+import { unstable_batchedUpdates } from "react-dom";
 export interface IProgressBarProps {
   width: number | string;
   height: number | string;
+  sourceCountry: string;
+  targetCountry: string;
 }
 
 const ProgressBar: React.FC<IProgressBarProps> = (props) => {
-  const { width, height } = props;
+  const { width, height, sourceCountry, targetCountry } = props;
 
   const dispatch = useDispatch();
 
   const axisHeight = 20;
-
-  const colors = useMemo(
-    () =>
-      dataSource.results.map((country) =>
-        colorMap.get(country.iso_2digit_alpha)
-      ),
-    []
-  );
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
@@ -60,7 +59,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     setLineX(computedWidth - 30);
   }, [computedWidth]);
 
-  const lines = useMemo(
+  const line = useMemo(
     () => ({
       x1: lineX,
       x2: lineX,
@@ -68,7 +67,8 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     [lineX]
   );
 
-  const bars = useMemo(() => colors.map(() => ({ width: lineX })), [lineX]);
+  // countries state
+  const [countriesId, setCountriesId] = useState<string[]>([]);
 
   // TODO: 事件解除绑定
   const bindClick = () => {
@@ -87,26 +87,44 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     bindClick();
   }, [xScale.range()]);
 
-  const { attrState: barAttrState } = useTransition({
-    className: "bar-transition",
-    value: bars,
-    deps: [bars],
-    duration: 500,
-    easingFunction: easeLinear,
-  });
+  const category = useSelector(
+    (state: IStore) =>
+      state.categoryObj.selectedCategory.map((item) => item.id),
+    (prev, next) => isEqual(prev, next)
+  );
 
-  const { attrState: lineAttrState } = useTransition({
-    className: "line-transition",
-    value: [lines],
-    deps: [lines],
-    duration: 500,
-    easingFunction: easeLinear,
-  });
+  const colorScale = useMemo(
+    () => scaleLinear<string>().domain(colorDomain).range(colorRange),
+    []
+  );
+
+  // timeline data
+  const [timelineData, setTimelineData] = useState<any>();
 
   // 获取timeline接口的数据
-  // const fetchData = () => {
-  //   httpRequest.get(`/timeline?${}`)
-  // };
+  const fetchData = () => {
+    httpRequest
+      .get(
+        `/timeline?category=${JSON.stringify(
+          category
+        )}&selectedCountries=${JSON.stringify([
+          findCountryIdByName(sourceCountry),
+          findCountryIdByName(targetCountry),
+        ])}`
+      )
+      .then((res: any) => {
+        const data = res?.data ?? {};
+        const newCountriesId = Object.keys(data);
+        unstable_batchedUpdates(() => {
+          setCountriesId(newCountriesId);
+          setTimelineData(data);
+        });
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [category, sourceCountry, targetCountry]);
 
   return (
     <svg
@@ -116,16 +134,22 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
       ref={svgRef}
     >
       <foreignObject width="100%" height="100%">
-        {(barAttrState as { width: number }[]).map((item, index) => {
+        {countriesId.map((item, index) => {
           return (
             <div
-              className="bar-transition"
+              className={cn({
+                "bar-transition": true,
+                [styles.transition]: true,
+              })}
               key={index}
               style={{
-                width: item.width - 10,
-                height: (computedHeight - axisHeight) / colors.length,
+                width: lineX - 10,
+                height:
+                  countriesId.length !== 0
+                    ? (computedHeight - axisHeight) / countriesId.length
+                    : 0,
                 opacity: 0.6,
-                background: colors[index],
+                background: colorScale(timelineData[countriesId[index]][0]),
                 marginLeft: 10,
               }}
             />
@@ -136,10 +160,11 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
         className={cn({
           [styles.tooltip]: true,
           "line-transition": true,
+          [styles.transition]: true,
         })}
-        x1={lineAttrState.x1 as number}
+        x1={line.x1 as number}
         y1={0}
-        x2={lineAttrState.x2 as number}
+        x2={line.x2 as number}
         y2={computedHeight - axisHeight}
         strokeWidth={4}
       />
