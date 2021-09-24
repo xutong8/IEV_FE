@@ -59,7 +59,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     setLineX(computedWidth - 30);
   }, [computedWidth]);
 
-  const lines = useMemo(
+  const lineState = useMemo(
     () => ({
       x1: lineX,
       x2: lineX,
@@ -69,11 +69,6 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
 
   // countries state
   const [countriesId, setCountriesId] = useState<string[]>([]);
-
-  const bars = useMemo(
-    () => countriesId.map(() => ({ width: lineX })),
-    [lineX, countriesId]
-  );
 
   // TODO: 事件解除绑定
   const bindClick = () => {
@@ -91,23 +86,6 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
   useEffect(() => {
     bindClick();
   }, [xScale.range()]);
-
-  const { attrState: barAttrState, setAttrState: setBarAttrState } =
-    useTransition({
-      className: "bar-transition",
-      value: bars,
-      deps: [bars],
-      duration: 500,
-      easingFunction: easeLinear,
-    });
-
-  const { attrState: lineAttrState } = useTransition({
-    className: "line-transition",
-    value: [lines],
-    deps: [lines],
-    duration: 500,
-    easingFunction: easeLinear,
-  });
 
   const category = useSelector(
     (state: IStore) =>
@@ -141,7 +119,6 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
         const data = res?.data ?? {};
         const newCountriesId = Object.keys(data);
         unstable_batchedUpdates(() => {
-          setBarAttrState(newCountriesId.map(() => ({ width: lineX })));
           setCountriesId(newCountriesId);
           setTimelineData(data);
         });
@@ -160,22 +137,37 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
       ref={svgRef}
     >
       <foreignObject width="100%" height="100%">
-        {(barAttrState as { width: number }[]).map((item, index) => {
+        {countriesId.map((item) => {
           return (
             <div
-              className="bar-transition"
-              key={index}
+              className={styles.container}
               style={{
-                width: item.width - 10,
+                width: lineX - 10,
+                marginLeft: 10,
                 height:
                   countriesId.length !== 0
                     ? (computedHeight - axisHeight) / countriesId.length
                     : 0,
-                opacity: 0.6,
-                background: colorScale(timelineData[countriesId[index]][0]),
-                marginLeft: 10,
               }}
-            />
+              key={item}
+            >
+              {((timelineData[item] ?? []) as any[]).map((val, index) => {
+                return (
+                  <div
+                    className={cn({
+                      "bar-transition": true,
+                      [styles.transition]: true,
+                    })}
+                    key={index}
+                    style={{
+                      flex: "1 0 0",
+                      opacity: 0.6,
+                      background: colorScale(val),
+                    }}
+                  />
+                );
+              })}
+            </div>
           );
         })}
       </foreignObject>
@@ -183,10 +175,11 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
         className={cn({
           [styles.tooltip]: true,
           "line-transition": true,
+          [styles.transition]: true,
         })}
-        x1={lineAttrState.x1 as number}
+        x1={lineState.x1 as number}
         y1={0}
-        x2={lineAttrState.x2 as number}
+        x2={lineState.x2 as number}
         y2={computedHeight - axisHeight}
         strokeWidth={4}
       />
