@@ -21,7 +21,7 @@ const CategoryList: React.FC<ICategoryListProps> = (props) => {
 
   return (
     <div className={styles.list}>
-      <Spin spinning={categoryObj.displayedCategory.length === 0}>
+      <Spin spinning={categoryObj.selectedCategory.length === 0}>
         <div className={styles.tags}>
           {categoryObj.displayedCategory.map((category) => (
             <Tag key={category.id} style={{ margin: 2 }}>
