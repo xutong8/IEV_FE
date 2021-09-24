@@ -89,7 +89,7 @@ const BasicLayout = () => {
   // 对比国家
   const [sourceCountry, setSourceCountry] = useState<string>("China");
   // 参照国家
-  const [targetCountry, setTargetCountry] = useState<string>("Turkey");
+  const [targetCountry, setTargetCountry] = useState<string>("USA");
 
   return (
     <div className={styles["basic_layout"]}>

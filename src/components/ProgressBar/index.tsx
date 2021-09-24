@@ -3,14 +3,11 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Axis, { DirectionValue } from "../Axis";
 import styles from "./index.less";
 import { select } from "d3-selection";
-import { pointer, easeLinear } from "d3";
-import { useTransition } from "@/hooks/useTransition";
+import { pointer } from "d3";
 import cn from "classnames";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import { years } from "@/constants/years";
 import { processTicks } from "@/utils/processTicks";
-import { colorMap } from "@/utils/generateCountryColor";
-import dataSource from "@/data/nameToDigit2.json";
 import { useDispatch, useSelector } from "react-redux";
 import { UPDATE_YEAR } from "@/constants/year";
 import { httpRequest } from "@/services";
@@ -19,6 +16,7 @@ import { isEqual } from "lodash";
 import { findCountryIdByName } from "@/utils/findCountryIdByName";
 import { colorDomain, colorRange } from "@/constants/colorScale";
 import { unstable_batchedUpdates } from "react-dom";
+import { uniteVal } from "@/utils/uniteVal";
 export interface IProgressBarProps {
   width: number | string;
   height: number | string;
@@ -32,6 +30,8 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
   const dispatch = useDispatch();
 
   const axisHeight = 20;
+
+  const BASE_YEAR = 1995;
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
@@ -82,6 +82,9 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
       });
     });
   };
+
+  // year selector
+  const year = useSelector((state: IStore) => state.year);
 
   useEffect(() => {
     bindClick();
@@ -137,39 +140,48 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
       ref={svgRef}
     >
       <foreignObject width="100%" height="100%">
-        {countriesId.map((item) => {
-          return (
-            <div
-              className={styles.container}
-              style={{
-                width: lineX - 10,
-                marginLeft: 10,
-                height:
-                  countriesId.length !== 0
-                    ? (computedHeight - axisHeight) / countriesId.length
-                    : 0,
-              }}
-              key={item}
-            >
-              {((timelineData[item] ?? []) as any[]).map((val, index) => {
-                return (
-                  <div
-                    className={cn({
-                      "bar-transition": true,
-                      [styles.transition]: true,
-                    })}
-                    key={index}
-                    style={{
-                      flex: "1 0 0",
-                      opacity: 0.6,
-                      background: colorScale(val),
-                    }}
-                  />
-                );
-              })}
-            </div>
-          );
-        })}
+        <div
+          className={styles.pixmaps}
+          style={{ height: computedHeight - axisHeight }}
+        >
+          {countriesId.map((item) => {
+            return (
+              <div
+                className={styles.container}
+                style={{
+                  width: lineX - 10,
+                  height: (computedHeight - axisHeight) / countriesId.length,
+                }}
+                key={item}
+              >
+                {uniteVal((timelineData[item] ?? []) as any[]).map(
+                  (val, index) => {
+                    if (index >= year - BASE_YEAR) {
+                      return null;
+                    }
+
+                    return (
+                      <div
+                        className={cn({
+                          "bar-transition": true,
+                          [styles.transition]: true,
+                          [styles.item]: true,
+                        })}
+                        key={index}
+                        style={{
+                          width: (computedWidth - 40) / (years.length - 1),
+                          backgroundImage: `linear-gradient(${colorScale(
+                            val[0]
+                          )}, ${colorScale(val[1])})`,
+                        }}
+                      />
+                    );
+                  }
+                )}
+              </div>
+            );
+          })}
+        </div>
       </foreignObject>
       <line
         className={cn({
