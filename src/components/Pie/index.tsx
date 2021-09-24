@@ -1,6 +1,6 @@
 import { pie, arc } from "d3";
 import Wedge from "./Wedge";
-import { IItemPieData } from "@/utils/processPieData";
+import { IItemPieData } from "@/types/pie";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Tooltip from "@/components/Tooltip";
 import { reqDonutChartData } from "@/services/api";
