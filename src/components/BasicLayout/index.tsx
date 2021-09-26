@@ -86,6 +86,11 @@ const BasicLayout = () => {
     );
   };
 
+  // 对比国家
+  const [sourceCountry, setSourceCountry] = useState<string>("China");
+  // 参照国家
+  const [targetCountry, setTargetCountry] = useState<string>("USA");
+
   return (
     <div className={styles["basic_layout"]}>
       <div className={styles["left_menu"]}>
@@ -143,7 +148,12 @@ const BasicLayout = () => {
           <div className={styles.second}>
             <div className={styles.secondLeft}>
               <div className={styles.pieMapContainer}>
-                <PieMap />
+                <PieMap
+                  sourceCountry={sourceCountry}
+                  setSourceCountry={setSourceCountry}
+                  targetCountry={targetCountry}
+                  setTargetCountry={setTargetCountry}
+                />
               </div>
             </div>
             <div className={styles.secondRight}>
@@ -153,7 +163,12 @@ const BasicLayout = () => {
             </div>
           </div>
           <div className={styles.progress}>
-            <ProgressBar width="100%" height="100%" />
+            <ProgressBar
+              width="100%"
+              height="100%"
+              sourceCountry={sourceCountry}
+              targetCountry={targetCountry}
+            />
           </div>
         </div>
       </div>
