@@ -25,7 +25,6 @@ const Path: React.FC<IPathProps> = (props) => {
   return (
     <path
       id={id}
-      className="stackArea"
       style={{ transition: "all .5s ease" }}
       {...attributes}
       onMouseEnter={() => onMouseEnter(id)}

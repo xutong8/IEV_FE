@@ -6,13 +6,12 @@ export interface IWedge {
   d: string | null;
   id: string;
   fill: string;
-  tipMessage: any;
   onMouseMove: any;
   onMouseLeave: any;
 }
 
 const Wedge: React.FC<IWedge> = (props) => {
-  const { d, fill, onMouseMove, onMouseLeave, tipMessage, id } = props;
+  const { d, fill, onMouseMove, onMouseLeave, id } = props;
   const [opacity, setOpacity] = useState<string>("0.7");
   return d ? (
     <path
@@ -24,7 +23,7 @@ const Wedge: React.FC<IWedge> = (props) => {
       onMouseEnter={() => {
         setOpacity("1");
       }}
-      onMouseMove={(e) => onMouseMove(e, tipMessage)}
+      onMouseMove={(e) => onMouseMove(e)}
       onMouseLeave={() => {
         onMouseLeave();
         setOpacity("0.7");

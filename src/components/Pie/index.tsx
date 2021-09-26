@@ -90,9 +90,11 @@ const Pie: React.FC<IPie> = (props) => {
                       ? "#508bbb"
                       : "#d2796f"
                   }
-                  tipMessage={item}
                   onMouseMove={(e: any) =>
-                    toolTipRef.current.onMouseMove(e, item.data)
+                    toolTipRef.current.onMouseMove(e, {
+                      name: `${item.data.country} ${item.data.type_name}`,
+                      value: item.data.value,
+                    })
                   }
                   onMouseLeave={() => toolTipRef.current.onMouseLeave()}
                 />
