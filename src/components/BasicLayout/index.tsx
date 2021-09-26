@@ -20,6 +20,7 @@ import {
 } from "@/actions/categoryList";
 import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
+import Radar from "../Radar";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -148,7 +149,8 @@ const BasicLayout = () => {
             </div>
             <div className={styles.secondRight}>
               <div className={styles.stack} ref={stackContainerRef}>
-                <StackChart width={stackWidth} height={stackHeight} />
+                {/* <StackChart width={stackWidth} height={stackHeight} /> */}
+                <Radar width={stackWidth} height={stackHeight} />
               </div>
             </div>
           </div>
