@@ -156,7 +156,10 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       const year = Math.round(xScale.invert(coordinates[0]));
       const value = areaData[year - 1995][hoverName].toFixed(3);
 
-      toolTipRef.current.onMouseMove(e, { year, country: hoverName, value });
+      toolTipRef.current.onMouseMove(e, {
+        name: `${year} ${hoverName}`,
+        value,
+      });
     },
     [xScale]
   );
@@ -199,9 +202,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   return (
     <>
       <Tooltip ref={toolTipRef}>
-        {({ year, country, value }: any) =>
+        {/* {({ year, country, value }: any) =>
           `<div>${year} ${country} </div><div>value: ${value}</div>`
-        }
+        } */}
       </Tooltip>
       <svg width={width} height={height} ref={svgRef}>
         <foreignObject width="100%" height={legendHeight}>
