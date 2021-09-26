@@ -20,6 +20,7 @@ import {
 } from "@/actions/categoryList";
 import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
+import { addCountryItem, delCountryItem } from "@/actions/countryList";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -34,7 +35,7 @@ const BasicLayout = () => {
   // dispatch
   const dispatch = useDispatch();
 
-  // selector
+  // categoryObj selector
   const categoryObj = useSelector(
     (state: IStore) => ({
       displayedCategory: state.categoryObj.displayedCategory,
@@ -91,13 +92,28 @@ const BasicLayout = () => {
   // 参照国家
   const [targetCountry, setTargetCountry] = useState<string>("USA");
 
+  // countryList selector
+  const countryList = useSelector(
+    (state: IStore) => state.countryList,
+    (prev, next) => isEqual(prev, next)
+  );
+
+  // 处理国家被点击的事件
+  const handleCountryClick = (image: Image) => {
+    dispatch(
+      countryList.find((country) => country.id === image.id)
+        ? delCountryItem(image)
+        : addCountryItem(image)
+    );
+  };
+
   return (
     <div className={styles["basic_layout"]}>
       <div className={styles["left_menu"]}>
         <LeftMenu />
       </div>
       <div className={styles["main_content"]}>
-        <div className={styles["top"]}>top</div>
+        {/* <div className={styles["top"]}>top</div> */}
         <div className={styles["middle"]}>
           <div className={styles["item"]}>
             <Images
@@ -108,6 +124,16 @@ const BasicLayout = () => {
                 width: 60,
                 margin: "4px 0",
               }}
+              styleProcessor={(image) => {
+                return {
+                  boxShadow: countryList.find(
+                    (country) => image.id === country.id
+                  )
+                    ? "-1px -1px 2px 2px rgba(0, 0, 0, 0.1)"
+                    : "1px 1px 1px 1px rgba(0, 0, 0, 0.1)",
+                };
+              }}
+              onClick={handleCountryClick}
             />
           </div>
           <div className={styles["item"]}>

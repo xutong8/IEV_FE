@@ -65,7 +65,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
             rowKey={(record) => record.id}
             pagination={{
               showSizeChanger: false,
-              pageSize: 12,
+              pageSize: 20,
               size: "small",
             }}
             scroll={{
