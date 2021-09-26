@@ -13,12 +13,19 @@ import { isEqual } from "lodash";
 
 const { Option } = Select;
 
-const PieMap = () => {
+export interface IPieMapProps {
+  sourceCountry: string;
+  targetCountry: string;
+  setSourceCountry: (sourceCountry: string) => void;
+  setTargetCountry: (targetCountry: string) => void;
+}
+
+const PieMap: React.FC<IPieMapProps> = (props) => {
   const productData = useContext(projectContext);
-  // 对比国家
-  const [sourceCountry, setSourceCountry] = useState<string>("China");
-  // 参照国家
-  const [targetCountry, setTargetCountry] = useState<string>("Usa");
+
+  const { sourceCountry, targetCountry, setSourceCountry, setTargetCountry } =
+    props;
+
   // source map的ref
   const sourceMapRef = useRef<HTMLDivElement>(null);
   const [sourceMapWidth, sourceMapHeight] = useSVGSize(sourceMapRef);
@@ -71,10 +78,14 @@ const PieMap = () => {
         </div>
         <div className={styles.middleMap} ref={middleMapRef}>
           <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
-            <Pie width={middleMapWidth} height={middleMapHeight} />
+            <Pie
+              width={middleMapWidth}
+              height={middleMapHeight}
+              sourceCountry={sourceCountry}
+              targetCountry={targetCountry}
+            />
             <Choropleth
               selectedCountries={["156", "842"]}
-              selectedColors={["red", "blue"]}
               parentClass={styles.middleMap}
             />
           </Spin>

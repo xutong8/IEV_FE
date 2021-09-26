@@ -22,7 +22,8 @@ const processTicks = <T extends BaseTick>(
 const processTicksByMax = (maxValue: number, ticks: number): number[] => {
   const result = [] as number[];
 
-  if (maxValue === -Infinity) return result;
+  if (maxValue === -Infinity || maxValue === Infinity || !maxValue)
+    return result;
 
   for (let i = 0; i <= ticks; i++) {
     result.push((maxValue / ticks) * i);

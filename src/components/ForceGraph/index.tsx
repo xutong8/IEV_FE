@@ -136,12 +136,10 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     return forceSimulation(nodesState as any)
       .force(
         "link",
-        forceLink(linksState as any)
-          .id((d: any) => d.id)
-          .distance((d) => linkScale((d as any)?.value ?? 1))
+        forceLink(linksState as any).id((d: any) => d.id)
       )
-      .force("charge", forceManyBody().distanceMax(30))
-      .force("collide", forceCollide().radius(8))
+      .force("charge", forceManyBody().distanceMax(40))
+      .force("collide", forceCollide().radius(12))
       .force("center", forceCenter(computedWidth / 2, computedHeight / 2));
   }, [computedWidth, computedHeight, nodesState, linksState, linkScale]);
 

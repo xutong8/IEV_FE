@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./index.less";
-import { Button, Tag, Spin } from "antd";
+import { Button, Spin } from "antd";
 import { IStore } from "@/reducers";
 import { connect } from "react-redux";
 import { ICategoryObj } from "@/types";
 import { Dispatch } from "redux";
 import { replaceCategory } from "@/actions/categoryList";
+import Tags from "@/components/Tags";
 
 interface ICategoryListProps {
   categoryObj: ICategoryObj;
@@ -22,13 +23,7 @@ const CategoryList: React.FC<ICategoryListProps> = (props) => {
   return (
     <div className={styles.list}>
       <Spin spinning={categoryObj.selectedCategory.length === 0}>
-        <div className={styles.tags}>
-          {categoryObj.displayedCategory.map((category) => (
-            <Tag key={category.id} style={{ margin: 2 }}>
-              {category.name}
-            </Tag>
-          ))}
-        </div>
+        <Tags tags={categoryObj.displayedCategory} />
       </Spin>
       <Button type="primary" size="small" onClick={handleConfirm}>
         Confirm

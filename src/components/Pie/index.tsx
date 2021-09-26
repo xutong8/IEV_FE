@@ -1,16 +1,19 @@
 import { pie, arc } from "d3";
 import Wedge from "./Wedge";
-import { IItemPieData, selectCountries } from "@/utils/processPieData";
+import { IItemPieData } from "@/types/pie";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Tooltip from "@/components/Tooltip";
 import { reqDonutChartData } from "@/services/api";
 import { useSelector } from "react-redux";
 import { isEqual } from "lodash";
 import { IStore } from "@/reducers";
+import { findCountryIdByName } from "@/utils/findCountryIdByName";
 
 export interface IPie {
   width: number;
   height: number;
+  sourceCountry: string;
+  targetCountry: string;
 }
 
 export interface IPieData {
@@ -23,7 +26,7 @@ export interface IPieData {
 }
 
 const Pie: React.FC<IPie> = (props) => {
-  const { width, height } = props;
+  const { width, height, sourceCountry, targetCountry } = props;
 
   const toolTipRef = useRef<any>();
   const [data, setData] = useState<any>();
@@ -43,7 +46,10 @@ const Pie: React.FC<IPie> = (props) => {
     const res: any = await reqDonutChartData({
       year,
       category,
-      countries: ["842", "156"],
+      countries: [
+        findCountryIdByName(sourceCountry),
+        findCountryIdByName(targetCountry),
+      ],
     });
 
     setData(res.data);
@@ -51,7 +57,7 @@ const Pie: React.FC<IPie> = (props) => {
 
   useEffect(() => {
     handleData();
-  }, [year, category]);
+  }, [year, category, sourceCountry, targetCountry]);
 
   const [innerRadius, outerRadius] = useMemo(() => {
     const radius = Math.min(width - 20, height - 20) / 2;
@@ -100,9 +106,7 @@ const Pie: React.FC<IPie> = (props) => {
                   id={`arc${item.index}`}
                   d={d}
                   fill={
-                    item.data.country === selectCountries[0]
-                      ? "#508bbb"
-                      : "#d2796f"
+                    item.data.country === targetCountry ? "#508bbb" : "#d2796f"
                   }
                   tipMessage={item}
                   onMouseMove={(e: any) =>
