@@ -107,6 +107,10 @@ const BasicLayout = () => {
     );
   };
 
+  // force graph的ref
+  const forceGraphRef = useRef<HTMLDivElement>(null);
+  const [forceWidth, forceHeight] = useSVGSize(forceGraphRef);
+
   return (
     <div className={styles["basic_layout"]}>
       <div className={styles["left_menu"]}>
@@ -166,8 +170,8 @@ const BasicLayout = () => {
               </div>
             </div>
             <div className={styles.firstRight}>
-              <div className={styles.force}>
-                <ForceGraphWithStore />
+              <div className={styles.force} ref={forceGraphRef}>
+                <ForceGraphWithStore width={forceWidth} height={forceHeight} />
               </div>
             </div>
           </div>

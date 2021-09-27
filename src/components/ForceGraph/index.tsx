@@ -33,8 +33,8 @@ import { Spin } from "antd";
 import { isEqual } from "lodash";
 
 export interface IForceGraphProps {
-  width: number | string;
-  height: number | string;
+  width: number;
+  height: number;
   radius: number;
   year: number;
   category: string[];
@@ -262,7 +262,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
             onMouseLeave={() => {}}
           />
         </div>
-        <svg width={width} height={height} ref={svgRef}>
+        <svg width={width} height={height - 50} ref={svgRef}>
           <g id="graphRoot">
             <g className={styles.links} stroke="#999">
               {linksState.map((link, index: number) => {
