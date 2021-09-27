@@ -3,19 +3,29 @@ import Pie from "../Pie";
 import styles from "./index.less";
 import cn from "classnames";
 import CountryMap from "../CountryMap";
-import { Select } from "antd";
+import { Select, Spin } from "antd";
 import { projectContext } from "@/context/projectData";
 import Choropleth from "../Choropleth";
 import { useSVGSize } from "@/hooks/useSVGSize";
+import { useSelector } from "react-redux";
+import { IStore } from "@/reducers";
+import { isEqual } from "lodash";
 
 const { Option } = Select;
 
-const PieMap = () => {
+export interface IPieMapProps {
+  sourceCountry: string;
+  targetCountry: string;
+  setSourceCountry: (sourceCountry: string) => void;
+  setTargetCountry: (targetCountry: string) => void;
+}
+
+const PieMap: React.FC<IPieMapProps> = (props) => {
   const productData = useContext(projectContext);
-  // 对比国家
-  const [sourceCountry, setSourceCountry] = useState<string>("China");
-  // 参照国家
-  const [targetCountry, setTargetCountry] = useState<string>("Usa");
+
+  const { sourceCountry, targetCountry, setSourceCountry, setTargetCountry } =
+    props;
+
   // source map的ref
   const sourceMapRef = useRef<HTMLDivElement>(null);
   const [sourceMapWidth, sourceMapHeight] = useSVGSize(sourceMapRef);
@@ -24,7 +34,14 @@ const PieMap = () => {
   const [middleMapWidth, middleMapHeight] = useSVGSize(middleMapRef);
   // target map的ref
   const targetMapRef = useRef<HTMLDivElement>(null);
-  const [targetMapWidth, targetMapHeight] = useSVGSize(targetMapRef);
+  const [targetMapWidth] = useSVGSize(targetMapRef);
+
+  // category selector
+  const category = useSelector(
+    (state: IStore) =>
+      state.categoryObj.selectedCategory.map((item) => item.name),
+    (prev, next) => isEqual(prev, next)
+  );
 
   return (
     <div className={styles.pieMap}>
@@ -60,12 +77,18 @@ const PieMap = () => {
           </Select>
         </div>
         <div className={styles.middleMap} ref={middleMapRef}>
-          <Pie width={middleMapWidth} height={middleMapHeight} />
-          <Choropleth
-            selectedCountries={["156", "842"]}
-            selectedColors={["red", "blue"]}
-            parentClass={styles.middleMap}
-          />
+          <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
+            <Pie
+              width={middleMapWidth}
+              height={middleMapHeight}
+              sourceCountry={sourceCountry}
+              targetCountry={targetCountry}
+            />
+            <Choropleth
+              selectedCountries={["156", "842"]}
+              parentClass={styles.middleMap}
+            />
+          </Spin>
         </div>
         <div
           className={cn({
