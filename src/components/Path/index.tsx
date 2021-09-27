@@ -1,4 +1,4 @@
-import React, { SVGAttributes } from "react";
+import React, { CSSProperties, SVGAttributes } from "react";
 import { pointer } from "d3";
 
 export interface IPathProps {
@@ -11,6 +11,7 @@ export interface IPathProps {
     coordinates: Array<number>,
     event: any
   ) => void;
+  style?: CSSProperties;
 }
 
 const Path: React.FC<IPathProps> = (props) => {
@@ -20,12 +21,14 @@ const Path: React.FC<IPathProps> = (props) => {
     onMouseEnter,
     onMouseLeave,
     onMouseMove,
+    style = {},
   } = props;
 
   return (
     <path
       id={id}
-      style={{ transition: "all .5s ease" }}
+      className="stackArea"
+      style={{ ...style }}
       {...attributes}
       onMouseEnter={() => onMouseEnter(id)}
       onMouseMove={(e: any) => onMouseMove(id, pointer(e), e)}

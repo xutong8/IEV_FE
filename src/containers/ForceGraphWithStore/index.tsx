@@ -8,14 +8,16 @@ export interface IForceGraphWithStoreProps {
   radius: number;
   year: number;
   category: string[];
+  width: number;
+  height: number;
 }
 
 const ForceGraphWithStore: React.FC<IForceGraphWithStoreProps> = (props) => {
-  const { radius, year, category } = props;
+  const { radius, year, category, width, height } = props;
   return (
     <ForceGraph
-      width="100%"
-      height="100%"
+      width={width}
+      height={height}
       radius={radius}
       year={year}
       category={category}

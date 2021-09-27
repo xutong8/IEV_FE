@@ -11,8 +11,8 @@ export interface IImageItem {
 }
 
 export interface Image {
-  name?: string;
-  id?: string;
+  name: string;
+  id: string;
   image: string;
 }
 

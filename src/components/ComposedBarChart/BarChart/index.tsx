@@ -13,12 +13,8 @@ export interface IBarChartProps {
 const BarChart: React.FC<IBarChartProps> = (props) => {
   const { isReverse = false, dataSource, scale } = props;
 
-  const reverseDirection = useMemo(
-    () => (isReverse ? "row-reverse" : "row"),
-    [isReverse]
-  );
-  const direction = useMemo(
-    () => (isReverse ? "row" : "row-reverse"),
+  const colors = useMemo(
+    () => (!isReverse ? ["#c8c8c8", "#636363"] : ["#636363", "#c8c8c8"]),
     [isReverse]
   );
 
@@ -31,19 +27,16 @@ const BarChart: React.FC<IBarChartProps> = (props) => {
             [`${country.countryName}bar`]: true,
           })}
           key={country.countryName}
-          style={{ flexDirection: reverseDirection }}
+          style={{ flexDirection: "row" }}
         >
-          <div className={styles.left} style={{ flexDirection: direction }}>
+          <div className={styles.left} style={{ flexDirection: "row-reverse" }}>
             <div
-              style={{ background: "#c8c8c8", width: scale(country.exptotal) }}
+              style={{ background: colors[0], width: scale(country.exptotal) }}
             />
           </div>
-          <div
-            className={styles.right}
-            style={{ flexDirection: reverseDirection }}
-          >
+          <div className={styles.right} style={{ flexDirection: "row" }}>
             <div
-              style={{ background: "#636363", width: scale(country.imptotal) }}
+              style={{ background: colors[1], width: scale(country.imptotal) }}
             />
           </div>
         </div>
