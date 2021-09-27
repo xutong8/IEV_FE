@@ -23,7 +23,6 @@ const useTransition: (props: {
 
   const executeTransition = () => {
     if (!className) return;
-    if (value && value.length <= 0) return;
 
     const elements = selectAll(`.${className}`);
 
@@ -35,15 +34,21 @@ const useTransition: (props: {
 
     easingFunction && transitions.ease(easingFunction);
 
-    const attrNames = Object.keys(attrState[0]);
+    if (attrState.length !== 0) {
+      const attrNames = Object.keys(attrState[0]);
 
-    attrNames.forEach((attrName) => {
-      transitions.each((d, index: number) => {
-        transitions
-          .filter((d, idx: number) => index === idx)
-          .attr(attrName, value[index][attrName]);
+      attrNames.forEach((attrName) => {
+        transitions.each((d, index: number) => {
+          transitions
+            .filter((d, idx: number) => index === idx)
+            .attr(attrName, value[index][attrName]);
+        });
       });
-    });
+    } else {
+      // Fix: 如果attrState为空，则无法触发transition，所以无法更新状态，
+      // 因此当attrState为空时，直接setState
+      setAttrState(value);
+    }
 
     transitions.on("end", () => {
       setAttrState(value);
@@ -56,6 +61,7 @@ const useTransition: (props: {
 
   return {
     attrState,
+    setAttrState,
   };
 };
 

@@ -233,6 +233,8 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
     drawLines();
   }, [countryNames]);
 
+  const [topmapWidth, topmapHeight] = useSVGSize(containerRef);
+
   return (
     <div className={styles.topmap}>
       <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
@@ -299,7 +301,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
             />
           </div>
         </div>
-        <svg width="100%" height="100%" className={styles.svg}>
+        <svg width={topmapWidth} height={topmapHeight} className={styles.svg}>
           {lines.map((line: IPoint[], index: number) => {
             return <path key={index} d={`${getLineD(line)}`} />;
           })}

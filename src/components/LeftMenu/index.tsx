@@ -4,6 +4,7 @@ import { Tag } from "antd";
 import DisplayYear from "@/containers/DisplayYear";
 import RadiusSlider from "@/containers/RadiusSlider";
 import CategoryList from "@/containers/CategoryList";
+import CountryList from "@/containers/CountryList";
 
 const LeftMenu = () => {
   return (
@@ -19,6 +20,12 @@ const LeftMenu = () => {
           Current Year:
         </Tag>
         <DisplayYear />
+      </div>
+      <div className={styles.basic}>
+        <Tag color="geekblue" className={styles.text} style={{ height: 32 }}>
+          Current Countries:
+        </Tag>
+        <CountryList />
       </div>
       <div className={styles.basic}>
         <Tag color="geekblue" className={styles.text} style={{ height: 32 }}>

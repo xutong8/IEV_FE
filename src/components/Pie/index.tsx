@@ -1,13 +1,19 @@
 import { pie, arc } from "d3";
 import Wedge from "./Wedge";
-import { IItemPieData, pieData, selectCountries } from "@/utils/processPieData";
+import { IItemPieData } from "@/types/pie";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Tooltip from "@/components/Tooltip";
 import { reqDonutChartData } from "@/services/api";
+import { useSelector } from "react-redux";
+import { isEqual } from "lodash";
+import { IStore } from "@/reducers";
+import { findCountryIdByName } from "@/utils/findCountryIdByName";
 
 export interface IPie {
   width: number;
   height: number;
+  sourceCountry: string;
+  targetCountry: string;
 }
 
 export interface IPieData {
@@ -20,16 +26,30 @@ export interface IPieData {
 }
 
 const Pie: React.FC<IPie> = (props) => {
-  const { width, height } = props;
+  const { width, height, sourceCountry, targetCountry } = props;
 
   const toolTipRef = useRef<any>();
   const [data, setData] = useState<any>();
 
+  const { year, category } = useSelector(
+    (state: IStore) => ({
+      year: state.year,
+      category: state.categoryObj.selectedCategory.map((item) => item.id),
+    }),
+    (prev, next) => isEqual(prev, next)
+  );
+
   const handleData = async () => {
+    // 如果category长度为0，则跳过
+    if (category.length === 0) return;
+
     const res: any = await reqDonutChartData({
-      year: "2019",
-      category: ["1", "2", "3", "4", "5", "6", "7"],
-      countries: ["842", "156"],
+      year,
+      category,
+      countries: [
+        findCountryIdByName(sourceCountry),
+        findCountryIdByName(targetCountry),
+      ],
     });
 
     setData(res.data);
@@ -37,7 +57,7 @@ const Pie: React.FC<IPie> = (props) => {
 
   useEffect(() => {
     handleData();
-  }, []);
+  }, [year, category, sourceCountry, targetCountry]);
 
   const [innerRadius, outerRadius] = useMemo(() => {
     const radius = Math.min(width - 20, height - 20) / 2;
@@ -86,9 +106,7 @@ const Pie: React.FC<IPie> = (props) => {
                   id={`arc${item.index}`}
                   d={d}
                   fill={
-                    item.data.country === selectCountries[0]
-                      ? "#508bbb"
-                      : "#d2796f"
+                    item.data.country === targetCountry ? "#508bbb" : "#d2796f"
                   }
                   onMouseMove={(e: any) =>
                     toolTipRef.current.onMouseMove(e, {
