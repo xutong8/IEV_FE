@@ -1,76 +1,77 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export interface IPolyGrid {
   sides: number;
   level: number;
   width: number;
   height: number;
+  r: number;
+  r_0: number;
+  size: number;
+  center: {
+    x: number;
+    y: number;
+  };
+  generatePoint: any;
+  drawPath: any;
 }
 
 // TODO
 const PolyGrid: React.FC<IPolyGrid> = (props) => {
-  const { sides, level, width, height } = props;
-  const size = Math.min(width, height);
-  const offset = Math.PI;
+  const {
+    sides,
+    level,
+    width,
+    height,
+    r,
+    r_0,
+    size,
+    center,
+    generatePoint,
+    drawPath,
+  } = props;
+  //   const size = useMemo(() => Math.min(width, height), [width, height]);
+
   const polyangle = (Math.PI * 2) / sides;
-  const r = 0.8 * size;
-  const r_0 = r / 2;
-  const center = {
-    x: size / 2,
-    y: size / 2,
-  };
+  //   const r = 0.8 * size;
+  //   const r_0 = r / 2;
 
-  const [paths, setPaths] = useState<Array<string>>();
-
-  const generatePoint = ({ length, angle }: any) => {
-    const point = {
-      x: center.x + length * Math.sin(offset - angle),
-      y: center.y + length * Math.cos(offset - angle),
-    };
-    return point;
-  };
-
-  const drawPath = (points: Array<any>) => {
-    // draw points
-    console.log(points);
-    let pathD = "";
-    points.forEach((point, index) => {
-      if (index == 0) {
-        pathD += `M${point.x} ${point.y} `;
-      } else {
-        pathD += `L${point.x} ${point.y} `;
-      }
-    });
-    pathD += "Z";
-
-    return pathD;
-  };
+  const paths: Array<string> = [];
+  const lines: Array<string> = [];
 
   const generateAndDrawLevels = (levelsCount: number, sideCount: number) => {
-    let pathAray = [];
     for (let level = 1; level <= levelsCount; level++) {
       const hyp = (level / levelsCount) * r_0;
 
       const points = [];
       for (let vertex = 0; vertex < sideCount; vertex++) {
         const theta = vertex * polyangle;
-
         points.push(generatePoint({ length: hyp, angle: theta }));
       }
 
-      pathAray.push(drawPath([...points]));
+      paths.push(drawPath([...points]));
     }
-    setPaths(pathAray);
   };
 
-  useEffect(() => {
-    generateAndDrawLevels(level, sides);
-  }, []);
+  const generateAndDrawLines = (sideCount: number) => {
+    for (let vertex = 1; vertex <= sideCount; vertex++) {
+      const theta = vertex * polyangle;
+      const point = generatePoint({ length: r_0, angle: theta });
+
+      lines.push(drawPath([center, point]));
+    }
+  };
+
+  generateAndDrawLevels(level, sides);
+  generateAndDrawLines(sides);
 
   return (
     <g className="polygrid">
       {paths?.map((d, index) => (
-        <path key={index} d={d} fill="none" stroke="black" strokeWidth={2} />
+        <path key={index} d={d} fill="none" stroke="black" strokeWidth={1} />
+      ))}
+      {lines?.map((d, index) => (
+        <path key={index} d={d} fill="none" stroke="black" strokeWidth={1} />
       ))}
     </g>
   );

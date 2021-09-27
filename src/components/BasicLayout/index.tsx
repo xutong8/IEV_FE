@@ -25,6 +25,7 @@ import Radar from "../Radar";
 const BasicLayout = () => {
   // stack container的ref
   const stackContainerRef = useRef<HTMLDivElement>(null);
+  console.log("layout update");
   const [stackWidth, stackHeight] = useSVGSize(stackContainerRef);
 
   // country images
