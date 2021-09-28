@@ -27,7 +27,7 @@ export interface IPieData {
 
 const Pie: React.FC<IPie> = (props) => {
   const { width, height, sourceCountry, targetCountry } = props;
-
+  console.log(width, height);
   const toolTipRef = useRef<any>();
   const [data, setData] = useState<any>();
 
@@ -85,7 +85,7 @@ const Pie: React.FC<IPie> = (props) => {
     [width, height]
   );
 
-  return (
+  return width && height ? (
     <>
       <Tooltip ref={toolTipRef}>
         {({ country, type_name, value }: any) =>
@@ -136,7 +136,7 @@ const Pie: React.FC<IPie> = (props) => {
         </g>
       </svg>
     </>
-  );
+  ) : null;
 };
 
 export default Pie;
