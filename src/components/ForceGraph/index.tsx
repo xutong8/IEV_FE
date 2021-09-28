@@ -140,8 +140,8 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
       )
       .force("charge", forceManyBody().distanceMax(40))
       .force("collide", forceCollide().radius(12))
-      .force("center", forceCenter(computedWidth / 2, computedHeight / 2));
-  }, [computedWidth, computedHeight, nodesState, linksState, linkScale]);
+      .force("center", forceCenter(width / 2, (height - 50) / 2));
+  }, [width, height, nodesState, linksState, linkScale]);
 
   useEffect(() => {
     simulation.on("tick", () => {
