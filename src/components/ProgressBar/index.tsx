@@ -164,7 +164,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
                         key={index}
                         style={{
                           width: (width - 40) / (years.length - 1),
-                          backgroundImage: `linear-gradient(${colorScale(
+                          backgroundImage: `linear-gradient(to right, ${colorScale(
                             val[0]
                           )}, ${colorScale(val[1])})`,
                         }}

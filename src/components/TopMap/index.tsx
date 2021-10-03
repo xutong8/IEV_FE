@@ -12,6 +12,7 @@ import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 import { Spin } from "antd";
 import Title from "../Title";
+import { numberFormat } from "@/utils/number";
 
 export interface ILineObj {
   name: string;
@@ -266,12 +267,52 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
 
   const [topmapWidth, topmapHeight] = useSVGSize(containerRef);
 
+  const maxValue = useMemo(
+    () =>
+      Math.max(
+        ...heatmapDataSource.map((item) =>
+          Math.max(...item.explist.map((exp) => exp.expvalue))
+        )
+      ),
+    [heatmapDataSource]
+  );
+
   return (
     <div className={styles.topmap}>
       <Title title="TopMap View"></Title>
       <div className={styles.content}>
         <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
           <div className={styles.container} ref={containerRef}>
+            <div
+              className={styles.colorScale}
+              style={{
+                backgroundImage: "linear-gradient(#eb7f3e, #f8d06b)",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: -20,
+                  right: -10,
+                  width: 55,
+                  fontSize: 12,
+                  fontWeight: 450,
+                }}
+              >
+                {numberFormat(maxValue)}
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: -20,
+                  right: 0,
+                  fontSize: 12,
+                  fontWeight: 450,
+                }}
+              >
+                0
+              </div>
+            </div>
             <div className={styles.left}>
               <div className={styles.map} ref={mapRef}>
                 <CountryMap
@@ -331,6 +372,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
                 height={heatmapHeight}
                 dataSource={heatmapDataSource}
                 className="heatmap"
+                maxValue={maxValue}
               />
             </div>
           </div>
