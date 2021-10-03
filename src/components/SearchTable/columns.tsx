@@ -5,6 +5,7 @@ import { TEXT_VALUE } from "@/constants/valueTypes";
 import { scaleLinear } from "d3-scale";
 import styles from "./index.less";
 import { selectAll } from "d3-selection";
+import ValueTypeButton from "@/containers/ValueTypeButton";
 
 const columns = [
   "year",
@@ -211,6 +212,7 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
             <Tooltip title="(In thousands current USD)">
               <QuestionCircleOutlined />
             </Tooltip>
+            <ValueTypeButton />
           </div>
         );
       },

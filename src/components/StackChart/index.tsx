@@ -21,6 +21,7 @@ import { httpRequest } from "@/services";
 import { unstable_batchedUpdates } from "react-dom";
 import { Spin } from "antd";
 import { filterObjectKeys } from "@/utils/filterObjectKeys";
+import Title from "../Title";
 
 export interface IStackChartProps {
   width: number;
@@ -254,8 +255,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   return (
     <div className={styles.container}>
+      <Title title="StackChart View"></Title>
       {areaData.length === 0 ? (
-        <Spin wrapperClassName={styles.spin} />
+        <Spin />
       ) : (
         <>
           <Tooltip ref={toolTipRef}>
@@ -263,7 +265,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               `<div>${year} ${country} </div><div>value: ${value}</div>`
             }
           </Tooltip>
-          <svg width={width} height={height} ref={svgRef}>
+          {/* 30为title的高度 */}
+          <svg width={width} height={height - 30} ref={svgRef}>
             <foreignObject width="100%" height={legendHeight}>
               <div className={styles.legends}>
                 <Legend

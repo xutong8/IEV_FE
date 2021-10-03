@@ -12,7 +12,15 @@ export interface IValueTypeButtonProps {
 const ValueTypeButton: React.FC<IValueTypeButtonProps> = (props) => {
   const { handleUpdateValueType } = props;
   return (
-    <Button type="primary" onClick={handleUpdateValueType}>
+    <Button
+      type="primary"
+      size="small"
+      style={{ marginLeft: 8 }}
+      onClick={(event) => {
+        event.stopPropagation();
+        handleUpdateValueType();
+      }}
+    >
       Text/Rect
     </Button>
   );
