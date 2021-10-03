@@ -78,7 +78,7 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
                 </Option>
               ))}
           </Select> */}
-          <RadarChart title="China" />
+          <RadarChart title="China" draggable={true} />
         </div>
         <div className={styles.middleMap} ref={middleMapRef}>
           <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>

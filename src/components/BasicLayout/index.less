@@ -12,7 +12,7 @@
 }
 
 .main_content {
-  flex: 4 0 0;
+  flex: 6 0 0;
   display: flex;
   flex-direction: column;
   padding: 16px;
@@ -36,63 +36,81 @@
       }
     }
 
-    .first {
+    .container {
+      flex: 1 0 0;
       display: flex;
       flex-direction: row;
-      flex: 1 0 0;
-
-      .firstLeft {
-        flex: 3 0 0;
-        height: 100%;
-
-        .topMap {
-          flex: 1 0 0;
-          height: 100%;
-          display: flex;
-        }
-      }
-
-      .firstRight {
-        flex: 1 0 0;
-        height: 100%;
-        margin-left: 12px;
-
-        .force {
-          flex: 1 0 0;
-          height: 100%;
-          display: flex;
-          &:extend(.block);
-        }
-      }
-    }
-
-    .second {
-      flex: 1 0 0;
-      margin-top: 12px;
-      display: flex;
-      flex-direction: row;
-
-      .secondLeft {
-        flex: 3 0 0;
+      .chart_content {
+        flex: 5 0 0;
         display: flex;
-
-        .pieMapContainer {
-          flex: 1 0 0;
+        flex-direction: column;
+        .first {
           display: flex;
-          &:extend(.block);
+          flex-direction: row;
+          flex: 1 0 0;
+
+          .firstLeft {
+            flex: 3 0 0;
+            height: 100%;
+
+            .topMap {
+              flex: 1 0 0;
+              height: 100%;
+              display: flex;
+            }
+          }
+
+          .firstRight {
+            flex: 1 0 0;
+            height: 100%;
+            margin-left: 12px;
+
+            .force {
+              flex: 1 0 0;
+              height: 100%;
+              display: flex;
+              &:extend(.block);
+            }
+          }
+        }
+
+        .second {
+          flex: 1 0 0;
+          margin-top: 12px;
+          display: flex;
+          flex-direction: row;
+
+          .secondLeft {
+            flex: 3 0 0;
+            display: flex;
+
+            .pieMapContainer {
+              flex: 1 0 0;
+              display: flex;
+              &:extend(.block);
+            }
+          }
+
+          .secondRight {
+            flex: 1 0 0;
+            display: flex;
+            margin-left: 12px;
+
+            .stack {
+              flex: 1 0 0;
+              display: flex;
+              &:extend(.block);
+            }
+          }
         }
       }
-
-      .secondRight {
+      .radar_chart {
         flex: 1 0 0;
         display: flex;
-        margin-left: 12px;
-
-        .stack {
-          flex: 1 0 0;
-          display: flex;
-          &:extend(.block);
-        }
+        flex-direction: column;
+        margin-left: 10px;
+        background-color: #fff;
+        border-radius: 8px;
       }
     }
   }

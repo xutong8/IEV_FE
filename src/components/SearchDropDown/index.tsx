@@ -4,9 +4,11 @@ import { KeyboardEvent, useRef, useState } from "react";
 import styles from "./index.less";
 export interface ISearchDropDown {
   width: number;
+  addRadar: (name: string) => void;
 }
 // todo: 调整多行文本的CSS
 const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
+  const { addRadar } = props;
   const countryList = countries;
   const [isActive, setIsActive] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -109,8 +111,9 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
   const handleEnterKeyDown = () => {
     if (inputRef?.current) {
       const value = countryNames[highLightIndex];
-      inputRef.current.value = value;
-      handleItemClick(value);
+      addRadar(value);
+      inputRef.current.value = "";
+      handleItemClick("");
       handleBlur();
     }
   };
@@ -151,7 +154,7 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
           </div>
         )}
       </div>
-      <button className={styles["btn"]}>Add</button>
+      {/* <button className={styles["btn"]}>Add</button> */}
     </div>
   );
 };

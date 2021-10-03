@@ -19,6 +19,7 @@ import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 // import Radar from "../Radar";
 import { addCountryItem, delCountryItem } from "@/actions/countryList";
+import RadarArea from "../RadarArea";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -42,33 +43,44 @@ const BasicLayout = () => {
       </div>
       <div className={styles["main_content"]}>
         <div className={styles["bottom"]}>
-          <div className={styles.first}>
-            <div className={styles.firstLeft}>
-              <div className={styles.topMap}>
-                <TopMapWithStore />
+          <div className={styles["container"]}>
+            <div className={styles["chart_content"]}>
+              <div className={styles.first}>
+                <div className={styles.firstLeft}>
+                  <div className={styles.topMap}>
+                    <TopMapWithStore />
+                  </div>
+                </div>
+                <div className={styles.firstRight}>
+                  <div className={styles.force} ref={forceGraphRef}>
+                    <ForceGraphWithStore
+                      width={forceWidth}
+                      height={forceHeight}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.second}>
+                <div className={styles.secondLeft}>
+                  <div className={styles.pieMapContainer}>
+                    <PieMap
+                      sourceCountry={sourceCountry}
+                      setSourceCountry={setSourceCountry}
+                      targetCountry={targetCountry}
+                      setTargetCountry={setTargetCountry}
+                    />
+                  </div>
+                </div>
+                <div className={styles.secondRight}>
+                  <div className={styles.stack} ref={stackContainerRef}>
+                    <StackChart width={stackWidth} height={stackHeight} />
+                  </div>
+                </div>
               </div>
             </div>
-            <div className={styles.firstRight}>
-              <div className={styles.force} ref={forceGraphRef}>
-                <ForceGraphWithStore width={forceWidth} height={forceHeight} />
-              </div>
-            </div>
-          </div>
-          <div className={styles.second}>
-            <div className={styles.secondLeft}>
-              <div className={styles.pieMapContainer}>
-                <PieMap
-                  sourceCountry={sourceCountry}
-                  setSourceCountry={setSourceCountry}
-                  targetCountry={targetCountry}
-                  setTargetCountry={setTargetCountry}
-                />
-              </div>
-            </div>
-            <div className={styles.secondRight}>
-              <div className={styles.stack} ref={stackContainerRef}>
-                <StackChart width={stackWidth} height={stackHeight} />
-              </div>
+            <div className={styles["radar_chart"]}>
+              <Title title="Radar Chart"></Title>
+              <RadarArea />
             </div>
           </div>
           <div className={styles.progress}>
@@ -84,6 +96,7 @@ const BasicLayout = () => {
           </div>
         </div>
       </div>
+
       <div className={styles["right_menu"]}>
         <SearchTableWithStore />
       </div>

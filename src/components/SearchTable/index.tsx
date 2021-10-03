@@ -58,7 +58,6 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
     <div className={styles["search_table"]}>
       <Title title="SearchTable View"></Title>
       <div className={styles["search_top"]}>
-        <SearchDropDown width={72} />
         <SearchInput onSearch={handleSearch} />
       </div>
       <div className={styles["search_list"]}>
