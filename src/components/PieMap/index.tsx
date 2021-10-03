@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 import Title from "../Title";
+import RadarChart from "../RadarChart";
 
 const { Option } = Select;
 
@@ -55,7 +56,7 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
           })}
           ref={sourceMapRef}
         >
-          <CountryMap
+          {/* <CountryMap
             className={styles.sourceCountryMap}
             name={sourceCountry}
             style={{
@@ -76,7 +77,8 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
                   {name}
                 </Option>
               ))}
-          </Select>
+          </Select> */}
+          <RadarChart title="China" />
         </div>
         <div className={styles.middleMap} ref={middleMapRef}>
           <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>

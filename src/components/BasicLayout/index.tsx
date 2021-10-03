@@ -9,10 +9,21 @@ import { useSVGSize } from "@/hooks/useSVGSize";
 import ForceGraphWithStore from "@/containers/ForceGraphWithStore";
 import TopMapWithStore from "@/containers/TopMapWithStore";
 import Title from "../Title";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addCategoryItem,
+  changeCategoryObj,
+  delCategoryItem,
+} from "@/actions/categoryList";
+import { IStore } from "@/reducers";
+import { isEqual } from "lodash";
+// import Radar from "../Radar";
+import { addCountryItem, delCountryItem } from "@/actions/countryList";
 
 const BasicLayout = () => {
   // stack container的ref
   const stackContainerRef = useRef<HTMLDivElement>(null);
+  console.log("layout update");
   const [stackWidth, stackHeight] = useSVGSize(stackContainerRef);
 
   // 对比国家

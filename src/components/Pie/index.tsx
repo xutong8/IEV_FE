@@ -27,7 +27,7 @@ export interface IPieData {
 
 const Pie: React.FC<IPie> = (props) => {
   const { width, height, sourceCountry, targetCountry } = props;
-  console.log(width, height);
+
   const toolTipRef = useRef<any>();
   const [data, setData] = useState<any>();
 
