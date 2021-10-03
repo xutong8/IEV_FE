@@ -13,7 +13,6 @@ export interface IChoropleth {
   parentClass: string;
 }
 
-// TODO: 统一数据输入; 解决列表中国家的处理
 const Choropleth: React.FC<IChoropleth> = (props) => {
   const { selectedCountries, parentClass } = props;
 
@@ -30,7 +29,6 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
     []
   );
 
-  // req data
   const handleData = async () => {
     // 如果category长度为0，则跳过
     if (category.length === 0) return;
