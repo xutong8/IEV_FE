@@ -13,7 +13,7 @@ import { isEqual } from "lodash";
 import { Spin } from "antd";
 import Title from "../Title";
 import { numberFormat } from "@/utils/number";
-
+import cn from "classnames";
 export interface ILineObj {
   name: string;
   lineCoordinates: IPoint[];
@@ -233,24 +233,23 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
     setLines(lines);
   };
 
-  const ARROW_X = 8;
-  const ARROW_Y = 5;
+  const ARROW_VAL = 6;
 
   // 计算线上的各个点
   const getLineD = (line: IPoint[], isReverse = false) => {
     const basePath = `L${line[1].x} ${line[1].y} L${line[2].x} ${line[2].y}`;
     if (!isReverse) {
-      return `M${line[0].x} ${line[0].y} ${basePath} L${line[2].x - ARROW_X} ${
-        line[2].y - ARROW_Y
-      } L${line[2].x} ${line[2].y} L${line[2].x - ARROW_X} ${
-        line[2].y + ARROW_Y
-      }`;
+      return `M${line[0].x} ${line[0].y} ${basePath} L${
+        line[2].x - ARROW_VAL
+      } ${line[2].y - ARROW_VAL} L${line[2].x} ${line[2].y} L${
+        line[2].x - ARROW_VAL
+      } ${line[2].y + ARROW_VAL}`;
     } else {
-      return `M${line[0].x} ${line[0].y} L${
-        line[0].x + (ARROW_X * Math.sqrt(3)) / 2
-      } ${line[0].y - ARROW_Y * 0.5} L${line[0].x} ${line[0].y} L${
-        line[0].x + (ARROW_X * Math.sqrt(3)) / 2
-      } ${line[0].y + ARROW_Y * 0.5} L${line[0].x} ${line[0].y} ${basePath}`;
+      return `M${line[0].x} ${line[0].y} L${line[0].x + ARROW_VAL + 2} ${
+        line[0].y
+      } L${line[0].x} ${line[0].y} L${line[0].x} ${
+        line[0].y + (line[0].y < line[1].y ? ARROW_VAL + 2 : -ARROW_VAL - 2)
+      } L${line[0].x} ${line[0].y} ${basePath}`;
     }
   };
 
@@ -349,7 +348,10 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
                   return (
                     <div
                       key={item.name}
-                      className={styles.circle}
+                      className={cn({
+                        [styles.circle]: true,
+                        [`circle_${item.name}`]: true,
+                      })}
                       style={{
                         left: (item.x * mapHeight) / fixedHeight,
                         top: (item.y * mapHeight) / fixedHeight,
