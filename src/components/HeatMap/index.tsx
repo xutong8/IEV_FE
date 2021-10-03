@@ -93,23 +93,29 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                   width={width / countryNames.length}
                   height={height / countryNames.length}
                   onMouseEnter={() => {
-                    console.log("name: ", row.countryName);
-                    const lines = document.getElementsByClassName(
+                    const inputLines = document.getElementsByClassName(
                       `line_${row.countryName}`
-                    );
-                    Array.from(lines).forEach((line) => {
-                      line.setAttribute("stroke-opacity", "1");
-                    });
+                    )[0];
+                    inputLines.setAttribute("stroke-opacity", "1");
+
+                    const outputLines = document.getElementsByClassName(
+                      `line_${item.countryName}`
+                    )[1];
+                    outputLines.setAttribute("stroke-opacity", "1");
+
                     setCurrentRowIdx(rowIdx);
                     setCurrentColumnIdx(columnIdx);
                   }}
                   onMouseLeave={() => {
-                    const lines = document.getElementsByClassName(
+                    const inputLines = document.getElementsByClassName(
                       `line_${row.countryName}`
-                    );
-                    Array.from(lines).forEach((line) => {
-                      line.setAttribute("stroke-opacity", "0.4");
-                    });
+                    )[0];
+                    inputLines.setAttribute("stroke-opacity", "0.4");
+
+                    const outputLines = document.getElementsByClassName(
+                      `line_${item.countryName}`
+                    )[1];
+                    outputLines.setAttribute("stroke-opacity", "0.4");
                     setCurrentRowIdx(-1);
                     setCurrentColumnIdx(-1);
                   }}

@@ -41,7 +41,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const BrushYOffset = 25;
 
   // (0, 0)点的位置
-  const zeroPosition = useMemo(() => [40, height - 70], [height]);
+  const zeroPosition = useMemo(() => [40, height - 100], [height]);
   // 面积图数据
   const [areaData, setAreaData] = useState<IStackAreaData[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -257,7 +257,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     <div className={styles.container}>
       <Title title="StackChart View"></Title>
       {areaData.length === 0 ? (
-        <Spin />
+        <div className={styles.content}>
+          <Spin />
+        </div>
       ) : (
         <>
           <Tooltip ref={toolTipRef}>
