@@ -1,4 +1,7 @@
-const filterCountry = (value: string, countries: Array<string>) => {
+const filterCountry = (value: string, countries: Array<string> | undefined) => {
+  if (!countries) {
+    return [];
+  }
   const lowerValue = value.toLocaleLowerCase();
   const filterCountries: Array<string> = [];
   countries.forEach((country) => {

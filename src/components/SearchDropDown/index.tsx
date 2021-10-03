@@ -1,27 +1,18 @@
+import { countries } from "@/constants/countries";
 import { filterCountry } from "@/utils/getFilterCountryList";
 import { KeyboardEvent, useRef, useState } from "react";
 import styles from "./index.less";
 export interface ISearchDropDown {
   width: number;
 }
-
+// todo: 调整多行文本的CSS
 const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
-  const countryList = [
-    "China",
-    "USA",
-    "UK",
-    "Brazil",
-    "Janpan",
-    "South, Korea",
-    "USB",
-    "USC",
-    "AUS",
-  ];
+  const countryList = countries;
   const [isActive, setIsActive] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [popupShow, setPopupShow] = useState(false);
   const [highLightIndex, setHighLightIndex] = useState(0);
-  const [countries, setCountries] = useState(countryList);
+  const [countryNames, setCountries] = useState<Array<string>>(countryList);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -74,12 +65,13 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
     setHovered(false);
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const newList = filterCountry(value, countryList);
     if (!highLightIndex) {
       setHighLightIndex(0);
     }
+
     setCountries([...newList]);
   };
 
@@ -93,8 +85,7 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    console.log("keydown", e.key);
-    const keyMap: any = {
+    const keyMap: { [eventType: string]: Function } = {
       ArrowUp: handleArrowUpKeyDown,
       ArrowDown: handleArrowDownKeyDown,
       Enter: handleEnterKeyDown,
@@ -110,19 +101,14 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
   };
   // TODO: 实现键盘操作时跟随滚动
   const handleArrowDownKeyDown = () => {
-    const newIndex = Math.min(highLightIndex + 1, countries.length - 1);
+    const newIndex = Math.min(highLightIndex + 1, countryNames.length - 1);
 
-    // if (dropdownRef?.current) {
-    //   dropdownRef.current.scrollTop =
-    //     dropdownRef.current.scrollHeight * (newIndex / countries.length - 1);
-    //   console.log(dropdownRef.current.scrollHeight);
-    // }
     setHighLightIndex(newIndex);
   };
 
   const handleEnterKeyDown = () => {
     if (inputRef?.current) {
-      const value = countries[highLightIndex];
+      const value = countryNames[highLightIndex];
       inputRef.current.value = value;
       handleItemClick(value);
       handleBlur();
@@ -151,7 +137,7 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
         </div>
         {popupShow && (
           <div className={styles.dropdown} ref={dropdownRef}>
-            {countries.map((item, index) => (
+            {countryNames.map((item, index) => (
               <div
                 key={item}
                 className={`${styles.option} ${
