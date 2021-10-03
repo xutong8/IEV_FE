@@ -9,20 +9,11 @@ export interface IHeatMapProps {
   height: number;
   dataSource: IRow[];
   className?: string;
+  maxValue: number;
 }
 
 const HeatMap: React.FC<IHeatMapProps> = (props) => {
-  const { width, height, dataSource, className = "" } = props;
-
-  const maxValue = useMemo(
-    () =>
-      Math.max(
-        ...dataSource.map((item) =>
-          Math.max(...item.explist.map((exp) => exp.expvalue))
-        )
-      ),
-    [dataSource]
-  );
+  const { width, height, dataSource, className = "", maxValue } = props;
 
   // color scale
   const colorScale = scaleLinear<string>()
