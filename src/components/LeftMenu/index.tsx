@@ -17,6 +17,8 @@ import { isEqual } from "lodash";
 import cn from "classnames";
 import { addCountryItem, delCountryItem } from "@/actions/countryList";
 
+// TODO: 高度在小屏幕上不对，这是出现滚动条的原因
+
 const LeftMenu = () => {
   // country images
   const [countryImages, setCountryImages] = useState<Image[]>([]);

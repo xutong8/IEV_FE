@@ -8,6 +8,7 @@ import { useRef, useState } from "react";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import ForceGraphWithStore from "@/containers/ForceGraphWithStore";
 import TopMapWithStore from "@/containers/TopMapWithStore";
+import Title from "../Title";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -60,12 +61,15 @@ const BasicLayout = () => {
             </div>
           </div>
           <div className={styles.progress}>
-            <ProgressBar
-              width="100%"
-              height="100%"
-              sourceCountry={sourceCountry}
-              targetCountry={targetCountry}
-            />
+            <Title title="Progress View"></Title>
+            <div className={styles.content}>
+              <ProgressBar
+                width="100%"
+                height="100%"
+                sourceCountry={sourceCountry}
+                targetCountry={targetCountry}
+              />
+            </div>
           </div>
         </div>
       </div>

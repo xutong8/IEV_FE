@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 import { Spin } from "antd";
+import Title from "../Title";
 export interface IPoint {
   x: number;
   y: number;
@@ -237,76 +238,79 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
 
   return (
     <div className={styles.topmap}>
-      <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
-        <div className={styles.container} ref={containerRef}>
-          <div className={styles.left}>
-            <div className={styles.map} ref={mapRef}>
-              <CountryMap
-                name="World"
-                className={styles.countryMap}
-                style={{
-                  width: mapWidth,
-                  height: mapHeight,
-                }}
-              />
-              {coordinatesData.coordinates.map((item) => {
-                return (
-                  <div
-                    key={item.name}
-                    className={styles.circle}
-                    style={{
-                      left: (item.x * mapHeight) / fixedHeight,
-                      top: (item.y * mapHeight) / fixedHeight,
-                    }}
-                  />
-                );
-              })}
+      <Title title="TopMap View"></Title>
+      <div className={styles.content}>
+        <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
+          <div className={styles.container} ref={containerRef}>
+            <div className={styles.left}>
+              <div className={styles.map} ref={mapRef}>
+                <CountryMap
+                  name="World"
+                  className={styles.countryMap}
+                  style={{
+                    width: mapWidth,
+                    height: mapHeight,
+                  }}
+                />
+                {coordinatesData.coordinates.map((item) => {
+                  return (
+                    <div
+                      key={item.name}
+                      className={styles.circle}
+                      style={{
+                        left: (item.x * mapHeight) / fixedHeight,
+                        top: (item.y * mapHeight) / fixedHeight,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+              <div className={styles.map}>
+                <CountryMap
+                  name="World"
+                  className={styles.countryMap}
+                  style={{
+                    width: mapWidth,
+                    height: mapHeight,
+                  }}
+                />
+                {coordinatesData.coordinates.map((item) => {
+                  return (
+                    <div
+                      key={item.name}
+                      className={styles.circle}
+                      style={{
+                        left: (item.x * mapHeight) / fixedHeight,
+                        top: (item.y * mapHeight) / fixedHeight,
+                      }}
+                    />
+                  );
+                })}
+              </div>
             </div>
-            <div className={styles.map}>
-              <CountryMap
-                name="World"
-                className={styles.countryMap}
-                style={{
-                  width: mapWidth,
-                  height: mapHeight,
-                }}
+            <div className={styles.middle}>
+              <ComposedBarChart
+                width={barWidth}
+                height={barHeight}
+                dataSource={barDataSource}
               />
-              {coordinatesData.coordinates.map((item) => {
-                return (
-                  <div
-                    key={item.name}
-                    className={styles.circle}
-                    style={{
-                      left: (item.x * mapHeight) / fixedHeight,
-                      top: (item.y * mapHeight) / fixedHeight,
-                    }}
-                  />
-                );
-              })}
+            </div>
+            <div className={styles.right} ref={heatmapContainerRef}>
+              <HeatMap
+                width={heatmapHeight}
+                height={heatmapHeight}
+                dataSource={heatmapDataSource}
+                className="heatmap"
+              />
             </div>
           </div>
-          <div className={styles.middle}>
-            <ComposedBarChart
-              width={barWidth}
-              height={barHeight}
-              dataSource={barDataSource}
-            />
-          </div>
-          <div className={styles.right} ref={heatmapContainerRef}>
-            <HeatMap
-              width={heatmapHeight}
-              height={heatmapHeight}
-              dataSource={heatmapDataSource}
-              className="heatmap"
-            />
-          </div>
-        </div>
-        <svg width={topmapWidth} height={topmapHeight} className={styles.svg}>
-          {lines.map((line: IPoint[], index: number) => {
-            return <path key={index} d={`${getLineD(line)}`} />;
-          })}
-        </svg>
-      </Spin>
+          <svg width={topmapWidth} height={topmapHeight} className={styles.svg}>
+            {lines.map((line: IPoint[], index: number) => {
+              return <path key={index} d={`${getLineD(line)}`} />;
+            })}
+          </svg>
+        </Spin>
+      </div>
     </div>
   );
 };

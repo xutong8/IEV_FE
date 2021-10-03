@@ -6,6 +6,7 @@ import { customColumnsFunc } from "./columns";
 import { ITableCountry } from "@/types/table";
 import SearchInput from "../SearchInput";
 import { httpRequest } from "@/services";
+import Title from "../Title";
 export interface ISearchTableProps {
   valueType: ValueType;
 }
@@ -54,6 +55,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
 
   return (
     <div className={styles["search_table"]}>
+      <Title title="SearchTable View"></Title>
       <div className={styles["search_top"]}>
         <SearchInput onSearch={handleSearch} />
       </div>
@@ -65,7 +67,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
             rowKey={(record) => record.id}
             pagination={{
               showSizeChanger: false,
-              pageSize: 20,
+              pageSize: 15,
               size: "small",
             }}
             scroll={{

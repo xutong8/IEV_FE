@@ -10,6 +10,7 @@ import { useSVGSize } from "@/hooks/useSVGSize";
 import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
+import Title from "../Title";
 
 const { Option } = Select;
 
@@ -45,6 +46,7 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
 
   return (
     <div className={styles.pieMap}>
+      <Title title="PieMap View"></Title>
       <div className={styles.maps}>
         <div
           className={cn({
