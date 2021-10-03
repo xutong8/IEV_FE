@@ -12,6 +12,12 @@ import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 import { Spin } from "antd";
 import Title from "../Title";
+
+export interface ILineObj {
+  name: string;
+  lineCoordinates: IPoint[];
+}
+
 export interface IPoint {
   x: number;
   y: number;
@@ -58,7 +64,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
   const heatmapHeight = barHeight / Math.sqrt(2);
 
   // 线的数组
-  const [lines, setLines] = useState<IPoint[][]>([]);
+  const [lines, setLines] = useState<ILineObj[]>([]);
 
   // basic chart数据
   const [dataSource, setDataSource] = useState<ICountry[]>([]);
@@ -128,7 +134,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
       heatmapRect.width / 2 +
       5;
 
-    const linesCoordinates = [];
+    const lines = [];
     const coordinates = coordinatesData.coordinates;
 
     for (let i = 0; i < namesLen; i++) {
@@ -139,7 +145,11 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
       const startPointY =
         (((country?.y ?? 0) + Math.floor(circleRadius / 2)) * mapHeight) /
         fixedHeight;
-      const lineCoordinates = [];
+
+      const lineObj = {} as ILineObj;
+      const lineCoordinates = [] as any[];
+      lineObj.name = countryNames[i];
+      lineObj.lineCoordinates = lineCoordinates;
 
       // 地图上的点
       lineCoordinates.push({
@@ -165,7 +175,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
         x: endPointX,
         y: endPointY,
       });
-      linesCoordinates.push(lineCoordinates);
+      lines.push(lineObj);
     }
 
     const yStart2 =
@@ -185,7 +195,11 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
         ((country?.y ?? 0 + Math.floor(circleRadius / 2)) * mapHeight) /
           fixedHeight +
         mapHeight;
-      const lineCoordinates = [];
+
+      const lineObj = {} as ILineObj;
+      const lineCoordinates = [] as any[];
+      lineObj.name = countryNames[i];
+      lineObj.lineCoordinates = lineCoordinates;
 
       // 地图上的点
       lineCoordinates.push({
@@ -213,14 +227,30 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
         x: endPointX,
         y: endPointY,
       });
-      linesCoordinates.push(lineCoordinates);
+      lines.push(lineObj);
     }
-    setLines(linesCoordinates);
+    setLines(lines);
   };
 
+  const ARROW_X = 8;
+  const ARROW_Y = 5;
+
   // 计算线上的各个点
-  const getLineD = (line: IPoint[]) => {
-    return `M${line[0].x} ${line[0].y} L${line[1].x} ${line[1].y} L${line[2].x} ${line[2].y}`;
+  const getLineD = (line: IPoint[], isReverse = false) => {
+    const basePath = `L${line[1].x} ${line[1].y} L${line[2].x} ${line[2].y}`;
+    if (!isReverse) {
+      return `M${line[0].x} ${line[0].y} ${basePath} L${line[2].x - ARROW_X} ${
+        line[2].y - ARROW_Y
+      } L${line[2].x} ${line[2].y} L${line[2].x - ARROW_X} ${
+        line[2].y + ARROW_Y
+      }`;
+    } else {
+      return `M${line[0].x} ${line[0].y} L${
+        line[0].x + (ARROW_X * Math.sqrt(3)) / 2
+      } ${line[0].y - ARROW_Y * 0.5} L${line[0].x} ${line[0].y} L${
+        line[0].x + (ARROW_X * Math.sqrt(3)) / 2
+      } ${line[0].y + ARROW_Y * 0.5} L${line[0].x} ${line[0].y} ${basePath}`;
+    }
   };
 
   useEffect(() => {
@@ -305,8 +335,19 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
             </div>
           </div>
           <svg width={topmapWidth} height={topmapHeight} className={styles.svg}>
-            {lines.map((line: IPoint[], index: number) => {
-              return <path key={index} d={`${getLineD(line)}`} />;
+            {lines.map((line: ILineObj, index: number) => {
+              return (
+                <path
+                  key={index}
+                  d={`${getLineD(
+                    line.lineCoordinates,
+                    index >= countryNames.length
+                  )}`}
+                  className={`line_${line.name}`}
+                  stroke="#595a5a"
+                  strokeOpacity="0.4"
+                />
+              );
             })}
           </svg>
         </Spin>
