@@ -233,7 +233,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
     setLines(lines);
   };
 
-  const ARROW_VAL = 6;
+  const ARROW_VAL = 4;
 
   // 计算线上的各个点
   const getLineD = (line: IPoint[], isReverse = false) => {
