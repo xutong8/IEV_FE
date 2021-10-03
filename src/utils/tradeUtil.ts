@@ -1,5 +1,5 @@
 import tradeData from "@/data/tradeData.json";
-import { ITradeCountry } from "@/types/index";
+import { ITradeCountry } from "@/types";
 export interface ITradeItem {
   countryName: string;
   imptotal: number;

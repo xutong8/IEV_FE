@@ -9,6 +9,13 @@ import { useSVGSize } from "@/hooks/useSVGSize";
 import ForceGraphWithStore from "@/containers/ForceGraphWithStore";
 import TopMapWithStore from "@/containers/TopMapWithStore";
 import Title from "../Title";
+import { Button } from "antd";
+import { PlayCircleTwoTone, PauseCircleTwoTone } from "@ant-design/icons";
+import { IconState } from "@/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { addOneYear, updateYear } from "@/actions/year";
+import { IStore } from "@/reducers";
+import { max_year, min_year } from "@/constants/year";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -23,6 +30,22 @@ const BasicLayout = () => {
   // force graph的ref
   const forceGraphRef = useRef<HTMLDivElement>(null);
   const [forceWidth, forceHeight] = useSVGSize(forceGraphRef);
+
+  // progressRef
+  const progressRef = useRef<HTMLDivElement>(null);
+  const [progressWidth, progressHeight] = useSVGSize(progressRef);
+
+  // 保存按钮的状态，用于展示播放/暂停
+  const [iconState, setIconState] = useState<IconState>(IconState.PLAY);
+
+  // dispatch
+  const dispatch = useDispatch();
+
+  // year selector
+  const yearRef = useRef<number>(min_year);
+
+  // timer ref
+  const timerRef = useRef<any>(null);
 
   return (
     <div className={styles["basic_layout"]}>
@@ -62,13 +85,46 @@ const BasicLayout = () => {
           </div>
           <div className={styles.progress}>
             <Title title="Progress View"></Title>
-            <div className={styles.content}>
-              <ProgressBar
-                width="100%"
-                height="100%"
-                sourceCountry={sourceCountry}
-                targetCountry={targetCountry}
-              />
+            <div className={styles.main}>
+              <div className={styles.playBtn}>
+                <Button
+                  type="default"
+                  icon={
+                    iconState === IconState.PLAY ? (
+                      <PlayCircleTwoTone />
+                    ) : (
+                      <PauseCircleTwoTone />
+                    )
+                  }
+                  onClick={() => {
+                    if (iconState === IconState.PLAY) {
+                      timerRef.current = setInterval(() => {
+                        if (yearRef.current >= max_year) {
+                          clearInterval(timerRef.current);
+                          timerRef.current = null;
+                          return;
+                        }
+                        yearRef.current = yearRef.current + 1;
+                        dispatch(addOneYear());
+                      }, 5000);
+                    } else {
+                      clearInterval(timerRef.current);
+                      timerRef.current = null;
+                    }
+                    setIconState((prev) =>
+                      prev === IconState.PLAY ? IconState.PAUSE : IconState.PLAY
+                    );
+                  }}
+                />
+              </div>
+              <div className={styles.progressContent} ref={progressRef}>
+                <ProgressBar
+                  width={progressWidth}
+                  height={progressHeight}
+                  sourceCountry={sourceCountry}
+                  targetCountry={targetCountry}
+                />
+              </div>
             </div>
           </div>
         </div>
