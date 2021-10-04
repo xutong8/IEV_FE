@@ -176,6 +176,12 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
         x: endPointX,
         y: endPointY,
       });
+
+      // 文本上的点
+      lineCoordinates.push({
+        x: xStart1 + ((barHeight + 20) / (2 * (namesLen + 1))) * (i + 1),
+        y: endPointY,
+      });
       lines.push(lineObj);
     }
 
@@ -228,6 +234,15 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
         x: endPointX,
         y: endPointY,
       });
+
+      // 文本上的点
+      lineCoordinates.push({
+        x:
+          xStart2 +
+          ((barHeight + 20) / (2 * (namesLen + 1))) * (namesLen - 1 - i + 1),
+        y: endPointY,
+      });
+
       lines.push(lineObj);
     }
     setLines(lines);
@@ -391,6 +406,24 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
                   stroke="#595a5a"
                   strokeOpacity="0.4"
                 />
+              );
+            })}
+            {lines.map((line: ILineObj, index: number) => {
+              const textPos = line.lineCoordinates[3];
+              const len = coordinatesData.coordinates.length;
+              return (
+                <text
+                  className={`text_${line.name}`}
+                  key={index}
+                  x={textPos.x}
+                  y={textPos.y}
+                  fontSize={9}
+                  dx={-6}
+                  dy={3}
+                  fillOpacity={0.4}
+                >
+                  {coordinatesData.coordinates[index % len].iso_2digit_alpha}
+                </text>
               );
             })}
           </svg>

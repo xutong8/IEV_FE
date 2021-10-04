@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, Fragment } from "react";
 import { scaleBand, scaleLinear } from "d3-scale";
 import { IRow } from "@/types/heatmap";
 import { useSelector } from "react-redux";
@@ -60,8 +60,8 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
             {row.explist.map((item, columnIdx) => {
               return (
                 <rect
-                  id={item.countryName}
                   key={item.countryName}
+                  id={item.countryName}
                   x={xScale(item.countryName)}
                   y={yScale(row.countryName)}
                   fill={
@@ -84,6 +84,7 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                   width={width / countryNames.length}
                   height={height / countryNames.length}
                   onMouseEnter={() => {
+                    // 高亮边
                     const inputLines = document.getElementsByClassName(
                       `line_${row.countryName}`
                     )[0];
@@ -93,11 +94,22 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                       `line_${item.countryName}`
                     )[1];
                     outputLines.setAttribute("stroke-opacity", "1");
+                    // 高亮文本
+                    const inputText = document.getElementsByClassName(
+                      `text_${row.countryName}`
+                    )[1];
+                    inputText.setAttribute("fill-opacity", "1");
+
+                    const outputText = document.getElementsByClassName(
+                      `text_${item.countryName}`
+                    )[0];
+                    outputText.setAttribute("fill-opacity", "1");
 
                     setCurrentRowIdx(rowIdx);
                     setCurrentColumnIdx(columnIdx);
                   }}
                   onMouseLeave={() => {
+                    // 取消高亮边
                     const inputLines = document.getElementsByClassName(
                       `line_${row.countryName}`
                     )[0];
@@ -107,6 +119,18 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                       `line_${item.countryName}`
                     )[1];
                     outputLines.setAttribute("stroke-opacity", "0.4");
+
+                    // 取消高亮文本
+                    const inputText = document.getElementsByClassName(
+                      `text_${row.countryName}`
+                    )[1];
+                    inputText.setAttribute("fill-opacity", "0.4");
+
+                    const outputText = document.getElementsByClassName(
+                      `text_${item.countryName}`
+                    )[0];
+                    outputText.setAttribute("fill-opacity", "0.4");
+
                     setCurrentRowIdx(-1);
                     setCurrentColumnIdx(-1);
                   }}
