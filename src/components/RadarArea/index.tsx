@@ -9,11 +9,18 @@ const RadarArea = () => {
     setRadarList([...radarList, name]);
   };
   return (
-    <div className={styles["radar_list"]}>
+    <div className={styles["radar_area"]}>
       <SearchDropDown width={72} addRadar={handleAddRadar} />
-      {radarList?.map((item) => (
-        <RadarChart key={item} title={item} draggable={true} />
-      ))}
+      <div className={styles["radar_chart_list"]}>
+        {radarList?.map((item) => (
+          <RadarChart
+            key={item}
+            title={item}
+            draggable={true}
+            style={{ flex: "0 0 20%" }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

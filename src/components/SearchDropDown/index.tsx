@@ -73,17 +73,17 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
     if (!highLightIndex) {
       setHighLightIndex(0);
     }
-
     setCountries([...newList]);
   };
 
   const handleItemClick = (value: string) => {
-    if (inputRef?.current) {
-      inputRef.current.value = value;
-      const newList = filterCountry(value, countryList);
+    // if (inputRef?.current) {
+    //   inputRef.current.value = value;
+    //   const newList = filterCountry(value, countryList);
 
-      setCountries([...newList]);
-    }
+    //   setCountries([...newList]);
+    // }
+    handleEnterKeyDown(value);
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -108,18 +108,19 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
     setHighLightIndex(newIndex);
   };
 
-  const handleEnterKeyDown = () => {
+  const handleEnterKeyDown = (value = "") => {
     if (inputRef?.current) {
-      const value = countryNames[highLightIndex];
-      addRadar(value);
+      const countryName = value ? value : countryNames[highLightIndex];
+      addRadar(countryName);
       inputRef.current.value = "";
-      handleItemClick("");
+      inputRef.current.blur();
+      // handleItemClick("");
       handleBlur();
     }
   };
 
   return (
-    <div>
+    <div className={styles["search_area"]}>
       <div
         className={styles["search_dropdown"]}
         // style={{ width: 72 }}

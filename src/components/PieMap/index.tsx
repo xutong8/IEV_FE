@@ -78,7 +78,12 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
                 </Option>
               ))}
           </Select> */}
-          <RadarChart title="China" draggable={true} />
+          <RadarChart
+            title={sourceCountry}
+            draggable={false}
+            style={{ flex: "1 0 0" }}
+            solveDrop={setSourceCountry}
+          />
         </div>
         <div className={styles.middleMap} ref={middleMapRef}>
           <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
@@ -101,28 +106,12 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
           })}
           ref={targetMapRef}
         >
-          <CountryMap
-            name={targetCountry}
-            className={styles.targetCountryMap}
-            style={{
-              width: targetMapWidth,
-              height: sourceMapHeight - 60,
-              overflow: "auto",
-            }}
+          <RadarChart
+            title={targetCountry}
+            draggable={false}
+            style={{ flex: "1 0 0" }}
+            solveDrop={setTargetCountry}
           />
-          <Select
-            className={styles.select}
-            value={targetCountry}
-            onChange={(country: string) => setTargetCountry(country)}
-          >
-            {(productData?.countris ?? [])
-              .filter((name) => name !== sourceCountry)
-              .map((name) => (
-                <Option key={name} value={name}>
-                  {name}
-                </Option>
-              ))}
-          </Select>
         </div>
       </div>
     </div>

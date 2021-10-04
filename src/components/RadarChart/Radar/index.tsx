@@ -1,13 +1,13 @@
 import PolyGrid from "./PolyGrid";
 import { scaleLinear } from "d3-scale";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { max } from "lodash";
 import Axis, { DirectionValue } from "../../Axis";
 import RadarArea from "./RadarArea";
 
 export interface IRadar {
-  width: number;
-  height: number;
+  svgWidth: number;
+  svgHeight: number;
 }
 
 export interface IRadarData {
@@ -36,7 +36,9 @@ const data: IRadarData = {
 };
 // TODO: 实现数据Scale range 取整10 算法; 配色方案; tooltip接入
 const Radar: React.FC<IRadar> = (props) => {
-  const { width, height } = props;
+  const { svgWidth, svgHeight } = props;
+  const width = svgWidth;
+  const height = svgHeight;
   // TODO: 通过输入数据的维度计算
   const sides = 5;
   const size = useMemo(() => Math.min(width, height), [width, height]);
@@ -101,7 +103,11 @@ const Radar: React.FC<IRadar> = (props) => {
   };
 
   return width ? (
-    <svg width={width} height={height}>
+    <svg
+      width={svgWidth}
+      height={svgHeight}
+      viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+    >
       <PolyGrid
         sides={5}
         level={4}
