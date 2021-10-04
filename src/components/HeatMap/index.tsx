@@ -1,6 +1,6 @@
 import React, { useMemo, useState, Fragment } from "react";
 import { scaleBand, scaleLinear } from "d3-scale";
-import { IRow } from "@/types/heatmap";
+import { IItem, IRow } from "@/types/heatmap";
 import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
@@ -41,6 +41,81 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
   // const [countryName, setCountryName] = useState<string>("");
   const [currentRowIdx, setCurrentRowIdx] = useState<number>(-1);
   const [currentColumnIdx, setCurrentColumnIdx] = useState<number>(-1);
+
+  // 高亮边
+  const highlightLine = (row: IRow, item: IItem) => {
+    const inputLines = document.getElementsByClassName(
+      `line_${row.countryName}`
+    )[0];
+    inputLines.setAttribute("stroke-opacity", "1");
+
+    const outputLines = document.getElementsByClassName(
+      `line_${item.countryName}`
+    )[1];
+    outputLines.setAttribute("stroke-opacity", "1");
+  };
+
+  // 取消高亮边
+  const unhighlightLine = (row: IRow, item: IItem) => {
+    const inputLines = document.getElementsByClassName(
+      `line_${row.countryName}`
+    )[0];
+    inputLines.setAttribute("stroke-opacity", "0.4");
+
+    const outputLines = document.getElementsByClassName(
+      `line_${item.countryName}`
+    )[1];
+    outputLines.setAttribute("stroke-opacity", "0.4");
+  };
+
+  // 高亮文本
+  const highlightText = (row: IRow, item: IItem) => {
+    const inputText = document.getElementsByClassName(
+      `text_${row.countryName}`
+    )[1];
+    inputText.setAttribute("fill-opacity", "1");
+
+    const outputText = document.getElementsByClassName(
+      `text_${item.countryName}`
+    )[0];
+    outputText.setAttribute("fill-opacity", "1");
+  };
+
+  // 取消高亮文本
+  const unhighlightText = (row: IRow, item: IItem) => {
+    const inputText = document.getElementsByClassName(
+      `text_${row.countryName}`
+    )[1];
+    inputText.setAttribute("fill-opacity", "0.4");
+
+    const outputText = document.getElementsByClassName(
+      `text_${item.countryName}`
+    )[0];
+    outputText.setAttribute("fill-opacity", "0.4");
+  };
+
+  const handleMouseEnter = (
+    rowIdx: number,
+    columnIdx: number,
+    row: IRow,
+    item: IItem
+  ) => {
+    // 高亮边
+    highlightLine(row, item);
+    // 高亮文本
+    highlightText(row, item);
+    setCurrentRowIdx(rowIdx);
+    setCurrentColumnIdx(columnIdx);
+  };
+
+  const handleMouseLeave = (row: IRow, item: IItem) => {
+    // 取消高亮边
+    unhighlightLine(row, item);
+    // 取消高亮文本
+    unhighlightText(row, item);
+    setCurrentRowIdx(-1);
+    setCurrentColumnIdx(-1);
+  };
 
   return (
     <svg
@@ -83,57 +158,10 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                   stroke="#d3d3d2"
                   width={width / countryNames.length}
                   height={height / countryNames.length}
-                  onMouseEnter={() => {
-                    // 高亮边
-                    const inputLines = document.getElementsByClassName(
-                      `line_${row.countryName}`
-                    )[0];
-                    inputLines.setAttribute("stroke-opacity", "1");
-
-                    const outputLines = document.getElementsByClassName(
-                      `line_${item.countryName}`
-                    )[1];
-                    outputLines.setAttribute("stroke-opacity", "1");
-                    // 高亮文本
-                    const inputText = document.getElementsByClassName(
-                      `text_${row.countryName}`
-                    )[1];
-                    inputText.setAttribute("fill-opacity", "1");
-
-                    const outputText = document.getElementsByClassName(
-                      `text_${item.countryName}`
-                    )[0];
-                    outputText.setAttribute("fill-opacity", "1");
-
-                    setCurrentRowIdx(rowIdx);
-                    setCurrentColumnIdx(columnIdx);
-                  }}
-                  onMouseLeave={() => {
-                    // 取消高亮边
-                    const inputLines = document.getElementsByClassName(
-                      `line_${row.countryName}`
-                    )[0];
-                    inputLines.setAttribute("stroke-opacity", "0.4");
-
-                    const outputLines = document.getElementsByClassName(
-                      `line_${item.countryName}`
-                    )[1];
-                    outputLines.setAttribute("stroke-opacity", "0.4");
-
-                    // 取消高亮文本
-                    const inputText = document.getElementsByClassName(
-                      `text_${row.countryName}`
-                    )[1];
-                    inputText.setAttribute("fill-opacity", "0.4");
-
-                    const outputText = document.getElementsByClassName(
-                      `text_${item.countryName}`
-                    )[0];
-                    outputText.setAttribute("fill-opacity", "0.4");
-
-                    setCurrentRowIdx(-1);
-                    setCurrentColumnIdx(-1);
-                  }}
+                  onMouseEnter={() =>
+                    handleMouseEnter(rowIdx, columnIdx, row, item)
+                  }
+                  onMouseLeave={() => handleMouseLeave(row, item)}
                   filter={
                     (currentRowIdx === -1 && currentColumnIdx === -1) ||
                     rowIdx === currentRowIdx ||
