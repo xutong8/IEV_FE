@@ -6,6 +6,11 @@ export interface IReqWithSCounAndCat {
   countries: Array<string>;
 }
 
+export interface IReqRadarChart {
+  selectedCountry: string;
+  year: number;
+}
+
 export const reqChoroplethMapData = ({
   year,
   category,
@@ -28,4 +33,10 @@ export const reqDonutChartData = ({
 
 export const reqCountryData = () => {
   return httpRequest.get("/all_countries");
+};
+
+export const reqRadarData = ({ selectedCountry, year }: IReqRadarChart) => {
+  return httpRequest.get(
+    `/radar_chart?selectedCountry=${selectedCountry}&year=${year}`
+  );
 };

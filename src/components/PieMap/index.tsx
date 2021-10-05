@@ -81,6 +81,7 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
           <RadarChart
             title={sourceCountry}
             draggable={false}
+            fontSize={25}
             style={{ flex: "1 0 0" }}
             solveDrop={setSourceCountry}
           />
@@ -109,6 +110,7 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
           <RadarChart
             title={targetCountry}
             draggable={false}
+            fontSize={25}
             style={{ flex: "1 0 0" }}
             solveDrop={setTargetCountry}
           />

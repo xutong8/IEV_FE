@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import styles from "./index.less";
 
 export interface IPolyGrid {
   sides: number;
@@ -50,6 +51,7 @@ const PolyGrid: React.FC<IPolyGrid> = (props) => {
       }
 
       paths.push(drawPath([...points]));
+      paths.reverse();
     }
   };
 
@@ -67,11 +69,13 @@ const PolyGrid: React.FC<IPolyGrid> = (props) => {
 
   return (
     <g className="polygrid">
-      {paths?.map((d, index) => (
-        <path key={index} d={d} fill="none" stroke="black" strokeWidth={1} />
-      ))}
+      <g className={styles["g_grid"]}>
+        {paths?.map((d, index) => (
+          <path className={styles["grid"]} key={index} d={d} strokeWidth={1} />
+        ))}
+      </g>
       {lines?.map((d, index) => (
-        <path key={index} d={d} fill="none" stroke="black" strokeWidth={1} />
+        <path className={styles["line"]} key={index} d={d} strokeWidth={1} />
       ))}
     </g>
   );

@@ -1,19 +1,28 @@
-import { keys } from "lodash";
 import { useEffect, useRef, useState } from "react";
+import styles from "./index.less";
 
 export interface IRadarArea {
   data: any;
   generatePoint: any;
   drawPath: any;
   radarScale: any;
-  size: number;
+  sides: number;
   r_0: number;
-  attributes: any;
+  color: string | undefined;
+  attributes?: any;
 }
 
 const RadarArea: React.FC<IRadarArea> = (props) => {
-  const { data, generatePoint, drawPath, radarScale, size, r_0, attributes } =
-    props;
+  const {
+    data,
+    generatePoint,
+    drawPath,
+    radarScale,
+    sides,
+    r_0,
+    attributes,
+    color,
+  } = props;
   const path = useRef();
   const circles: Array<any> = [];
 
@@ -26,20 +35,19 @@ const RadarArea: React.FC<IRadarArea> = (props) => {
   };
 
   const drawData = (data: any, n: number) => {
-    Object.keys(data).forEach((type: any, i: number) => {
-      const len = r_0 - radarScale(data[type]);
+    data.forEach((item: any, i: number) => {
+      const len = r_0 - radarScale(item["value"]);
       const theta = i * ((2 * Math.PI) / n);
 
       circles.push({
         ...generatePoint({ length: len, angle: theta }),
-        value: data[type],
+        value: item["value"],
       });
     });
-    console.log(circles);
     path.current = drawPath([...circles]);
   };
 
-  drawData(data, 5);
+  drawData(data, sides);
   return (
     <g className="radar_area">
       {circles?.map((circle: any, index: number) => (
@@ -47,16 +55,17 @@ const RadarArea: React.FC<IRadarArea> = (props) => {
           key={index}
           cx={circle.x}
           cy={circle.y}
-          r={3}
+          fill={color}
+          r={2}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         />
       ))}
       <path
+        className={styles["radar_item"]}
+        stroke={color}
+        fill={color}
         d={path.current}
-        fill="none"
-        stroke="black"
-        strokeWidth={1}
         {...attributes}
       />
     </g>

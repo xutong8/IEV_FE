@@ -1,46 +1,33 @@
 import PolyGrid from "./PolyGrid";
 import { scaleLinear } from "d3-scale";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { max } from "lodash";
 import Axis, { DirectionValue } from "../../Axis";
 import RadarArea from "./RadarArea";
+import { nameToIDObj } from "@/constants/nameMapToID";
+import { reqRadarData } from "@/services/api";
+import { IRadarChart } from "..";
+import rangeWithLen from "@/utils/rangeWithLen";
+import { colorMap } from "@/utils/generateCountryColor";
 
 export interface IRadar {
   svgWidth: number;
   svgHeight: number;
+  title: string;
 }
 
-export interface IRadarData {
-  [country: string]: ICountryTypesData;
+export interface IRadarItem {
+  axisname: string;
+  value: number;
 }
-
-export interface ICountryTypesData {
-  [type: string]: number;
-}
-
-const data: IRadarData = {
-  China: {
-    Agriculture: 90,
-    textile: 120,
-    food: 30,
-    tech: 140,
-    chemistry: 30,
-  },
-  USA: {
-    Agriculture: 50,
-    textile: 80,
-    food: 20,
-    tech: 120,
-    chemistry: 80,
-  },
-};
-// TODO: 实现数据Scale range 取整10 算法; 配色方案; tooltip接入
+// TODO: 实现数据Scale range 取整10 算法; 配色方案; tooltip接入; 接入全局的year
 const Radar: React.FC<IRadar> = (props) => {
-  const { svgWidth, svgHeight } = props;
+  const { svgWidth, svgHeight, title } = props;
+  const [data, setData] = useState<Array<IRadarItem>>([]);
   const width = svgWidth;
   const height = svgHeight;
-  // TODO: 通过输入数据的维度计算
-  const sides = 5;
+  const level = 4;
+  const sides = useMemo(() => data.length, [data]);
   const size = useMemo(() => Math.min(width, height), [width, height]);
   const r = 0.8 * size;
   const r_0 = r / 2;
@@ -49,22 +36,39 @@ const Radar: React.FC<IRadar> = (props) => {
     y: size / 2,
   };
   const offset = Math.PI;
-  // 抽离
   const polyangle = (Math.PI * 2) / sides;
+  const nameToID = nameToIDObj;
+  // TODO: 配色解决
+  const color = colorMap.get(nameToID[title]);
 
-  const maxValue: number | undefined = max(
-    Object.keys(data)
-      .map((key) => Object.keys(data[key]).map((type) => data[key][type]))
-      ?.flat()
-  );
+  const maxValue: number = useMemo(() => {
+    const maxNum = max(data.map((item) => item.value));
+
+    return maxNum ? Math.ceil(maxNum * 10) / 10 : 0;
+  }, [data]);
+
+  const tickValues = useMemo(() => {
+    return rangeWithLen(0, maxValue, level + 1);
+  }, [maxValue]);
+  // const maxValue = 1;
 
   const radarScale = useMemo(
     () =>
       scaleLinear()
         .domain([0, maxValue as number])
         .range([r_0, 0]),
-    [r_0]
+    [r_0, maxValue]
   );
+
+  const reqRadar = async () => {
+    const selectedCountry = nameToID[title];
+    const response: any = await reqRadarData({ selectedCountry, year: 2019 });
+    setData(response.data);
+  };
+
+  useEffect(() => {
+    reqRadar();
+  }, []);
 
   const generatePoint = ({ length, angle }: any) => {
     const point = {
@@ -77,24 +81,25 @@ const Radar: React.FC<IRadar> = (props) => {
   const drawPath = (points: Array<any>) => {
     // draw points
     let pathD = "";
-    points.forEach((point, index) => {
-      if (index == 0) {
-        pathD += `M${point.x} ${point.y} `;
-      } else {
-        pathD += `L${point.x} ${point.y} `;
-      }
-    });
-    pathD += "Z";
+    if (points.length) {
+      points.forEach((point, index) => {
+        if (index == 0) {
+          pathD += `M${point.x} ${point.y} `;
+        } else {
+          pathD += `L${point.x} ${point.y} `;
+        }
+      });
+      pathD += "Z";
+    }
 
     return pathD;
   };
 
   const drawLabels = (data: any, sides: number) => {
     const labels = [];
-    const types = Object.keys(data["China"]);
     for (let vertex = 0; vertex < sides; vertex++) {
       const angle = vertex * polyangle;
-      const label = types[vertex];
+      const label = data[vertex]["axisname"];
       const point = generatePoint({ length: 0.9 * (size / 2), angle });
 
       labels.push({ ...point, label: label });
@@ -102,15 +107,15 @@ const Radar: React.FC<IRadar> = (props) => {
     return labels;
   };
 
-  return width ? (
+  return width && data ? (
     <svg
       width={svgWidth}
       height={svgHeight}
       viewBox={`0 0 ${svgWidth} ${svgHeight}`}
     >
       <PolyGrid
-        sides={5}
-        level={4}
+        sides={sides}
+        level={level}
         width={width}
         height={height}
         r={r}
@@ -124,19 +129,16 @@ const Radar: React.FC<IRadar> = (props) => {
         scale={radarScale}
         position={[center.x, center.y - r_0]}
         direction={DirectionValue.LEFT}
-        tickValues={[0, 35, 70, 105, 140]}
+        tickValues={tickValues}
       />
       <RadarArea
-        data={data["China"]}
+        data={data}
         generatePoint={generatePoint}
         drawPath={drawPath}
         radarScale={radarScale}
-        size={size}
+        sides={sides}
         r_0={r_0}
-        attributes={{
-          fill: "#d62728",
-          fillOpacity: 0.3,
-        }}
+        color={color}
       />
       <g>
         {drawLabels(data, sides).map((item) => (

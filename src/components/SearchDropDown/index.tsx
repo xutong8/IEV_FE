@@ -1,23 +1,28 @@
 import { countries } from "@/constants/countries";
 import { filterCountry } from "@/utils/getFilterCountryList";
-import { KeyboardEvent, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import styles from "./index.less";
 export interface ISearchDropDown {
   width: number;
+  drawedRadar: Array<string>;
   addRadar: (name: string) => void;
 }
 // todo: 调整多行文本的CSS
 const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
-  const { addRadar } = props;
+  const { addRadar, drawedRadar } = props;
   const countryList = countries;
   const [isActive, setIsActive] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [popupShow, setPopupShow] = useState(false);
   const [highLightIndex, setHighLightIndex] = useState(0);
-  const [countryNames, setCountries] = useState<Array<string>>(countryList);
+  const [countryNames, setCountries] = useState<Array<string>>(
+    filterCountry(countryList, drawedRadar)
+  );
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+  useEffect(() => {
+    setCountries(filterCountry(countryList, drawedRadar));
+  }, [drawedRadar]);
   // 渲染输入栏右侧的倒三角
   const renderCaretSVG = (
     isActive: boolean,
@@ -69,7 +74,8 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const newList = filterCountry(value, countryList);
+    console.log(drawedRadar);
+    const newList = filterCountry(countryList, drawedRadar, value);
     if (!highLightIndex) {
       setHighLightIndex(0);
     }
@@ -114,6 +120,7 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
       addRadar(countryName);
       inputRef.current.value = "";
       inputRef.current.blur();
+      setCountries(countryList);
       // handleItemClick("");
       handleBlur();
     }
