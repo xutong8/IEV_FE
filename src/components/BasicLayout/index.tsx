@@ -12,9 +12,8 @@ import Title from "../Title";
 import { Button } from "antd";
 import { PlayCircleTwoTone, PauseCircleTwoTone } from "@ant-design/icons";
 import { IconState } from "@/constants";
-import { useDispatch, useSelector } from "react-redux";
-import { addOneYear, updateYear } from "@/actions/year";
-import { IStore } from "@/reducers";
+import { useDispatch } from "react-redux";
+import { addOneYear } from "@/actions/year";
 import { max_year, min_year } from "@/constants/year";
 
 const BasicLayout = () => {

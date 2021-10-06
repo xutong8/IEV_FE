@@ -198,6 +198,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     (prev, next) => isEqual(prev, next)
   );
 
+  // columns ref
+  const columnsRef = useRef<string[]>();
+
   // 向后端拉取数据
   const fetchData = () => {
     // 如果category长度为0，则跳过；
@@ -206,7 +209,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       .get(`/stack_chart?category=${JSON.stringify(category)}`)
       .then((res: any) => {
         unstable_batchedUpdates(() => {
-          setColumns(res?.data?.columns ?? []);
+          const columns = res?.data?.columns ?? [];
+          setColumns(columns);
+          columnsRef.current = columns;
           const areaData = res?.data?.data ?? [];
           setAreaData(areaData);
           areaDataRef.current = areaData;
@@ -227,7 +232,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         ...filterList,
         namesToColumns.get(nationsToNames.get(digit2)),
       ];
-      const newColumns = columns.filter(
+      const newColumns = (columnsRef.current as string[]).filter(
         (column) => !newFilterList.includes(column)
       );
       setColumns(newColumns);
@@ -239,7 +244,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       const newFilterList = filterList.filter(
         (item) => item !== namesToColumns.get(nationsToNames.get(digit2))
       );
-      const newColumns = columns.filter(
+      const newColumns = (columnsRef.current as string[]).filter(
         (column) => !newFilterList.includes(column)
       );
       setColumns(newColumns);
