@@ -6,6 +6,7 @@ import { customColumnsFunc } from "./columns";
 import { ITableCountry } from "@/types/table";
 import SearchInput from "../SearchInput";
 import { httpRequest } from "@/services";
+import SearchDropDown from "../SearchDropDown";
 import Title from "../Title";
 export interface ISearchTableProps {
   valueType: ValueType;
