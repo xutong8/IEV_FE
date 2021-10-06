@@ -7,6 +7,7 @@ import { CloseCircleFilled } from "@ant-design/icons";
 export interface IRadarChart {
   title: string;
   draggable: boolean;
+  color?: string;
   fontSize?: number;
   solveDrop?: (value: string) => void;
   deleteItem?: (name: string) => void;
@@ -18,7 +19,8 @@ export interface IRadarChart {
  * @returns
  */
 const RadarChart: React.FC<IRadarChart> = (props) => {
-  const { title, style, fontSize, draggable, solveDrop, deleteItem } = props;
+  const { title, style, fontSize, draggable, color, solveDrop, deleteItem } =
+    props;
   const radarRef = useRef<HTMLDivElement>(null);
   const [radarWidth, radarHeight] = useSVGSize(radarRef);
   const radarSide = useMemo(
@@ -62,7 +64,12 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
     >
       <div ref={radarRef} className={styles["radar_chart"]}>
         {radarSide && (
-          <Radar svgWidth={radarSide} svgHeight={radarSide} title={title} />
+          <Radar
+            svgWidth={radarSide}
+            svgHeight={radarSide}
+            title={title}
+            color={color}
+          />
         )}
       </div>
       <div className={styles["radar_title"]} style={{ fontSize: fontSize }}>
@@ -77,6 +84,10 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
       />
     </div>
   );
+};
+
+RadarChart.defaultProps = {
+  color: "black",
 };
 
 export default RadarChart;

@@ -83,6 +83,7 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
             draggable={false}
             fontSize={25}
             style={{ flex: "1 0 0" }}
+            color="red"
             solveDrop={setSourceCountry}
           />
         </div>
@@ -111,6 +112,7 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
             title={targetCountry}
             draggable={false}
             fontSize={25}
+            color="blue"
             style={{ flex: "1 0 0" }}
             solveDrop={setTargetCountry}
           />

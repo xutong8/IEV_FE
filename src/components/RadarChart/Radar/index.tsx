@@ -14,6 +14,7 @@ export interface IRadar {
   svgWidth: number;
   svgHeight: number;
   title: string;
+  color: string | undefined;
 }
 
 export interface IRadarItem {
@@ -22,7 +23,7 @@ export interface IRadarItem {
 }
 // TODO: 实现数据Scale range 取整10 算法; 配色方案; tooltip接入; 接入全局的year
 const Radar: React.FC<IRadar> = (props) => {
-  const { svgWidth, svgHeight, title } = props;
+  const { svgWidth, svgHeight, title, color } = props;
   const [data, setData] = useState<Array<IRadarItem>>([]);
   const width = svgWidth;
   const height = svgHeight;
@@ -38,8 +39,6 @@ const Radar: React.FC<IRadar> = (props) => {
   const offset = Math.PI;
   const polyangle = (Math.PI * 2) / sides;
   const nameToID = nameToIDObj;
-  // TODO: 配色解决
-  const color = colorMap.get(nameToID[title]);
 
   const maxValue: number = useMemo(() => {
     const maxNum = max(data.map((item) => item.value));
