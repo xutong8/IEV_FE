@@ -99,7 +99,7 @@ const Pie: React.FC<IPie> = (props) => {
           {pieDrawData?.map((item: IPieData, index: number) => {
             const d = arcData(item);
             const firstArcSection = /(.+?)L/;
-            const newArc = d?.match(firstArcSection)![1];
+            const newArc = d?.match(firstArcSection)?.[1];
             return (
               <g key={item.index}>
                 <Wedge

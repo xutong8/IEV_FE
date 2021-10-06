@@ -5,7 +5,6 @@ import styles from "./index.less";
 import { select } from "d3-selection";
 import { pointer } from "d3";
 import cn from "classnames";
-import { useSVGSize } from "@/hooks/useSVGSize";
 import { years } from "@/constants/years";
 import { processTicks } from "@/utils/processTicks";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,8 +17,8 @@ import { colorDomain, colorRange } from "@/constants/colorScale";
 import { unstable_batchedUpdates } from "react-dom";
 import { uniteVal } from "@/utils/uniteVal";
 export interface IProgressBarProps {
-  width: number | string;
-  height: number | string;
+  width: number;
+  height: number;
   sourceCountry: string;
   targetCountry: string;
 }
@@ -36,8 +35,6 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
 
-  // computed width and height
-  const [computedWidth, computedHeight] = useSVGSize(svgRef);
   // 最小年
   const minYear = useMemo(() => Math.min(...years), []);
   // 最大年
@@ -50,14 +47,10 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
 
   const xScale = scaleLinear()
     .domain([minYear, maxYear])
-    .range([10, computedWidth - 30]);
+    .range([10, width - 30]);
 
   // 当前年份的x坐标
   const [lineX, setLineX] = useState<number>(0);
-
-  useEffect(() => {
-    setLineX(computedWidth - 30);
-  }, [computedWidth]);
 
   const lineState = useMemo(
     () => ({
@@ -132,6 +125,10 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
     fetchData();
   }, [category, sourceCountry, targetCountry]);
 
+  useEffect(() => {
+    setLineX(xScale(year));
+  }, [width, year]);
+
   return (
     <svg
       width={width}
@@ -140,17 +137,14 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
       ref={svgRef}
     >
       <foreignObject width="100%" height="100%">
-        <div
-          className={styles.pixmaps}
-          style={{ height: computedHeight - axisHeight }}
-        >
+        <div className={styles.pixmaps} style={{ height: height - axisHeight }}>
           {countriesId.map((item) => {
             return (
               <div
                 className={styles.container}
                 style={{
                   width: lineX - 10,
-                  height: (computedHeight - axisHeight) / countriesId.length,
+                  height: (height - axisHeight) / countriesId.length,
                 }}
                 key={item}
               >
@@ -169,8 +163,8 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
                         })}
                         key={index}
                         style={{
-                          width: (computedWidth - 40) / (years.length - 1),
-                          backgroundImage: `linear-gradient(${colorScale(
+                          width: (width - 40) / (years.length - 1),
+                          backgroundImage: `linear-gradient(to right, ${colorScale(
                             val[0]
                           )}, ${colorScale(val[1])})`,
                         }}
@@ -192,12 +186,12 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
         x1={lineState.x1 as number}
         y1={0}
         x2={lineState.x2 as number}
-        y2={computedHeight - axisHeight}
+        y2={height - axisHeight}
         strokeWidth={4}
       />
       <Axis
         direction={DirectionValue.BOTTOM}
-        position={[0, computedHeight - axisHeight]}
+        position={[0, height - axisHeight]}
         scale={xScale}
         ticks={X_TICKS}
         tickValues={yearTicks}

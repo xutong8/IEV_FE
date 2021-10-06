@@ -110,8 +110,6 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
 
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const [computedWidth, computedHeight] = useSVGSize(svgRef);
-
   // 按照expsum的值来映射节点的半径
   const minNode = useMemo(() => {
     return Math.min(...graphNodes.map((node) => node.expsum));
@@ -239,15 +237,24 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     select("#graphRoot").attr("transform", event.transform);
   };
 
+  // zoom ref
+  const zoomRef = useRef<any>(null);
+
   useEffect(() => {
     // 支持zoom交互
     const customZoom = zoom().on("zoom", handleZoom) as any;
+    zoomRef.current = customZoom;
     select(svgRef.current).call(customZoom);
 
     return () => {
       customZoom.on("zoom", null);
       select(svgRef.current).call(customZoom);
     };
+  }, []);
+
+  useEffect(() => {
+    zoomRef.current.scaleTo(select(svgRef.current), 0.6);
+    zoomRef.current.translateBy(select(svgRef.current), 50, 50);
   }, []);
 
   return (

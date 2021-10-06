@@ -100,6 +100,22 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
               parentClass={styles.middleMap}
             />
           </Spin>
+          <div className={styles.colorScale}>
+            <div
+              style={{
+                flex: "1 0 0",
+                backgroundImage: "linear-gradient(to right, blue, #fff)",
+              }}
+              className={styles.left}
+            ></div>
+            <div
+              style={{
+                flex: "1 0 0",
+                backgroundImage: "linear-gradient(to right, #fff, red)",
+              }}
+              className={styles.right}
+            ></div>
+          </div>
         </div>
         <div
           className={cn({
