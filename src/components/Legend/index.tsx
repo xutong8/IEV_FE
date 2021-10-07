@@ -9,8 +9,8 @@ export interface ILegend {
   // Pos问题
   data: Array<string>;
   onClick: (digit2: string, state: boolean) => void;
-  onMouseEnter: (hoverName: string) => void;
-  onMouseLeave: () => void;
+  onMouseEnter?: (hoverName: string) => void;
+  onMouseLeave?: () => void;
   itemClassName?: string;
 }
 
@@ -20,8 +20,8 @@ const Legend: React.FC<ILegend> = (props) => {
     orient,
     data,
     onClick,
-    onMouseEnter,
-    onMouseLeave,
+    onMouseEnter = () => {},
+    onMouseLeave = () => {},
     itemClassName = "",
   } = props;
   const style = { flexDirection: orient };

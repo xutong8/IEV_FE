@@ -3,72 +3,86 @@
     {
       "name": "USA",
       "x": 75,
-      "y": 120
+      "y": 120,
+      "iso_2digit_alpha": "US"
     },
     {
       "name": "United Kingdom",
       "x": 165,
-      "y": 95
+      "y": 95,
+      "iso_2digit_alpha": "GB"
     },
     {
       "name": "Germany",
       "x": 175,
-      "y": 105
+      "y": 105,
+      "iso_2digit_alpha": "DE"
     },
     {
       "name": "Italy",
       "x": 184,
-      "y": 112
+      "y": 112,
+      "iso_2digit_alpha": "IT"
     },
     {
       "name": "Russian Federation",
       "x": 270,
-      "y": 80
+      "y": 85,
+      "iso_2digit_alpha": "RU"
     },
     {
       "name": "China",
       "x": 270,
-      "y": 125
+      "y": 125,
+      "iso_2digit_alpha": "CN"
     },
     {
       "name": "Rep. of Korea",
       "x": 295,
-      "y": 122
+      "y": 122,
+      "iso_2digit_alpha": "KR"
     },
     {
       "name": "Japan",
       "x": 305,
-      "y": 125
+      "y": 125,
+      "iso_2digit_alpha": "JP"
     },
     {
       "name": "India",
       "x": 245,
-      "y": 140
+      "y": 140,
+      "iso_2digit_alpha": "IN"
     },
     {
       "name": "Indonesia",
       "x": 282,
-      "y": 162
+      "y": 166,
+      "iso_2digit_alpha": "ID"
     },
     {
       "name": "Turkey",
       "x": 200,
-      "y": 120
+      "y": 120,
+      "iso_2digit_alpha": "TR"
     },
     {
       "name": "France",
       "x": 170,
-      "y": 110
+      "y": 112,
+      "iso_2digit_alpha": "FR"
     },
     {
       "name": "Brazil",
       "x": 115,
-      "y": 170
+      "y": 170,
+      "iso_2digit_alpha": "BR"
     },
     {
       "name": "Mexico",
       "x": 65,
-      "y": 138
+      "y": 138,
+      "iso_2digit_alpha": "MX"
     }
   ]
 }

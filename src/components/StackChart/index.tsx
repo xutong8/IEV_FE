@@ -21,6 +21,7 @@ import { httpRequest } from "@/services";
 import { unstable_batchedUpdates } from "react-dom";
 import { Spin } from "antd";
 import { filterObjectKeys } from "@/utils/filterObjectKeys";
+import Title from "../Title";
 
 export interface IStackChartProps {
   width: number;
@@ -40,7 +41,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const BrushYOffset = 25;
 
   // (0, 0)点的位置
-  const zeroPosition = useMemo(() => [40, height - 70], [height]);
+  const zeroPosition = useMemo(() => [40, height - 100], [height]);
   // 面积图数据
   const [areaData, setAreaData] = useState<IStackAreaData[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -171,7 +172,10 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       const year = Math.round(xScale.invert(coordinates[0]));
       const value = areaData[year - 1995][hoverName].toFixed(3);
 
-      toolTipRef.current.onMouseMove(e, { year, country: hoverName, value });
+      toolTipRef.current.onMouseMove(e, {
+        name: `${year} ${hoverName}`,
+        value,
+      });
     },
     [xScale]
   );
@@ -194,6 +198,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     (prev, next) => isEqual(prev, next)
   );
 
+  // columns ref
+  const columnsRef = useRef<string[]>();
+
   // 向后端拉取数据
   const fetchData = () => {
     // 如果category长度为0，则跳过；
@@ -202,7 +209,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       .get(`/stack_chart?category=${JSON.stringify(category)}`)
       .then((res: any) => {
         unstable_batchedUpdates(() => {
-          setColumns(res?.data?.columns ?? []);
+          const columns = res?.data?.columns ?? [];
+          setColumns(columns);
+          columnsRef.current = columns;
           const areaData = res?.data?.data ?? [];
           setAreaData(areaData);
           areaDataRef.current = areaData;
@@ -223,7 +232,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         ...filterList,
         namesToColumns.get(nationsToNames.get(digit2)),
       ];
-      const newColumns = columns.filter(
+      const newColumns = (columnsRef.current as string[]).filter(
         (column) => !newFilterList.includes(column)
       );
       setColumns(newColumns);
@@ -235,7 +244,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       const newFilterList = filterList.filter(
         (item) => item !== namesToColumns.get(nationsToNames.get(digit2))
       );
-      const newColumns = columns.filter(
+      const newColumns = (columnsRef.current as string[]).filter(
         (column) => !newFilterList.includes(column)
       );
       setColumns(newColumns);
@@ -251,8 +260,11 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   return (
     <div className={styles.container}>
+      <Title title="StackChart View"></Title>
       {areaData.length === 0 ? (
-        <Spin wrapperClassName={styles.spin} />
+        <div className={styles.content}>
+          <Spin />
+        </div>
       ) : (
         <>
           <Tooltip ref={toolTipRef}>
@@ -260,7 +272,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               `<div>${year} ${country} </div><div>value: ${value}</div>`
             }
           </Tooltip>
-          <svg width={width} height={height} ref={svgRef}>
+          {/* 30为title的高度 */}
+          <svg width={width} height={height - 30} ref={svgRef}>
             <foreignObject width="100%" height={legendHeight}>
               <div className={styles.legends}>
                 <Legend

@@ -1,5 +1,3 @@
-import { ExecSyncOptionsWithStringEncoding } from "child_process";
-
 export type ValueType = "text" | "rect";
 
 export interface ActionType {

@@ -7,43 +7,15 @@
 }
 
 .left_menu {
-  padding: 16px 8px;
+  padding: 16px 8px 12px;
   flex: 1 0 0;
 }
 
 .main_content {
-  flex: 4 0 0;
+  flex: 6 0 0;
   display: flex;
   flex-direction: column;
   padding: 16px;
-
-  .top {
-    height: 50px;
-    &:extend(.block);
-  }
-
-  .middle {
-    height: 75px;
-    display: flex;
-    margin: 0 0 16px;
-    flex-shrink: 0;
-
-    .item {
-      height: 100%;
-      overflow: auto;
-
-      &:first-child {
-        flex: 1 0 0;
-        margin-right: 12px;
-      }
-
-      &:nth-child(2) {
-        flex: 1 0 0;
-      }
-
-      &:extend(.block);
-    }
-  }
 
   .bottom {
     flex: 5 0 0;
@@ -53,67 +25,104 @@
     .progress {
       margin-top: 12px;
       height: 80px;
-      padding: 16px 16px;
+      display: flex;
+      flex-direction: column;
       &:extend(.block);
-    }
 
-    .first {
-      display: flex;
-      flex-direction: row;
-      flex: 1 0 0;
-
-      .firstLeft {
-        flex: 3 0 0;
-        height: 100%;
-
-        .topMap {
-          flex: 1 0 0;
-          height: 100%;
-          display: flex;
-        }
-      }
-
-      .firstRight {
+      .main {
         flex: 1 0 0;
-        height: 100%;
-        margin-left: 12px;
+        margin-top: 12px;
+        display: flex;
+        flex-direction: row;
 
-        .force {
+        .playBtn {
+          margin: 0 12px;
+        }
+
+        .progressContent {
           flex: 1 0 0;
-          height: 100%;
           display: flex;
-          &:extend(.block);
+          flex-direction: row;
+          min-height: 0;
         }
       }
     }
 
-    .second {
+    .container {
       flex: 1 0 0;
-      margin-top: 12px;
       display: flex;
       flex-direction: row;
-
-      .secondLeft {
-        flex: 3 0 0;
+      .chart_content {
+        flex: 6 0 0;
         display: flex;
-
-        .pieMapContainer {
-          flex: 1 0 0;
+        flex-direction: column;
+        .first {
           display: flex;
-          &:extend(.block);
+          flex-direction: row;
+          flex: 1 0 0;
+
+          .firstLeft {
+            flex: 3 0 0;
+            height: 100%;
+
+            .topMap {
+              flex: 1 0 0;
+              height: 100%;
+              display: flex;
+            }
+          }
+
+          .firstRight {
+            flex: 1 0 0;
+            height: 100%;
+            margin-left: 12px;
+
+            .force {
+              flex: 1 0 0;
+              height: 100%;
+              display: flex;
+              &:extend(.block);
+            }
+          }
+        }
+
+        .second {
+          flex: 1 0 0;
+          margin-top: 12px;
+          display: flex;
+          flex-direction: row;
+
+          .secondLeft {
+            flex: 3 0 0;
+            display: flex;
+
+            .pieMapContainer {
+              flex: 1 0 0;
+              display: flex;
+              &:extend(.block);
+            }
+          }
+
+          .secondRight {
+            flex: 1 0 0;
+            display: flex;
+            margin-left: 12px;
+
+            .stack {
+              flex: 1 0 0;
+              display: flex;
+              &:extend(.block);
+            }
+          }
         }
       }
-
-      .secondRight {
+      .radar_chart {
         flex: 1 0 0;
         display: flex;
-        margin-left: 12px;
-
-        .stack {
-          flex: 1 0 0;
-          display: flex;
-          &:extend(.block);
-        }
+        flex-direction: column;
+        margin-left: 10px;
+        background-color: #fff;
+        border-radius: 8px;
       }
     }
   }
