@@ -16,7 +16,6 @@ const ValueTypeButton: React.FC<IValueTypeButtonProps> = (props) => {
     <Button
       type="primary"
       size="small"
-      style={{ marginLeft: 8 }}
       onClick={(event) => {
         event.stopPropagation();
         handleTabelClick();
