@@ -1,4 +1,4 @@
-import React, { useMemo, useState, Fragment } from "react";
+import React, { useMemo, useState } from "react";
 import { scaleBand, scaleLinear } from "d3-scale";
 import { IItem, IRow } from "@/types/heatmap";
 import { useSelector } from "react-redux";
@@ -94,6 +94,19 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
     outputText.setAttribute("fill-opacity", "0.4");
   };
 
+  // 高亮矩形
+  const highlightRect = (row: IRow, item: IItem) => {
+    const inputRect = document.getElementsByClassName(
+      `${row.countryName}bar`
+    )[0] as HTMLDivElement;
+    inputRect.style.opacity = "1";
+
+    const outputRect = document.getElementsByClassName(
+      `${item.countryName}bar`
+    )[1] as HTMLDivElement;
+    outputRect.style.opacity = "1";
+  };
+
   const handleMouseEnter = (
     rowIdx: number,
     columnIdx: number,
@@ -104,8 +117,23 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
     highlightLine(row, item);
     // 高亮文本
     highlightText(row, item);
+    // 高亮矩形
+    highlightRect(row, item);
     setCurrentRowIdx(rowIdx);
     setCurrentColumnIdx(columnIdx);
+  };
+
+  // 取消高亮矩形
+  const unhighlightRect = (row: IRow, item: IItem) => {
+    const inputRect = document.getElementsByClassName(
+      `${row.countryName}bar`
+    )[0] as HTMLDivElement;
+    inputRect.style.opacity = "0.4";
+
+    const outputRect = document.getElementsByClassName(
+      `${item.countryName}bar`
+    )[1] as HTMLDivElement;
+    outputRect.style.opacity = "0.4";
   };
 
   const handleMouseLeave = (row: IRow, item: IItem) => {
@@ -113,6 +141,8 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
     unhighlightLine(row, item);
     // 取消高亮文本
     unhighlightText(row, item);
+    // 取消高亮矩形
+    unhighlightRect(row, item);
     setCurrentRowIdx(-1);
     setCurrentColumnIdx(-1);
   };
@@ -152,7 +182,7 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                         country.name === row.countryName
                     )
                       ? 1
-                      : 0.3
+                      : 0.4
                   }
                   strokeWidth={1}
                   stroke="#d3d3d2"

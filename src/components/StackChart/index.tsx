@@ -182,7 +182,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   // 移入legend事件的处理器
   const onLegendMouseEnter = (hoverName: string) => {
-    setHoverCountry(namesToColumns.get(nationsToNames.get(hoverName)));
+    setHoverCountry(namesToColumns.get(hoverName));
   };
 
   // 移除area path事件的处理器
@@ -228,10 +228,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const onClick = (digit2: string, state: boolean) => {
     // 更新过滤列表
     if (state) {
-      const newFilterList = [
-        ...filterList,
-        namesToColumns.get(nationsToNames.get(digit2)),
-      ];
+      const newFilterList = [...filterList, namesToColumns.get(digit2)];
       const newColumns = (columnsRef.current as string[]).filter(
         (column) => !newFilterList.includes(column)
       );
@@ -242,7 +239,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       setFilterList(newFilterList);
     } else {
       const newFilterList = filterList.filter(
-        (item) => item !== namesToColumns.get(nationsToNames.get(digit2))
+        (item) => item !== namesToColumns.get(digit2)
       );
       const newColumns = (columnsRef.current as string[]).filter(
         (column) => !newFilterList.includes(column)
@@ -267,11 +264,10 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         </div>
       ) : (
         <>
-          <Tooltip ref={toolTipRef}>
-            {({ year, country, value }: any) =>
+          <Tooltip ref={toolTipRef} />
+          {/* {({ year, country, value }: any) =>
               `<div>${year} ${country} </div><div>value: ${value}</div>`
-            }
-          </Tooltip>
+            } */}
           {/* 30为title的高度 */}
           <svg width={width} height={height - 30} ref={svgRef}>
             <foreignObject width="100%" height={legendHeight}>

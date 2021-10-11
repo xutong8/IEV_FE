@@ -21,13 +21,14 @@ import { max_year, min_year } from "@/constants/year";
 const BasicLayout = () => {
   // stack container的ref
   const stackContainerRef = useRef<HTMLDivElement>(null);
-  console.log("layout update");
   const [stackWidth, stackHeight] = useSVGSize(stackContainerRef);
 
   // 对比国家
   const [sourceCountry, setSourceCountry] = useState<string>("China");
   // 参照国家
-  const [targetCountry, setTargetCountry] = useState<string>("Chile");
+  const [targetCountry, setTargetCountry] = useState<string>(
+    "USA, Puerto Rico and US Virgin Islands"
+  );
 
   // force graph的ref
   const forceGraphRef = useRef<HTMLDivElement>(null);

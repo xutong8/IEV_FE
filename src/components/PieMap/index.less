@@ -89,42 +89,10 @@
 
 .spin {
   height: 100%;
-}
 
-.colorScale {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 20px;
-  width: 100px;
-  height: 20px;
-  border-radius: 2px;
-  display: flex;
-  flex-direction: row;
-}
-
-.left {
-  position: relative;
-
-  &::after {
-    position: absolute;
-    content: "-1";
-    display: block;
-    left: -20px;
-    font-size: 12px;
-    font-weight: 450;
-  }
-}
-
-.right {
-  position: relative;
-
-  &::after {
-    position: absolute;
-    content: "1";
-    display: block;
-    right: -15px;
-    font-size: 12px;
-    font-weight: 450;
+  :global {
+    .ant-spin-container {
+      height: 100%;
+    }
   }
 }
