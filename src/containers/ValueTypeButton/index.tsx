@@ -7,17 +7,18 @@ import { Dispatch } from "redux";
 
 export interface IValueTypeButtonProps {
   handleUpdateValueType: () => void;
+  handleTabelClick: () => void;
 }
 
 const ValueTypeButton: React.FC<IValueTypeButtonProps> = (props) => {
-  const { handleUpdateValueType } = props;
+  const { handleUpdateValueType, handleTabelClick } = props;
   return (
     <Button
       type="primary"
       size="small"
-      style={{ marginLeft: 8 }}
       onClick={(event) => {
         event.stopPropagation();
+        handleTabelClick();
         handleUpdateValueType();
       }}
     >

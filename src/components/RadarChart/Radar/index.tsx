@@ -1,7 +1,7 @@
 import PolyGrid from "./PolyGrid";
 import { scaleLinear } from "d3-scale";
 import { useEffect, useMemo, useState } from "react";
-import { max } from "lodash";
+import { isEqual, max } from "lodash";
 import Axis, { DirectionValue } from "../../Axis";
 import RadarArea from "./RadarArea";
 import { nameToIDObj } from "@/constants/nameMapToID";
@@ -9,12 +9,15 @@ import { reqRadarData } from "@/services/api";
 import { IRadarChart } from "..";
 import rangeWithLen from "@/utils/rangeWithLen";
 import { colorMap } from "@/utils/generateCountryColor";
+import { IStore } from "@/reducers";
+import { useSelector } from "react-redux";
 
 export interface IRadar {
   svgWidth: number;
   svgHeight: number;
   title: string;
   color: string | undefined;
+  tooltipRef: any;
 }
 
 export interface IRadarItem {
@@ -23,14 +26,15 @@ export interface IRadarItem {
 }
 // TODO: 实现数据Scale range 取整10 算法; 配色方案; tooltip接入; 接入全局的year
 const Radar: React.FC<IRadar> = (props) => {
-  const { svgWidth, svgHeight, title, color } = props;
+  const { svgWidth, svgHeight, title, color, tooltipRef } = props;
   const [data, setData] = useState<Array<IRadarItem>>([]);
+  const [maxValue, setMaxValue] = useState<number>(0);
   const width = svgWidth;
   const height = svgHeight;
   const level = 4;
   const sides = useMemo(() => data.length, [data]);
   const size = useMemo(() => Math.min(width, height), [width, height]);
-  const r = 0.8 * size;
+  const r = 0.75 * size;
   const r_0 = r / 2;
   const center = {
     x: size / 2,
@@ -40,11 +44,12 @@ const Radar: React.FC<IRadar> = (props) => {
   const polyangle = (Math.PI * 2) / sides;
   const nameToID = nameToIDObj;
 
-  const maxValue: number = useMemo(() => {
-    const maxNum = max(data.map((item) => item.value));
-
-    return maxNum ? Math.ceil(maxNum * 10) / 10 : 0;
-  }, [data]);
+  const { year } = useSelector(
+    (state: IStore) => ({
+      year: state.year,
+    }),
+    (prev, next) => isEqual(prev, next)
+  );
 
   const tickValues = useMemo(() => {
     return rangeWithLen(0, maxValue, level + 1);
@@ -60,14 +65,16 @@ const Radar: React.FC<IRadar> = (props) => {
   );
 
   const reqRadar = async () => {
+    console.log(year);
     const selectedCountry = nameToID[title];
-    const response: any = await reqRadarData({ selectedCountry, year: 2019 });
-    setData(response.data);
+    const response: any = await reqRadarData({ selectedCountry, year: year });
+    setData(response.data.data);
+    setMaxValue(response.data.range);
   };
 
   useEffect(() => {
     reqRadar();
-  }, []);
+  }, [year, title]);
 
   const generatePoint = ({ length, angle }: any) => {
     const point = {
@@ -99,9 +106,8 @@ const Radar: React.FC<IRadar> = (props) => {
     for (let vertex = 0; vertex < sides; vertex++) {
       const angle = vertex * polyangle;
       const label = data[vertex]["axisname"];
-      const point = generatePoint({ length: 0.9 * (size / 2), angle });
-
-      labels.push({ ...point, label: label });
+      const point = generatePoint({ length: 0.8 * (size / 2), angle });
+      labels.push({ ...point, label: label, angle: angle });
     }
     return labels;
   };
@@ -138,17 +144,34 @@ const Radar: React.FC<IRadar> = (props) => {
         sides={sides}
         r_0={r_0}
         color={color}
+        tooltipRef={tooltipRef}
       />
       <g>
         {drawLabels(data, sides).map((item) => (
-          <text
-            key={item.label}
-            style={{ textAnchor: "middle" }}
-            x={item.x}
-            y={item.y}
-          >
-            {item.label}
-          </text>
+          <g key={item.label}>
+            <text
+              key={item.label}
+              style={{
+                textAnchor:
+                  item.angle === 0 || item.angle === Math.PI
+                    ? "middle"
+                    : item.angle > Math.PI
+                    ? "end"
+                    : "start",
+                dominantBaseline:
+                  item.angle === 0
+                    ? "inherit"
+                    : item.angle === Math.PI
+                    ? "hanging"
+                    : "central",
+                fontSize: `${svgWidth / 25}px`,
+              }}
+              x={item.x}
+              y={item.y}
+            >
+              {item.label}
+            </text>
+          </g>
         ))}
       </g>
     </svg>

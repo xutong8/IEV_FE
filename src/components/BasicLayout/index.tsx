@@ -27,7 +27,9 @@ const BasicLayout = () => {
   // 对比国家
   const [sourceCountry, setSourceCountry] = useState<string>("China");
   // 参照国家
-  const [targetCountry, setTargetCountry] = useState<string>("Chile");
+  const [targetCountry, setTargetCountry] = useState<string>(
+    "USA, Puerto Rico and US Virgin Islands"
+  );
 
   // force graph的ref
   const forceGraphRef = useRef<HTMLDivElement>(null);

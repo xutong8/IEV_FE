@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
 import { scaleLinear } from "d3-scale";
 import { colorDomain, colorRange } from "@/constants/colorScale";
+import { selectAll } from "d3";
 export interface IChoropleth {
   selectedCountries: Array<string>;
   parentClass: string;
@@ -56,19 +57,29 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
         `${colorScale(data[id])}`
       );
     });
-
+    const selectedPair = [
+      allCountries[selectedCountries[0]]["iso_2digit_alpha"],
+      allCountries[selectedCountries[1]]["iso_2digit_alpha"],
+    ];
     // draw color for selected country
-    select(
-      `.${parentClass} #${allCountries[selectedCountries[0]][
-        "iso_2digit_alpha"
-      ].toLowerCase()}`
-    ).style("fill", `${colorRange[1]}`);
+    select(`.${parentClass} #${selectedPair[0].toLowerCase()}`).style(
+      "fill",
+      `${"lightgreen"}`
+    );
+    // .append("text")
+    // .append("textPath")
+    // .attr(
+    //   "xlink:href",
+    //   `#${allCountries[selectedCountries[0]][
+    //     "iso_2digit_alpha"
+    //   ].toLowerCase()}`
+    // )
+    // .text(allCountries[selectedCountries[0]]["iso_2digit_alpha"]);
 
-    select(
-      `.${parentClass} #${allCountries[selectedCountries[1]][
-        "iso_2digit_alpha"
-      ].toLowerCase()}`
-    ).style("fill", `${colorRange[0]}`);
+    select(`.${parentClass} #${selectedPair[1].toLowerCase()}`).style(
+      "fill",
+      `${"lightgreen"}`
+    );
   };
 
   useEffect(() => {
@@ -76,17 +87,34 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
   }, [selectedCountries, year, category]);
 
   return (
-    <CountryMap
-      name="World"
-      className={styles.map}
-      style={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        width: "60%",
-        transform: "translate(-50%, -50%)",
-      }}
-    />
+    <div className={styles["choropleth_container"]}>
+      <CountryMap
+        name="World"
+        className={styles.map}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      />
+      <div className={styles.colorScale}>
+        <div
+          style={{
+            flex: "1 0 0",
+            backgroundImage: "linear-gradient(to right, blue, #fff)",
+          }}
+          className={styles.left}
+        ></div>
+        <div
+          style={{
+            flex: "1 0 0",
+            backgroundImage: "linear-gradient(to right, #fff, red)",
+          }}
+          className={styles.right}
+        ></div>
+      </div>
+    </div>
   );
 };
 

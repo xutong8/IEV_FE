@@ -12,6 +12,7 @@ import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 import Title from "../Title";
 import RadarChart from "../RadarChart";
+import { findCountryIdByName } from "@/utils/findCountryIdByName";
 
 const { Option } = Select;
 
@@ -56,28 +57,6 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
           })}
           ref={sourceMapRef}
         >
-          {/* <CountryMap
-            className={styles.sourceCountryMap}
-            name={sourceCountry}
-            style={{
-              width: sourceMapWidth,
-              height: sourceMapHeight - 60,
-              overflow: "auto",
-            }}
-          />
-          <Select
-            className={styles.select}
-            value={sourceCountry}
-            onChange={(country: string) => setSourceCountry(country)}
-          >
-            {(productData?.countris ?? [])
-              .filter((name) => name !== targetCountry)
-              .map((name) => (
-                <Option key={name} value={name}>
-                  {name}
-                </Option>
-              ))}
-          </Select> */}
           <RadarChart
             title={sourceCountry}
             draggable={false}
@@ -88,34 +67,25 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
           />
         </div>
         <div className={styles.middleMap} ref={middleMapRef}>
-          <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
-            <Pie
+          <Spin
+            spinning={category.length === 0}
+            wrapperClassName={styles.spin}
+            style={{ height: "100%" }}
+          >
+            {/* <Pie
               width={middleMapWidth}
               height={middleMapHeight}
               sourceCountry={sourceCountry}
               targetCountry={targetCountry}
-            />
+            /> */}
             <Choropleth
-              selectedCountries={["156", "842"]}
+              selectedCountries={[
+                findCountryIdByName(sourceCountry),
+                findCountryIdByName(targetCountry),
+              ]}
               parentClass={styles.middleMap}
             />
           </Spin>
-          <div className={styles.colorScale}>
-            <div
-              style={{
-                flex: "1 0 0",
-                backgroundImage: "linear-gradient(to right, blue, #fff)",
-              }}
-              className={styles.left}
-            ></div>
-            <div
-              style={{
-                flex: "1 0 0",
-                backgroundImage: "linear-gradient(to right, #fff, red)",
-              }}
-              className={styles.right}
-            ></div>
-          </div>
         </div>
         <div
           className={cn({
