@@ -226,7 +226,6 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   // 点击legend事件的处理器
   const onClick = (digit2: string, state: boolean) => {
-    console.log(digit2);
     // 更新过滤列表
     if (state) {
       const newFilterList = [...filterList, namesToColumns.get(digit2)];

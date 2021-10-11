@@ -74,7 +74,6 @@ const SearchDropDown: React.FC<ISearchDropDown> = (props) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log(drawedRadar);
     const newList = filterCountry(countryList, drawedRadar, value);
     if (!highLightIndex) {
       setHighLightIndex(0);

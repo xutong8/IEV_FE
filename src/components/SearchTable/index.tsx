@@ -62,6 +62,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
       </div>
       <div className={styles["search_list"]}>
         <div className={styles["search_container"]}>
+          {/* TODO: 当pageNo切换时，需要考虑高亮的问题 */}
           <Table
             columns={customColumnsFunc(valueType, maxAmount)}
             dataSource={dataSource}

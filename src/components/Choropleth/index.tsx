@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { select } from "d3-selection";
 import CountryMap from "../CountryMap";
 import styles from "./index.less";
@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
 import { scaleLinear } from "d3-scale";
 import { colorDomain, colorRange } from "@/constants/colorScale";
-import { selectAll } from "d3";
 export interface IChoropleth {
   selectedCountries: Array<string>;
   parentClass: string;
@@ -29,6 +28,8 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
     () => scaleLinear<string>().domain(colorDomain).range(colorRange),
     []
   );
+
+  const allCountriesRef = useRef<any>();
 
   const handleData = async () => {
     // 如果category长度为0，则跳过
@@ -57,34 +58,48 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
         `${colorScale(data[id])}`
       );
     });
+
     const selectedPair = [
       allCountries[selectedCountries[0]]["iso_2digit_alpha"],
       allCountries[selectedCountries[1]]["iso_2digit_alpha"],
     ];
     // draw color for selected country
-    select(`.${parentClass} #${selectedPair[0].toLowerCase()}`).style(
-      "fill",
-      `${"lightgreen"}`
+    select(`.${parentClass} #${selectedPair[0].toLowerCase()}`).classed(
+      `${styles.shadow1} ${styles.shadow2}`,
+      true
     );
-    // .append("text")
-    // .append("textPath")
-    // .attr(
-    //   "xlink:href",
-    //   `#${allCountries[selectedCountries[0]][
-    //     "iso_2digit_alpha"
-    //   ].toLowerCase()}`
-    // )
-    // .text(allCountries[selectedCountries[0]]["iso_2digit_alpha"]);
 
-    select(`.${parentClass} #${selectedPair[1].toLowerCase()}`).style(
-      "fill",
-      `${"lightgreen"}`
+    select(`.${parentClass} #${selectedPair[1].toLowerCase()}`).classed(
+      `${styles.shadow1} ${styles.shadow2}`,
+      true
     );
+
+    allCountriesRef.current = allCountries;
   };
 
   useEffect(() => {
     handleData();
-  }, [selectedCountries, year, category]);
+    // 清理上一轮selectedCountry的drop-shadow
+    return function cleanup() {
+      const allCountries = allCountriesRef.current;
+      if (!allCountries) return;
+
+      const selectedPair = [
+        allCountries[selectedCountries[0]]["iso_2digit_alpha"],
+        allCountries[selectedCountries[1]]["iso_2digit_alpha"],
+      ];
+      // draw color for selected country
+      select(`.${parentClass} #${selectedPair[0].toLowerCase()}`).classed(
+        `${styles.shadow1} ${styles.shadow2}`,
+        false
+      );
+
+      select(`.${parentClass} #${selectedPair[1].toLowerCase()}`).classed(
+        `${styles.shadow1} ${styles.shadow2}`,
+        false
+      );
+    };
+  }, [selectedCountries, year, category, allCountriesRef.current]);
 
   return (
     <div className={styles["choropleth_container"]}>

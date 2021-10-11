@@ -21,7 +21,6 @@ import { max_year, min_year } from "@/constants/year";
 const BasicLayout = () => {
   // stack container的ref
   const stackContainerRef = useRef<HTMLDivElement>(null);
-  console.log("layout update");
   const [stackWidth, stackHeight] = useSVGSize(stackContainerRef);
 
   // 对比国家

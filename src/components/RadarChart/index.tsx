@@ -1,5 +1,5 @@
 import { useSVGSize } from "@/hooks/useSVGSize";
-import { CSSProperties, useRef, useMemo, useEffect } from "react";
+import { CSSProperties, useRef, useMemo } from "react";
 import Radar from "./Radar";
 import styles from "./index.less";
 import { CloseCircleFilled } from "@ant-design/icons";
@@ -56,7 +56,6 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
   const handleDragEnter = (e: any) => {
     e.preventDefault();
     containerRef.current?.classList.add(styles["enter"]);
-    console.log(containerRef.current?.classList);
   };
   const handleDragLeave = () => {
     containerRef.current?.classList.remove(styles["enter"]);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { Button } from "antd";
 import { updateValueType } from "../../actions/valueType";
 import { connect } from "react-redux";
@@ -8,10 +8,11 @@ import { Dispatch } from "redux";
 export interface IValueTypeButtonProps {
   handleUpdateValueType: () => void;
   handleTabelClick: () => void;
+  style?: CSSProperties;
 }
 
 const ValueTypeButton: React.FC<IValueTypeButtonProps> = (props) => {
-  const { handleUpdateValueType, handleTabelClick } = props;
+  const { handleUpdateValueType, handleTabelClick, style = {} } = props;
   return (
     <Button
       type="primary"
@@ -21,6 +22,7 @@ const ValueTypeButton: React.FC<IValueTypeButtonProps> = (props) => {
         handleTabelClick();
         handleUpdateValueType();
       }}
+      style={style}
     >
       Text/Rect
     </Button>

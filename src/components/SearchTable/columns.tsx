@@ -207,6 +207,9 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
           <div className={styles.hover}>
             <ValueTypeButton
               handleTabelClick={() => handleColumnClick("amount")}
+              style={{
+                marginRight: 2,
+              }}
             />
             <Tooltip title="(In thousands current USD)">
               <QuestionCircleOutlined />

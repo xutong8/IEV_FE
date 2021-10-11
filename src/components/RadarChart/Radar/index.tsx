@@ -1,14 +1,12 @@
 import PolyGrid from "./PolyGrid";
 import { scaleLinear } from "d3-scale";
 import { useEffect, useMemo, useState } from "react";
-import { isEqual, max } from "lodash";
+import { isEqual } from "lodash";
 import Axis, { DirectionValue } from "../../Axis";
 import RadarArea from "./RadarArea";
 import { nameToIDObj } from "@/constants/nameMapToID";
 import { reqRadarData } from "@/services/api";
-import { IRadarChart } from "..";
 import rangeWithLen from "@/utils/rangeWithLen";
-import { colorMap } from "@/utils/generateCountryColor";
 import { IStore } from "@/reducers";
 import { useSelector } from "react-redux";
 
@@ -65,7 +63,6 @@ const Radar: React.FC<IRadar> = (props) => {
   );
 
   const reqRadar = async () => {
-    console.log(year);
     const selectedCountry = nameToID[title];
     const response: any = await reqRadarData({ selectedCountry, year: year });
     setData(response.data.data);

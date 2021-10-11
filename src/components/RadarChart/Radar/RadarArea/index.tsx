@@ -30,7 +30,6 @@ const RadarArea: React.FC<IRadarArea> = (props) => {
   const path = useRef();
   const circles: Array<any> = [];
   const onMouseEnter = (e: any, message: any) => {
-    console.log("enter");
     // tooltip
     tooltipRef.current.onMouseMove(e, message);
   };

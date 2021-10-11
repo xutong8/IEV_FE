@@ -29,7 +29,7 @@ const filterCountry = (
     filterCountries.sort((a: string, b: string) => {
       let indexA = a.toLocaleLowerCase().indexOf(lowerValue);
       let indexB = b.toLocaleLowerCase().indexOf(lowerValue);
-      if (indexA == indexB) {
+      if (indexA === indexB) {
         return a > b ? 1 : -1;
       } else {
         return indexA - indexB;
