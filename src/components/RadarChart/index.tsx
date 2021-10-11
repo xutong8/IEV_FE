@@ -3,6 +3,7 @@ import { CSSProperties, useRef, useMemo, useEffect } from "react";
 import Radar from "./Radar";
 import styles from "./index.less";
 import { CloseCircleFilled } from "@ant-design/icons";
+import Tooltip from "../Tooltip";
 
 export interface IRadarChart {
   title: string;
@@ -27,6 +28,8 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
     () => Math.min(radarWidth, radarHeight),
     [radarWidth, radarHeight]
   );
+  const containerRef = useRef<HTMLDivElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
   // useEffect(() => {}, [radarWidth, radarHeight]);
   const handleDragStart = (e: any) => {
     e.target.style.opacity = 0.5;
@@ -36,7 +39,7 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
     e.target.style.opacity = "";
   };
   const handleDrop = (e: any) => {
-    console.log(solveDrop, deleteItem);
+    containerRef.current?.classList.remove(styles["enter"]);
     if (solveDrop) {
       const newName = e.dataTransfer.getData("text");
       solveDrop(newName);
@@ -50,18 +53,30 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
       deleteItem(title);
     }
   };
+  const handleDragEnter = (e: any) => {
+    e.preventDefault();
+    containerRef.current?.classList.add(styles["enter"]);
+    console.log(containerRef.current?.classList);
+  };
+  const handleDragLeave = () => {
+    containerRef.current?.classList.remove(styles["enter"]);
+  };
   return (
     <div
       className={`${styles["radar_container"]} ${
-        draggable ? styles["display_list"] : ""
+        draggable ? styles["display_list"] : styles["display_choose"]
       }`}
+      ref={containerRef}
       style={{ ...style }}
       draggable={draggable}
       onDragStart={handleDragStart}
       onDrop={handleDrop}
+      onDragOverCapture={handleDragEnter}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
+      onDragLeave={handleDragLeave}
     >
+      <Tooltip ref={tooltipRef} />
       <div ref={radarRef} className={styles["radar_chart"]}>
         {radarSide && (
           <Radar
@@ -69,6 +84,7 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
             svgHeight={radarSide}
             title={title}
             color={color}
+            tooltipRef={tooltipRef}
           />
         )}
       </div>

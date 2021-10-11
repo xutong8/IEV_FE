@@ -1,7 +1,7 @@
-import dataSource from "@/data/nameToDigit2.json";
+import { nameToIDObj } from "@/constants/nameMapToID";
 
 const findCountryIdByName = (name: string) => {
-  return dataSource.results.find((item) => item.name === name)?.id ?? "";
+  return nameToIDObj[name];
 };
 
 export { findCountryIdByName };
