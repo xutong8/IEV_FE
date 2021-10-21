@@ -6,7 +6,7 @@ export const countryColorMap: { [key: string]: string } = {
   DE: "#006d2c",
   RU: "#ccece6",
   BR: "#bf812d",
-  UK: "#41ae76",
+  GB: "#41ae76",
   CA: "#ffeda0",
   FR: "#66c2a4",
   AU: "#6baed6",
