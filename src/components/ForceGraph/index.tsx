@@ -32,6 +32,7 @@ import randomcolor from "randomcolor";
 import { Spin } from "antd";
 import { isEqual } from "lodash";
 import Title from "../Title";
+import { continentColorMap } from "@/constants/colorMap";
 
 export interface IForceGraphProps {
   width: number;
@@ -84,12 +85,8 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
         if ((colorMap?.size ?? 0) === 0) {
           const newColorMap = new Map<string, string>();
 
-          const colors = randomcolor({
-            count: continents.length,
-          });
-
           continents.forEach((continent, index) => {
-            newColorMap.set(continent, colors[index]);
+            newColorMap.set(continent, continentColorMap[continent]);
           });
           setColorMap(newColorMap);
         }

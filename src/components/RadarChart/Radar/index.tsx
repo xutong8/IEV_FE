@@ -32,7 +32,7 @@ const Radar: React.FC<IRadar> = (props) => {
   const level = 4;
   const sides = useMemo(() => data.length, [data]);
   const size = useMemo(() => Math.min(width, height), [width, height]);
-  const r = 0.75 * size;
+  const r = 0.7 * size;
   const r_0 = r / 2;
   const center = {
     x: size / 2,
@@ -65,11 +65,14 @@ const Radar: React.FC<IRadar> = (props) => {
   const reqRadar = async () => {
     const selectedCountry = nameToID[title];
     const response: any = await reqRadarData({ selectedCountry, year: year });
+    console.log(response.data.data);
     setData(response.data.data);
+
     setMaxValue(response.data.range);
   };
 
   useEffect(() => {
+    console.log("update");
     reqRadar();
   }, [year, title]);
 
@@ -101,9 +104,21 @@ const Radar: React.FC<IRadar> = (props) => {
   const drawLabels = (data: any, sides: number) => {
     const labels = [];
     for (let vertex = 0; vertex < sides; vertex++) {
-      const angle = vertex * polyangle;
+      let angle = vertex * polyangle;
+
       const label = data[vertex]["axisname"];
-      const point = generatePoint({ length: 0.8 * (size / 2), angle });
+      // 进行标签旋转
+      if (angle != 0 && angle != Math.PI) {
+        if (
+          angle < Math.PI / 2 ||
+          (angle > Math.PI && angle <= (Math.PI / 2) * 3)
+        ) {
+          angle -= Math.PI / 10;
+        } else {
+          angle += Math.PI / 10;
+        }
+      }
+      const point = generatePoint({ length: 0.75 * (size / 2), angle });
       labels.push({ ...point, label: label, angle: angle });
     }
     return labels;

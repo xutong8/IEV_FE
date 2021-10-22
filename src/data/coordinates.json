@@ -1,6 +1,12 @@
 {
   "coordinates": [
     {
+      "name": "Canada",
+      "x": 65,
+      "y": 85,
+      "iso_2digit_alpha": "CA"
+    },
+    {
       "name": "USA",
       "x": 75,
       "y": 120,
@@ -30,12 +36,7 @@
       "y": 85,
       "iso_2digit_alpha": "RU"
     },
-    {
-      "name": "China",
-      "x": 270,
-      "y": 125,
-      "iso_2digit_alpha": "CN"
-    },
+
     {
       "name": "Rep. of Korea",
       "x": 295,
@@ -49,23 +50,18 @@
       "iso_2digit_alpha": "JP"
     },
     {
+      "name": "China",
+      "x": 270,
+      "y": 125,
+      "iso_2digit_alpha": "CN"
+    },
+    {
       "name": "India",
       "x": 245,
       "y": 140,
       "iso_2digit_alpha": "IN"
     },
-    {
-      "name": "Indonesia",
-      "x": 282,
-      "y": 166,
-      "iso_2digit_alpha": "ID"
-    },
-    {
-      "name": "Turkey",
-      "x": 200,
-      "y": 120,
-      "iso_2digit_alpha": "TR"
-    },
+
     {
       "name": "France",
       "x": 170,
@@ -73,16 +69,22 @@
       "iso_2digit_alpha": "FR"
     },
     {
+      "name": "Australia",
+      "x": 305,
+      "y": 185,
+      "iso_2digit_alpha": "AU"
+    },
+    {
+      "name": "Spain",
+      "x": 160,
+      "y": 117,
+      "iso_2digit_alpha": "ES"
+    },
+    {
       "name": "Brazil",
       "x": 115,
       "y": 170,
       "iso_2digit_alpha": "BR"
-    },
-    {
-      "name": "Mexico",
-      "x": 65,
-      "y": 138,
-      "iso_2digit_alpha": "MX"
     }
   ]
 }

@@ -13,13 +13,25 @@
   .radar_chart {
     flex: 0 0 80%;
     position: relative;
-    svg {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin: auto;
-    }
+    display: flex;
+    justify-content: center;
+    // svg {
+    //   position: absolute;
+    //   bottom: 0;
+    //   left: 0;
+    //   right: 0;
+    //   top: 0;
+    //   margin: auto;
+    // }
+    // &::after {
+    //   position: absolute;
+    //   bottom: 0;
+    //   left: 0;
+    //   right: 0;
+    //   top: 0;
+    //   margin: auto;
+    //   content: "";
+    // }
   }
 
   .radar_title {
@@ -28,6 +40,10 @@
     font-weight: 500;
     text-align: center;
     text-anchor: middle;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 0 10px;
   }
 }
 
