@@ -130,6 +130,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   // 设置布局算法
   const simulation = useMemo(() => {
     return forceSimulation(nodesState as any)
+      .alphaDecay(0.05)
       .force(
         "link",
         forceLink(linksState as any).id((d: any) => d.id)
