@@ -8,6 +8,7 @@ import Tooltip from "../Tooltip";
 export interface IRadarChart {
   title: string;
   draggable: boolean;
+  parentRef?: any;
   color?: string;
   fontSize?: number;
   solveDrop?: (value: string) => void;
@@ -20,10 +21,19 @@ export interface IRadarChart {
  * @returns
  */
 const RadarChart: React.FC<IRadarChart> = (props) => {
-  const { title, style, fontSize, draggable, color, solveDrop, deleteItem } =
-    props;
+  const {
+    title,
+    style,
+    fontSize,
+    draggable,
+    color,
+    solveDrop,
+    deleteItem,
+    parentRef,
+  } = props;
   const radarRef = useRef<HTMLDivElement>(null);
-  const [radarWidth, radarHeight] = useSVGSize(radarRef);
+  console.log(parentRef, radarRef);
+  const [radarWidth, radarHeight] = useSVGSize(parentRef ?? radarRef);
   const radarSide = useMemo(
     () => Math.min(radarWidth, radarHeight),
     [radarWidth, radarHeight]

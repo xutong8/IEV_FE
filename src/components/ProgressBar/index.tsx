@@ -21,10 +21,11 @@ export interface IProgressBarProps {
   height: number;
   sourceCountry: string;
   targetCountry: string;
+  sorted: boolean;
 }
 
 const ProgressBar: React.FC<IProgressBarProps> = (props) => {
-  const { width, height, sourceCountry, targetCountry } = props;
+  const { width, height, sourceCountry, targetCountry, sorted } = props;
 
   const dispatch = useDispatch();
 
@@ -109,7 +110,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
         )}&selectedCountries=${JSON.stringify([
           findCountryIdByName(sourceCountry),
           findCountryIdByName(targetCountry),
-        ])}`
+        ])}&sortlist=${sorted}`
       )
       .then((res: any) => {
         const data = res?.data ?? {};
@@ -123,7 +124,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
 
   useEffect(() => {
     fetchData();
-  }, [category, sourceCountry, targetCountry]);
+  }, [category, sourceCountry, targetCountry, sorted]);
 
   useEffect(() => {
     setLineX(xScale(year));

@@ -12,7 +12,11 @@ import Title from "../Title";
 import { addCountryItem, delCountryItem } from "@/actions/countryList";
 import RadarArea from "../RadarArea";
 import { Button } from "antd";
-import { PlayCircleTwoTone, PauseCircleTwoTone } from "@ant-design/icons";
+import {
+  PlayCircleTwoTone,
+  PauseCircleTwoTone,
+  SortAscendingOutlined,
+} from "@ant-design/icons";
 import { IconState } from "@/constants";
 import { useDispatch } from "react-redux";
 import { addOneYear } from "@/actions/year";
@@ -40,6 +44,9 @@ const BasicLayout = () => {
 
   // 保存按钮的状态，用于展示播放/暂停
   const [iconState, setIconState] = useState<IconState>(IconState.PLAY);
+
+  // 保存是否排序的按钮状态
+  const [sorted, setSorted] = useState<boolean>(false);
 
   // dispatch
   const dispatch = useDispatch();
@@ -131,12 +138,20 @@ const BasicLayout = () => {
                   }}
                 />
               </div>
+              <div className={`${styles.sortBtn}`}>
+                <Button
+                  className={sorted ? styles.sorted : ""}
+                  onClick={() => setSorted(!sorted)}
+                  icon={<SortAscendingOutlined />}
+                />
+              </div>
               <div className={styles.progressContent} ref={progressRef}>
                 <ProgressBar
                   width={progressWidth}
                   height={progressHeight}
                   sourceCountry={sourceCountry}
                   targetCountry={targetCountry}
+                  sorted={sorted}
                 />
               </div>
             </div>

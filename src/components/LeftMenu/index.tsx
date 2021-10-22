@@ -101,7 +101,7 @@ const LeftMenu = () => {
 
   return (
     <div className={styles.leftmenu}>
-      <div className={styles.item}>
+      <div className={styles.item + " " + styles.itemTop}>
         <Title title="Country List" />
         <div
           className={styles.middle}
@@ -110,31 +110,41 @@ const LeftMenu = () => {
               countryImages.length === 0 ? "center" : "flex-start",
           }}
         >
-          <Spin spinning={countryImages.length === 0}>
-            <div className={styles.list}>
-              {countryImages.map((country) => (
-                <div key={country.id} className={styles.countryItem}>
-                  <Tag
-                    style={{
-                      fontSize: 12,
-                      cursor: "pointer",
-                    }}
-                    className={cn({
-                      [styles.clicked]:
-                        countryList.find((item) => item.id === country.id) !==
-                        undefined,
-                    })}
-                    onClick={() => handleCountryClick(country)}
-                  >
-                    {country.name}
-                  </Tag>
+          <Spin spinning={countryImages.length === 0} />
+          <div className={styles.list}>
+            {countryImages.map((country) => (
+              <div key={country.id} className={styles.countryContainer}>
+                <div
+                  className={`${styles.countryItem} ${cn({
+                    [styles.clicked]:
+                      countryList.find((item) => item.id === country.id) !==
+                      undefined,
+                  })}`}
+                  onClick={() => handleCountryClick(country)}
+                >
+                  {country.name}
                 </div>
-              ))}
-            </div>
-          </Spin>
+                {/* <Tag
+                  style={{
+                    fontSize: 12,
+                    cursor: "pointer",
+                  }}
+                  className={cn({
+                    [styles.clicked]:
+                      countryList.find((item) => item.id === country.id) !==
+                      undefined,
+                  })}
+                  onClick={() => handleCountryClick(country)}
+                >
+                  {country.name}
+                </Tag> */}
+              </div>
+            ))}
+          </div>
+          {/* </Spin> */}
         </div>
       </div>
-      <div className={styles.item}>
+      <div className={styles.item + " " + styles.itemBottom}>
         <Title title="Category List" />
         <div
           className={styles.middle}
@@ -143,29 +153,40 @@ const LeftMenu = () => {
               categoryImages.length === 0 ? "center" : "flex-start",
           }}
         >
-          <Spin spinning={categoryImages.length === 0}>
-            <div className={styles.list}>
-              {categoryImages.map((category) => (
-                <div key={category.id} className={styles.countryItem}>
-                  <Tag
-                    style={{
-                      fontSize: 12,
-                      cursor: "pointer",
-                    }}
-                    className={cn({
-                      [styles.clicked]:
-                        categoryObj.displayedCategory.find(
-                          (item) => item.id === category.id
-                        ) !== undefined,
-                    })}
-                    onClick={() => handleCategoryClick(category)}
-                  >
-                    {category.name}
-                  </Tag>
+          <Spin spinning={categoryImages.length === 0} />
+          <div className={styles.list}>
+            {categoryImages.map((category) => (
+              <div key={category.id} className={styles.countryContainer}>
+                <div
+                  className={`${styles.countryItem} ${cn({
+                    [styles.clicked]:
+                      categoryObj.displayedCategory.find(
+                        (item) => item.id === category.id
+                      ) !== undefined,
+                  })}`}
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category.name}
                 </div>
-              ))}
-            </div>
-          </Spin>
+                {/* <Tag
+                  style={{
+                    fontSize: 12,
+                    cursor: "pointer",
+                  }}
+                  className={cn({
+                    [styles.clicked]:
+                      categoryObj.displayedCategory.find(
+                        (item) => item.id === category.id
+                      ) !== undefined,
+                  })}
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category.name}
+                </Tag> */}
+              </div>
+            ))}
+          </div>
+          {/* </Spin> */}
         </div>
         <Button
           type="primary"

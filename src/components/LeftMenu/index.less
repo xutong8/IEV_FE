@@ -3,11 +3,8 @@
 .leftmenu {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
 
   .item {
-    flex: 1 0 0;
     display: flex;
     flex-direction: column;
     overflow: auto;
@@ -23,13 +20,48 @@
       flex-wrap: wrap;
       padding: 0 12px;
 
-      .countryItem {
+      .countryContainer {
+        flex: 1;
         width: 50%;
-        margin-top: 24px;
+        min-width: 50%;
+        max-width: 50%;
+        display: flex;
+
+        .countryItem {
+          // flex: 1;
+          // width: 50%;
+          cursor: pointer;
+          text-align: center;
+          width: 100%;
+          height: 25px;
+          padding: 0 7px;
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin: 12px 2px;
+          white-space: nowrap;
+          background: #fafafa;
+          border: 1px solid #d9d9d9;
+          border-radius: 2px;
+          opacity: 1;
+          transition: all 0.3s;
+          display: inline-block;
+        }
+        .clicked {
+          box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 10%);
+          border-color: #1890ff;
+          color: #1890ff;
+        }
       }
     }
 
     &:extend(.block);
+  }
+  .itemTop {
+    height: calc(50% - 55px);
+  }
+  .itemBottom {
+    height: calc(50% + 40px);
   }
 }
 
