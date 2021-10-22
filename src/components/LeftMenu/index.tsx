@@ -1,5 +1,5 @@
 import styles from "./index.less";
-import { Tag, Spin, Button } from "antd";
+import { Tag, Spin, Button, Tooltip } from "antd";
 import Title from "../Title";
 import { httpRequest } from "@/services";
 import { Image } from "../Images/ImageItem";
@@ -16,6 +16,8 @@ import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 import cn from "classnames";
 import { addCountryItem, delCountryItem } from "@/actions/countryList";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import TextWithTooltip from "../TextWithTooltip";
 
 // TODO: 高度在小屏幕上不对，这是出现滚动条的原因
 
@@ -122,7 +124,13 @@ const LeftMenu = () => {
                   })}`}
                   onClick={() => handleCountryClick(country)}
                 >
-                  {country.name}
+                  {/* {country.name.length > 12 ? (
+                    <Tooltip title={country.name}>
+                      <QuestionCircleOutlined />
+                    </Tooltip>
+                  ) : null}
+                  {country.name} */}
+                  <TextWithTooltip title={country.name} />
                 </div>
                 {/* <Tag
                   style={{

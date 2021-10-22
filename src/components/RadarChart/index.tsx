@@ -2,8 +2,9 @@ import { useSVGSize } from "@/hooks/useSVGSize";
 import { CSSProperties, useRef, useMemo } from "react";
 import Radar from "./Radar";
 import styles from "./index.less";
-import { CloseCircleFilled } from "@ant-design/icons";
+import { CloseCircleFilled, QuestionCircleOutlined } from "@ant-design/icons";
 import Tooltip from "../Tooltip";
+import TextWithTooltip from "../TextWithTooltip";
 
 export interface IRadarChart {
   title: string;
@@ -98,7 +99,7 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
         )}
       </div>
       <div className={styles["radar_title"]} style={{ fontSize: fontSize }}>
-        {title}
+        <TextWithTooltip title={title} />
       </div>
       <CloseCircleFilled
         className={styles["close"]}
