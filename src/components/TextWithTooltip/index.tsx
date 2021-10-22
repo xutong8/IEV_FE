@@ -13,12 +13,12 @@ const TextWithTooltip: React.FC<ITextWithTooltip> = (props) => {
 
   return (
     <div className={styles.textDiv} style={{ ...style }}>
+      <div className={styles.title}>{title}</div>
       {title.length > 12 ? (
         <Tooltip title={title}>
           <QuestionCircleOutlined />
         </Tooltip>
       ) : null}
-      {title}
     </div>
   );
 };
