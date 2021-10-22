@@ -7,7 +7,7 @@ import styles from "./index.less";
 import { selectAll } from "d3-selection";
 import ValueTypeButton from "@/containers/ValueTypeButton";
 
-const columns = [
+export const columns = [
   "year",
   "importCountry",
   "exportCountry",

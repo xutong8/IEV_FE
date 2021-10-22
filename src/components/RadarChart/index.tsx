@@ -33,7 +33,7 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
     parentRef,
   } = props;
   const radarRef = useRef<HTMLDivElement>(null);
-  console.log(parentRef, radarRef);
+
   const [radarWidth, radarHeight] = useSVGSize(parentRef ?? radarRef);
   const radarSide = useMemo(
     () => Math.min(radarWidth, radarHeight),
@@ -41,7 +41,7 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
   );
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
-  // useEffect(() => {}, [radarWidth, radarHeight]);
+
   const handleDragStart = (e: any) => {
     e.target.style.opacity = 0.5;
     e.dataTransfer.setData("text/plain", title);

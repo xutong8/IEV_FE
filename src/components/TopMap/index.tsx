@@ -84,7 +84,6 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
     httpRequest
       .get(`/base_chart?year=${year}&category=${JSON.stringify(category)}`)
       .then((res: any) => {
-        console.log(res.data);
         const newDataSource = coordinatesData.coordinates.map((item) => {
           return (res.data ?? []).find(
             (country: ICountry) => country.countryName === item.name

@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import styles from "./index.less";
 import { Table } from "antd";
 import { ValueType } from "@/types";
-import { customColumnsFunc } from "./columns";
+import { columns, customColumnsFunc } from "./columns";
 import { ITableCountry } from "@/types/table";
 import SearchInput from "../SearchInput";
 import { httpRequest } from "@/services";
-import SearchDropDown from "../SearchDropDown";
 import Title from "../Title";
+import { selectAll } from "d3-selection";
 export interface ISearchTableProps {
   valueType: ValueType;
 }
@@ -54,6 +54,15 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
     setQueryConditions(conditions);
   };
 
+  // 处理page_size变更时回调
+  const handlePageSizeChange = () => {
+    columns.forEach((column) => {
+      selectAll(`.${column}`)
+        .attr("data-hoverd", false)
+        .style("background-color", null);
+    });
+  };
+
   return (
     <div className={styles["search_table"]}>
       <Title title="SearchTable View"></Title>
@@ -71,6 +80,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
               showSizeChanger: false,
               pageSize: 15,
               size: "small",
+              onChange: handlePageSizeChange,
             }}
             scroll={{
               x: true,

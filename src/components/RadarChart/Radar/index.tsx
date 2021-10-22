@@ -65,14 +65,12 @@ const Radar: React.FC<IRadar> = (props) => {
   const reqRadar = async () => {
     const selectedCountry = nameToID[title];
     const response: any = await reqRadarData({ selectedCountry, year: year });
-    console.log(response.data.data);
     setData(response.data.data);
 
     setMaxValue(response.data.range);
   };
 
   useEffect(() => {
-    console.log("update");
     reqRadar();
   }, [year, title]);
 
@@ -89,7 +87,7 @@ const Radar: React.FC<IRadar> = (props) => {
     let pathD = "";
     if (points.length) {
       points.forEach((point, index) => {
-        if (index == 0) {
+        if (index === 0) {
           pathD += `M${point.x} ${point.y} `;
         } else {
           pathD += `L${point.x} ${point.y} `;
