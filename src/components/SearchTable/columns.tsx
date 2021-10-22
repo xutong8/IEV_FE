@@ -5,6 +5,7 @@ import { TEXT_VALUE } from "@/constants/valueTypes";
 import { scaleLinear } from "d3-scale";
 import styles from "./index.less";
 import { selectAll } from "d3-selection";
+import ValueTypeButton from "@/containers/ValueTypeButton";
 
 const columns = [
   "year",
@@ -203,11 +204,13 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
     {
       title: () => {
         return (
-          <div
-            className={styles.hover}
-            onClick={() => handleColumnClick("amount")}
-          >
-            <span className={styles.tooltipText}>Amount</span>
+          <div className={styles.hover}>
+            <ValueTypeButton
+              handleTabelClick={() => handleColumnClick("amount")}
+              style={{
+                marginRight: 2,
+              }}
+            />
             <Tooltip title="(In thousands current USD)">
               <QuestionCircleOutlined />
             </Tooltip>

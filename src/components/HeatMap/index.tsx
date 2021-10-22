@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { scaleBand, scaleLinear } from "d3-scale";
-import { IRow } from "@/types/heatmap";
+import { IItem, IRow } from "@/types/heatmap";
 import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
@@ -9,20 +9,11 @@ export interface IHeatMapProps {
   height: number;
   dataSource: IRow[];
   className?: string;
+  maxValue: number;
 }
 
 const HeatMap: React.FC<IHeatMapProps> = (props) => {
-  const { width, height, dataSource, className = "" } = props;
-
-  const maxValue = useMemo(
-    () =>
-      Math.max(
-        ...dataSource.map((item) =>
-          Math.max(...item.explist.map((exp) => exp.expvalue))
-        )
-      ),
-    [dataSource]
-  );
+  const { width, height, dataSource, className = "", maxValue } = props;
 
   // color scale
   const colorScale = scaleLinear<string>()
@@ -51,6 +42,111 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
   const [currentRowIdx, setCurrentRowIdx] = useState<number>(-1);
   const [currentColumnIdx, setCurrentColumnIdx] = useState<number>(-1);
 
+  // 高亮边
+  const highlightLine = (row: IRow, item: IItem) => {
+    const inputLines = document.getElementsByClassName(
+      `line_${row.countryName}`
+    )[0];
+    inputLines.setAttribute("stroke-opacity", "1");
+
+    const outputLines = document.getElementsByClassName(
+      `line_${item.countryName}`
+    )[1];
+    outputLines.setAttribute("stroke-opacity", "1");
+  };
+
+  // 取消高亮边
+  const unhighlightLine = (row: IRow, item: IItem) => {
+    const inputLines = document.getElementsByClassName(
+      `line_${row.countryName}`
+    )[0];
+    inputLines.setAttribute("stroke-opacity", "0.4");
+
+    const outputLines = document.getElementsByClassName(
+      `line_${item.countryName}`
+    )[1];
+    outputLines.setAttribute("stroke-opacity", "0.4");
+  };
+
+  // 高亮文本
+  const highlightText = (row: IRow, item: IItem) => {
+    const inputText = document.getElementsByClassName(
+      `text_${row.countryName}`
+    )[1];
+    inputText.setAttribute("fill-opacity", "1");
+
+    const outputText = document.getElementsByClassName(
+      `text_${item.countryName}`
+    )[0];
+    outputText.setAttribute("fill-opacity", "1");
+  };
+
+  // 取消高亮文本
+  const unhighlightText = (row: IRow, item: IItem) => {
+    const inputText = document.getElementsByClassName(
+      `text_${row.countryName}`
+    )[1];
+    inputText.setAttribute("fill-opacity", "0.4");
+
+    const outputText = document.getElementsByClassName(
+      `text_${item.countryName}`
+    )[0];
+    outputText.setAttribute("fill-opacity", "0.4");
+  };
+
+  // 高亮矩形
+  const highlightRect = (row: IRow, item: IItem) => {
+    const inputRect = document.getElementsByClassName(
+      `${row.countryName}bar`
+    )[0] as HTMLDivElement;
+    inputRect.style.opacity = "1";
+
+    const outputRect = document.getElementsByClassName(
+      `${item.countryName}bar`
+    )[1] as HTMLDivElement;
+    outputRect.style.opacity = "1";
+  };
+
+  const handleMouseEnter = (
+    rowIdx: number,
+    columnIdx: number,
+    row: IRow,
+    item: IItem
+  ) => {
+    // 高亮边
+    highlightLine(row, item);
+    // 高亮文本
+    highlightText(row, item);
+    // 高亮矩形
+    highlightRect(row, item);
+    setCurrentRowIdx(rowIdx);
+    setCurrentColumnIdx(columnIdx);
+  };
+
+  // 取消高亮矩形
+  const unhighlightRect = (row: IRow, item: IItem) => {
+    const inputRect = document.getElementsByClassName(
+      `${row.countryName}bar`
+    )[0] as HTMLDivElement;
+    inputRect.style.opacity = "0.4";
+
+    const outputRect = document.getElementsByClassName(
+      `${item.countryName}bar`
+    )[1] as HTMLDivElement;
+    outputRect.style.opacity = "0.4";
+  };
+
+  const handleMouseLeave = (row: IRow, item: IItem) => {
+    // 取消高亮边
+    unhighlightLine(row, item);
+    // 取消高亮文本
+    unhighlightText(row, item);
+    // 取消高亮矩形
+    unhighlightRect(row, item);
+    setCurrentRowIdx(-1);
+    setCurrentColumnIdx(-1);
+  };
+
   return (
     <svg
       width={width}
@@ -69,8 +165,8 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
             {row.explist.map((item, columnIdx) => {
               return (
                 <rect
-                  id={item.countryName}
                   key={item.countryName}
+                  id={item.countryName}
                   x={xScale(item.countryName)}
                   y={yScale(row.countryName)}
                   fill={
@@ -86,20 +182,16 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                         country.name === row.countryName
                     )
                       ? 1
-                      : 0.3
+                      : 0.4
                   }
                   strokeWidth={1}
                   stroke="#d3d3d2"
                   width={width / countryNames.length}
                   height={height / countryNames.length}
-                  onMouseEnter={() => {
-                    setCurrentRowIdx(rowIdx);
-                    setCurrentColumnIdx(columnIdx);
-                  }}
-                  onMouseLeave={() => {
-                    setCurrentRowIdx(-1);
-                    setCurrentColumnIdx(-1);
-                  }}
+                  onMouseEnter={() =>
+                    handleMouseEnter(rowIdx, columnIdx, row, item)
+                  }
+                  onMouseLeave={() => handleMouseLeave(row, item)}
                   filter={
                     (currentRowIdx === -1 && currentColumnIdx === -1) ||
                     rowIdx === currentRowIdx ||

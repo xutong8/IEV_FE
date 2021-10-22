@@ -10,6 +10,9 @@ import { useSVGSize } from "@/hooks/useSVGSize";
 import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
+import Title from "../Title";
+import RadarChart from "../RadarChart";
+import { findCountryIdByName } from "@/utils/findCountryIdByName";
 
 const { Option } = Select;
 
@@ -45,6 +48,7 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
 
   return (
     <div className={styles.pieMap}>
+      <Title title="PieMap View"></Title>
       <div className={styles.maps}>
         <div
           className={cn({
@@ -53,39 +57,32 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
           })}
           ref={sourceMapRef}
         >
-          <CountryMap
-            className={styles.sourceCountryMap}
-            name={sourceCountry}
-            style={{
-              width: sourceMapWidth,
-              height: sourceMapHeight - 60,
-              overflow: "auto",
-            }}
+          <RadarChart
+            title={sourceCountry}
+            draggable={false}
+            fontSize={25}
+            style={{ flex: "1 0 0" }}
+            color="red"
+            solveDrop={setSourceCountry}
           />
-          <Select
-            className={styles.select}
-            value={sourceCountry}
-            onChange={(country: string) => setSourceCountry(country)}
-          >
-            {(productData?.countris ?? [])
-              .filter((name) => name !== targetCountry)
-              .map((name) => (
-                <Option key={name} value={name}>
-                  {name}
-                </Option>
-              ))}
-          </Select>
         </div>
         <div className={styles.middleMap} ref={middleMapRef}>
-          <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
-            <Pie
+          <Spin
+            spinning={category.length === 0}
+            wrapperClassName={styles.spin}
+            style={{ height: "100%" }}
+          >
+            {/* <Pie
               width={middleMapWidth}
               height={middleMapHeight}
               sourceCountry={sourceCountry}
               targetCountry={targetCountry}
-            />
+            /> */}
             <Choropleth
-              selectedCountries={["156", "842"]}
+              selectedCountries={[
+                findCountryIdByName(sourceCountry),
+                findCountryIdByName(targetCountry),
+              ]}
               parentClass={styles.middleMap}
             />
           </Spin>
@@ -97,28 +94,14 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
           })}
           ref={targetMapRef}
         >
-          <CountryMap
-            name={targetCountry}
-            className={styles.targetCountryMap}
-            style={{
-              width: targetMapWidth,
-              height: sourceMapHeight - 60,
-              overflow: "auto",
-            }}
+          <RadarChart
+            title={targetCountry}
+            draggable={false}
+            fontSize={25}
+            color="blue"
+            style={{ flex: "1 0 0" }}
+            solveDrop={setTargetCountry}
           />
-          <Select
-            className={styles.select}
-            value={targetCountry}
-            onChange={(country: string) => setTargetCountry(country)}
-          >
-            {(productData?.countris ?? [])
-              .filter((name) => name !== sourceCountry)
-              .map((name) => (
-                <Option key={name} value={name}>
-                  {name}
-                </Option>
-              ))}
-          </Select>
         </div>
       </div>
     </div>

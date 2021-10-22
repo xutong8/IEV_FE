@@ -85,7 +85,7 @@ const Pie: React.FC<IPie> = (props) => {
     [width, height]
   );
 
-  return (
+  return width && height ? (
     <>
       <Tooltip ref={toolTipRef}>
         {({ country, type_name, value }: any) =>
@@ -99,7 +99,7 @@ const Pie: React.FC<IPie> = (props) => {
           {pieDrawData?.map((item: IPieData, index: number) => {
             const d = arcData(item);
             const firstArcSection = /(.+?)L/;
-            const newArc = d?.match(firstArcSection)![1];
+            const newArc = d?.match(firstArcSection)?.[1];
             return (
               <g key={item.index}>
                 <Wedge
@@ -108,9 +108,11 @@ const Pie: React.FC<IPie> = (props) => {
                   fill={
                     item.data.country === targetCountry ? "#508bbb" : "#d2796f"
                   }
-                  tipMessage={item}
                   onMouseMove={(e: any) =>
-                    toolTipRef.current.onMouseMove(e, item.data)
+                    toolTipRef.current.onMouseMove(e, {
+                      name: `${item.data.country} ${item.data.type_name}`,
+                      value: item.data.value,
+                    })
                   }
                   onMouseLeave={() => toolTipRef.current.onMouseLeave()}
                 />
@@ -134,7 +136,7 @@ const Pie: React.FC<IPie> = (props) => {
         </g>
       </svg>
     </>
-  );
+  ) : null;
 };
 
 export default Pie;

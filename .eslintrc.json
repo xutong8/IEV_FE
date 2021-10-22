@@ -23,6 +23,9 @@
   "rules": {
     // 自定义您的规则
     "@typescript-eslint/consistent-type-assertions": "off",
-    "no-debugger": "off"
+    "no-debugger": "off",
+    "react/self-closing-comp": "off",
+    "radix": "off",
+    "max-params": "off"
   }
 }

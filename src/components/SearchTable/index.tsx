@@ -6,6 +6,8 @@ import { customColumnsFunc } from "./columns";
 import { ITableCountry } from "@/types/table";
 import SearchInput from "../SearchInput";
 import { httpRequest } from "@/services";
+import SearchDropDown from "../SearchDropDown";
+import Title from "../Title";
 export interface ISearchTableProps {
   valueType: ValueType;
 }
@@ -54,18 +56,20 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
 
   return (
     <div className={styles["search_table"]}>
+      <Title title="SearchTable View"></Title>
       <div className={styles["search_top"]}>
         <SearchInput onSearch={handleSearch} />
       </div>
       <div className={styles["search_list"]}>
         <div className={styles["search_container"]}>
+          {/* TODO: 当pageNo切换时，需要考虑高亮的问题 */}
           <Table
             columns={customColumnsFunc(valueType, maxAmount)}
             dataSource={dataSource}
             rowKey={(record) => record.id}
             pagination={{
               showSizeChanger: false,
-              pageSize: 20,
+              pageSize: 15,
               size: "small",
             }}
             scroll={{
