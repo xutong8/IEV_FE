@@ -6,13 +6,13 @@ const top14Countries = [
   "Japan",
   "Germany",
   "Russian Federation",
-  "Indonesia",
+  "Canada",
   "Brazil",
   "United Kingdom",
   "France",
-  "Mexico",
+  "Australia",
   "Italy",
-  "Turkey",
+  "Spain",
   "Dem. People's Rep. of Korea",
 ];
 

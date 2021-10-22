@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import RadarChart from "../RadarChart";
 import SearchDropDown from "../SearchDropDown";
 import styles from "./index.less";
@@ -31,6 +31,7 @@ const RadarArea = () => {
             draggable={true}
             style={{ flex: "0 0 20%" }}
             deleteItem={deleteItem}
+            // parentRef={listRef}
           />
         ))}
       </div>

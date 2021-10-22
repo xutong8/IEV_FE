@@ -2,12 +2,14 @@ import { useSVGSize } from "@/hooks/useSVGSize";
 import { CSSProperties, useRef, useMemo } from "react";
 import Radar from "./Radar";
 import styles from "./index.less";
-import { CloseCircleFilled } from "@ant-design/icons";
+import { CloseCircleFilled, QuestionCircleOutlined } from "@ant-design/icons";
 import Tooltip from "../Tooltip";
+import TextWithTooltip from "../TextWithTooltip";
 
 export interface IRadarChart {
   title: string;
   draggable: boolean;
+  parentRef?: any;
   color?: string;
   fontSize?: number;
   solveDrop?: (value: string) => void;
@@ -20,10 +22,19 @@ export interface IRadarChart {
  * @returns
  */
 const RadarChart: React.FC<IRadarChart> = (props) => {
-  const { title, style, fontSize, draggable, color, solveDrop, deleteItem } =
-    props;
+  const {
+    title,
+    style,
+    fontSize,
+    draggable,
+    color,
+    solveDrop,
+    deleteItem,
+    parentRef,
+  } = props;
   const radarRef = useRef<HTMLDivElement>(null);
-  const [radarWidth, radarHeight] = useSVGSize(radarRef);
+  console.log(parentRef, radarRef);
+  const [radarWidth, radarHeight] = useSVGSize(parentRef ?? radarRef);
   const radarSide = useMemo(
     () => Math.min(radarWidth, radarHeight),
     [radarWidth, radarHeight]
@@ -88,7 +99,7 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
         )}
       </div>
       <div className={styles["radar_title"]} style={{ fontSize: fontSize }}>
-        {title}
+        <TextWithTooltip title={title} />
       </div>
       <CloseCircleFilled
         className={styles["close"]}

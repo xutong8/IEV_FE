@@ -1,5 +1,5 @@
 import styles from "./index.less";
-import { Tag, Spin, Button } from "antd";
+import { Tag, Spin, Button, Tooltip } from "antd";
 import Title from "../Title";
 import { httpRequest } from "@/services";
 import { Image } from "../Images/ImageItem";
@@ -16,6 +16,8 @@ import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 import cn from "classnames";
 import { addCountryItem, delCountryItem } from "@/actions/countryList";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import TextWithTooltip from "../TextWithTooltip";
 
 // TODO: 高度在小屏幕上不对，这是出现滚动条的原因
 
@@ -101,7 +103,7 @@ const LeftMenu = () => {
 
   return (
     <div className={styles.leftmenu}>
-      <div className={styles.item}>
+      <div className={styles.item + " " + styles.itemTop}>
         <Title title="Country List" />
         <div
           className={styles.middle}
@@ -110,31 +112,47 @@ const LeftMenu = () => {
               countryImages.length === 0 ? "center" : "flex-start",
           }}
         >
-          <Spin spinning={countryImages.length === 0}>
-            <div className={styles.list}>
-              {countryImages.map((country) => (
-                <div key={country.id} className={styles.countryItem}>
-                  <Tag
-                    style={{
-                      fontSize: 12,
-                      cursor: "pointer",
-                    }}
-                    className={cn({
-                      [styles.clicked]:
-                        countryList.find((item) => item.id === country.id) !==
-                        undefined,
-                    })}
-                    onClick={() => handleCountryClick(country)}
-                  >
-                    {country.name}
-                  </Tag>
+          <Spin spinning={countryImages.length === 0} />
+          <div className={styles.list}>
+            {countryImages.map((country) => (
+              <div key={country.id} className={styles.countryContainer}>
+                <div
+                  className={`${styles.countryItem} ${cn({
+                    [styles.clicked]:
+                      countryList.find((item) => item.id === country.id) !==
+                      undefined,
+                  })}`}
+                  onClick={() => handleCountryClick(country)}
+                >
+                  {/* {country.name.length > 12 ? (
+                    <Tooltip title={country.name}>
+                      <QuestionCircleOutlined />
+                    </Tooltip>
+                  ) : null}
+                  {country.name} */}
+                  <TextWithTooltip title={country.name} />
                 </div>
-              ))}
-            </div>
-          </Spin>
+                {/* <Tag
+                  style={{
+                    fontSize: 12,
+                    cursor: "pointer",
+                  }}
+                  className={cn({
+                    [styles.clicked]:
+                      countryList.find((item) => item.id === country.id) !==
+                      undefined,
+                  })}
+                  onClick={() => handleCountryClick(country)}
+                >
+                  {country.name}
+                </Tag> */}
+              </div>
+            ))}
+          </div>
+          {/* </Spin> */}
         </div>
       </div>
-      <div className={styles.item}>
+      <div className={styles.item + " " + styles.itemBottom}>
         <Title title="Category List" />
         <div
           className={styles.middle}
@@ -143,29 +161,40 @@ const LeftMenu = () => {
               categoryImages.length === 0 ? "center" : "flex-start",
           }}
         >
-          <Spin spinning={categoryImages.length === 0}>
-            <div className={styles.list}>
-              {categoryImages.map((category) => (
-                <div key={category.id} className={styles.countryItem}>
-                  <Tag
-                    style={{
-                      fontSize: 12,
-                      cursor: "pointer",
-                    }}
-                    className={cn({
-                      [styles.clicked]:
-                        categoryObj.displayedCategory.find(
-                          (item) => item.id === category.id
-                        ) !== undefined,
-                    })}
-                    onClick={() => handleCategoryClick(category)}
-                  >
-                    {category.name}
-                  </Tag>
+          <Spin spinning={categoryImages.length === 0} />
+          <div className={styles.list}>
+            {categoryImages.map((category) => (
+              <div key={category.id} className={styles.countryContainer}>
+                <div
+                  className={`${styles.countryItem} ${cn({
+                    [styles.clicked]:
+                      categoryObj.displayedCategory.find(
+                        (item) => item.id === category.id
+                      ) !== undefined,
+                  })}`}
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category.name}
                 </div>
-              ))}
-            </div>
-          </Spin>
+                {/* <Tag
+                  style={{
+                    fontSize: 12,
+                    cursor: "pointer",
+                  }}
+                  className={cn({
+                    [styles.clicked]:
+                      categoryObj.displayedCategory.find(
+                        (item) => item.id === category.id
+                      ) !== undefined,
+                  })}
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category.name}
+                </Tag> */}
+              </div>
+            ))}
+          </div>
+          {/* </Spin> */}
         </div>
         <Button
           type="primary"
