@@ -52,8 +52,11 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
 
   // nodes的state
   const [nodesState, setNodesState] = useState<IGraphNode[]>([]);
+  const nodesStateRef = useRef<IGraphNode[]>([]);
+
   // links的state
   const [linksState, setLinksState] = useState<IGraphLink[]>([]);
+  const linksStateRef = useRef<IGraphLink[]>([]);
 
   // continents
   const [continents, setContinents] = useState<string[]>([]);
@@ -69,6 +72,20 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
       .get(`/force_graph?year=${year}&category=${JSON.stringify(category)}`)
       .then((res: any) => {
         const nodes = (res?.data?.nodes ?? []) as IGraphNode[];
+
+        const lastNodes = nodesStateRef.current;
+
+        // 初始化nodes上一轮的位置信息，所以simulation不会重新initialize
+        nodes.forEach((node) => {
+          const lastNode = lastNodes.find(
+            (lastNode) => lastNode.id === node.id
+          );
+          if (lastNode) {
+            node.x = lastNode.x;
+            node.y = lastNode.y;
+          }
+        });
+
         const links = (res?.data?.links ?? []).map((link: IGraphLink) => {
           return {
             value: link.value,
@@ -90,6 +107,9 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
           });
           setColorMap(newColorMap);
         }
+
+        nodesStateRef.current = nodes;
+        linksStateRef.current = links;
 
         unstable_batchedUpdates(() => {
           setContinents(continents);
@@ -117,20 +137,11 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
 
   const nodeScale = scaleLinear().domain([minNode, maxNode]).range([3, radius]);
 
-  // 按照value值来映射边的长短
-  const minLink = useMemo(() => {
-    return Math.min(...graphLinks.map((link) => link.value));
-  }, [graphLinks]);
-  const maxLink = useMemo(() => {
-    return Math.max(...graphLinks.map((link) => link.value));
-  }, [graphLinks]);
-
-  const linkScale = scaleLinear().domain([minLink, maxLink]).range([4, 8]);
-
   // 设置布局算法
   const simulation = useMemo(() => {
     return forceSimulation(nodesState as any)
-      .alphaDecay(0.05)
+      .alphaDecay(0.15)
+      .velocityDecay(0.6)
       .force(
         "link",
         forceLink(linksState as any).id((d: any) => d.id)
@@ -138,7 +149,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
       .force("charge", forceManyBody().distanceMax(40))
       .force("collide", forceCollide().radius(12))
       .force("center", forceCenter(width / 2, (height - 50) / 2));
-  }, [width, height, nodesState, linksState, linkScale]);
+  }, [width, height, nodesState, linksState]);
 
   useEffect(() => {
     simulation.on("tick", () => {
