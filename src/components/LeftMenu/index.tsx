@@ -18,6 +18,8 @@ import cn from "classnames";
 import { addCountryItem, delCountryItem } from "@/actions/countryList";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import TextWithTooltip from "../TextWithTooltip";
+import { addBrForLabel } from "@/utils/addBrForLabel";
+import { addLabelById, removeLabelById } from "@/utils/nodeUtils";
 
 // TODO: 高度在小屏幕上不对，这是出现滚动条的原因
 
@@ -74,6 +76,9 @@ const LeftMenu = () => {
         ? delCountryItem(image)
         : addCountryItem(image)
     );
+    countryList.find((country) => country.id === image.id)
+      ? removeLabelById(image.id)
+      : addLabelById(image.id, image.name);
   };
 
   // categoryObj selector
@@ -104,7 +109,7 @@ const LeftMenu = () => {
   return (
     <div className={styles.leftmenu}>
       <div className={styles.item + " " + styles.itemTop}>
-        <Title title="Country List" />
+        <Title title="Countries" />
         <div
           className={styles.middle}
           style={{
@@ -123,6 +128,12 @@ const LeftMenu = () => {
                       undefined,
                   })}`}
                   onClick={() => handleCountryClick(country)}
+                  style={{
+                    lineHeight: `${country.name.length > 11 ? "16px" : "32px"}`,
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: addBrForLabel(country.name, 8),
+                  }}
                 >
                   {/* {country.name.length > 12 ? (
                     <Tooltip title={country.name}>
@@ -130,7 +141,7 @@ const LeftMenu = () => {
                     </Tooltip>
                   ) : null}
                   {country.name} */}
-                  <TextWithTooltip title={country.name} />
+                  {/* <TextWithTooltip title={country.name} /> */}
                 </div>
                 {/* <Tag
                   style={{
@@ -153,7 +164,7 @@ const LeftMenu = () => {
         </div>
       </div>
       <div className={styles.item + " " + styles.itemBottom}>
-        <Title title="Category List" />
+        <Title title="Industries" />
         <div
           className={styles.middle}
           style={{
@@ -173,9 +184,15 @@ const LeftMenu = () => {
                       ) !== undefined,
                   })}`}
                   onClick={() => handleCategoryClick(category)}
-                >
-                  {category.name}
-                </div>
+                  style={{
+                    lineHeight: `${
+                      category.name.length > 11 ? "16px" : "32px"
+                    }`,
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: addBrForLabel(category.name, 8),
+                  }}
+                ></div>
                 {/* <Tag
                   style={{
                     fontSize: 12,

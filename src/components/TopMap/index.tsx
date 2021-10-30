@@ -293,7 +293,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
 
   return (
     <div className={styles.topmap}>
-      <Title title="TopMap View"></Title>
+      <Title title="Trade Flow"></Title>
       <div className={styles.content}>
         <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
           <div className={styles.container} ref={containerRef}>

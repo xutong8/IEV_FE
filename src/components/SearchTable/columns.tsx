@@ -205,16 +205,15 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
       title: () => {
         return (
           <div className={styles.hover}>
-            Amount
-            <Tooltip title="(In thousands current USD)">
-              <QuestionCircleOutlined />
-            </Tooltip>
             <ValueTypeButton
               handleTabelClick={() => handleColumnClick("amount")}
               style={{
-                marginLeft: 2,
+                marginRight: 2,
               }}
             />
+            <Tooltip title="(In thousands current USD)">
+              <QuestionCircleOutlined />
+            </Tooltip>
           </div>
         );
       },
