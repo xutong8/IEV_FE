@@ -268,7 +268,7 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
 
   return (
     <div className={styles.forceGraph}>
-      <Title title="ForceGraph View"></Title>
+      <Title title="Industrial Structure"></Title>
       <div className={styles.content}>
         <Spin spinning={category.length === 0} wrapperClassName={styles.spin}>
           <div className={styles.legends}>

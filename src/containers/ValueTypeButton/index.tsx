@@ -13,7 +13,6 @@ export interface IValueTypeButtonProps {
 
 const ValueTypeButton: React.FC<IValueTypeButtonProps> = (props) => {
   const { handleUpdateValueType, handleTabelClick, style = {} } = props;
-  const [type, setType] = useState<boolean>(false);
   return (
     <Button
       type="primary"
@@ -22,11 +21,10 @@ const ValueTypeButton: React.FC<IValueTypeButtonProps> = (props) => {
         event.stopPropagation();
         handleTabelClick();
         handleUpdateValueType();
-        setType(!type);
       }}
       style={style}
     >
-      {type ? "Rect" : "Text"}
+      Value
     </Button>
   );
 };

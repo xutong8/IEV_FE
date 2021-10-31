@@ -9,6 +9,7 @@ import styles from "./index.less";
  */
 const RadarArea = () => {
   const [radarList, setRadarList] = useState<Array<string>>([]);
+  const RadarAreaRef = useRef<HTMLDivElement>(null);
   const handleAddRadar = (name: string) => {
     setRadarList([...radarList, name]);
   };
@@ -17,7 +18,7 @@ const RadarArea = () => {
     setRadarList([...newList]);
   };
   return (
-    <div className={styles["radar_area"]}>
+    <div className={styles["radar_area"]} ref={RadarAreaRef}>
       <SearchDropDown
         width={72}
         addRadar={handleAddRadar}
@@ -31,7 +32,7 @@ const RadarArea = () => {
             draggable={true}
             style={{ flex: "0 0 20%" }}
             deleteItem={deleteItem}
-            // parentRef={listRef}
+            parentRef={RadarAreaRef}
           />
         ))}
       </div>

@@ -257,7 +257,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   return (
     <div className={styles.container}>
-      <Title title="StackChart View"></Title>
+      <Title title="StackChart"></Title>
       {areaData.length === 0 ? (
         <div className={styles.content}>
           <Spin />
