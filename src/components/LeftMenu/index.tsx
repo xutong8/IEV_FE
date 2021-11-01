@@ -19,7 +19,11 @@ import { addCountryItem, delCountryItem } from "@/actions/countryList";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import TextWithTooltip from "../TextWithTooltip";
 import { addBrForLabel } from "@/utils/addBrForLabel";
-import { addLabelById, removeLabelById } from "@/utils/nodeUtils";
+import {
+  addLabelById,
+  removeLabelById,
+  updateLabelPos,
+} from "@/utils/nodeUtils";
 
 // TODO: 高度在小屏幕上不对，这是出现滚动条的原因
 
@@ -78,7 +82,7 @@ const LeftMenu = () => {
     );
     countryList.find((country) => country.id === image.id)
       ? removeLabelById(image.id)
-      : addLabelById(image.id, image.name);
+      : updateLabelPos(countryList);
   };
 
   // categoryObj selector

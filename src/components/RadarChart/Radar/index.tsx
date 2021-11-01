@@ -119,7 +119,7 @@ const Radar: React.FC<IRadar> = (props) => {
     return labels;
   };
 
-  return radarSide && data ? (
+  return radarSide > 0 && data ? (
     <svg
       width={radarSide}
       height={radarSide}
