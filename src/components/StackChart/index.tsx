@@ -19,7 +19,7 @@ import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 import { httpRequest } from "@/services";
 import { unstable_batchedUpdates } from "react-dom";
-import { Spin } from "antd";
+import { Spin, Switch } from "antd";
 import { filterObjectKeys } from "@/utils/filterObjectKeys";
 import Title from "../Title";
 
@@ -202,11 +202,13 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const columnsRef = useRef<string[]>();
 
   // 向后端拉取数据
-  const fetchData = () => {
+  const fetchData = (type: string) => {
     // 如果category长度为0，则跳过；
     if (category.length === 0) return;
     httpRequest
-      .get(`/stack_chart?category=${JSON.stringify(category)}`)
+      .get(
+        `/stack_chart?category=${JSON.stringify(category)}&queryvorq=${type}`
+      )
       .then((res: any) => {
         unstable_batchedUpdates(() => {
           const columns = res?.data?.columns ?? [];
@@ -221,7 +223,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   // 每次category变动时，重新请求数据
   useEffect(() => {
-    fetchData();
+    fetchData("v");
   }, [category]);
 
   // 点击legend事件的处理器
@@ -250,6 +252,11 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       );
       setFilterList(newFilterList);
     }
+  };
+
+  // 开关点击处理函数
+  const onSwitch = (checked: boolean, e: Event) => {
+    fetchData(checked ? "v" : "q");
   };
 
   // year selector
@@ -286,6 +293,20 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                   onMouseLeave={onMouseLeave}
                 />
               </div>
+            </foreignObject>
+            <foreignObject
+              width="80px"
+              height="25px"
+              y={legendHeight + 6}
+              x={width / 2 - 40}
+            >
+              <Switch
+                className={styles.switch}
+                checkedChildren="value"
+                unCheckedChildren="quantity"
+                onClick={onSwitch}
+                defaultChecked
+              />
             </foreignObject>
             <defs>
               <clipPath id="clip-path">
