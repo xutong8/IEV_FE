@@ -1,5 +1,7 @@
 import { select } from "d3-selection";
 import { IGraphLink, IGraphNode } from "@/types/forceGraph";
+import { IStore } from "@/reducers";
+import { countries } from "@/constants/countries";
 
 // 获取节点的完整id
 const getNodeId = (id: string) => `node${id}`;
@@ -69,6 +71,31 @@ const addLabelById = (id: string, name: string) => {
 const removeLabelById = (id: string) => {
   select(`#forceNodes`).select(`#label${id}`).remove();
 };
+// 布局变化后更新所有标签的位置
+const updateLabelPos = (countryList: any) => {
+  // const textArray = Array.from(document.querySelectorAll("#forceNodes text"));
+  for (let country of countryList) {
+    const text = document.querySelector(`#forceNodes #label${country.id}`);
+    const node = document.getElementById(`${getNodeId(country.id ?? "")}`);
+
+    if (node) {
+      if (text) {
+        text.setAttribute(
+          "x",
+          String(Number.parseFloat(node.getAttribute("cx") ?? "0") + 10)
+        );
+        text.setAttribute(
+          "y",
+          String(Number.parseFloat(node.getAttribute("cy") ?? "0") + 2)
+        );
+      } else {
+        addLabelById(country.id, country.name);
+      }
+    } else {
+      text?.remove();
+    }
+  }
+};
 
 export {
   findNodes,
@@ -78,4 +105,5 @@ export {
   unhighlightNodeById,
   addLabelById,
   removeLabelById,
+  updateLabelPos,
 };
