@@ -9,7 +9,7 @@ import TextWithTooltip from "../TextWithTooltip";
 export interface IRadarChart {
   title: string;
   draggable: boolean;
-  parentRef?: any;
+  parentRef: any;
   color?: string;
   fontSize?: number;
   solveDrop?: (value: string) => void;
@@ -34,9 +34,10 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
   } = props;
   const radarRef = useRef<HTMLDivElement>(null);
 
-  const [radarWidth, radarHeight] = useSVGSize(parentRef ?? radarRef);
+  const [radarWidth, radarHeight] = useSVGSize(parentRef);
   const radarSide = useMemo(
-    () => Math.min(radarWidth, radarHeight),
+    // 减去的为margin
+    () => Math.min(radarWidth, radarHeight) - 20,
     [radarWidth, radarHeight]
   );
   const containerRef = useRef<HTMLDivElement>(null);
@@ -90,8 +91,7 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
       <div ref={radarRef} className={styles["radar_chart"]}>
         {radarSide && (
           <Radar
-            svgWidth={radarSide}
-            svgHeight={radarSide}
+            radarSide={radarSide}
             title={title}
             color={color}
             tooltipRef={tooltipRef}

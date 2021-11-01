@@ -4,8 +4,6 @@ import styles from "./index.less";
 export interface IPolyGrid {
   sides: number;
   level: number;
-  width: number;
-  height: number;
   r: number;
   r_0: number;
   size: number;
@@ -19,18 +17,7 @@ export interface IPolyGrid {
 
 // TODO
 const PolyGrid: React.FC<IPolyGrid> = (props) => {
-  const {
-    sides,
-    level,
-    width,
-    height,
-    r,
-    r_0,
-    size,
-    center,
-    generatePoint,
-    drawPath,
-  } = props;
+  const { sides, level, r, r_0, size, center, generatePoint, drawPath } = props;
   //   const size = useMemo(() => Math.min(width, height), [width, height]);
 
   const polyangle = (Math.PI * 2) / sides;

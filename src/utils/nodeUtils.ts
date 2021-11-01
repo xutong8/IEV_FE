@@ -37,6 +37,7 @@ const highlightNodeById = (filteredNodes: IGraphNode[], id: string) => {
     .append("text")
     .attr("x", Number.parseFloat(circle.attr("cx") ?? 0) + 10)
     .attr("y", Number.parseFloat(circle.attr("cy") ?? 0) + 2)
+    .attr("id", "label" + id)
     .text(node?.name ?? "");
 };
 
@@ -51,7 +52,22 @@ const unhighlightNodeById = (
     "fill",
     colorMap?.get((findNodeById(nodes, id) as IGraphNode).continent) ?? ""
   );
-  select(`#forceNodes`).select("text").remove();
+  select(`#forceNodes`).select(`#label${id}`).remove();
+};
+
+// 为left menu中选中国家添加标签
+const addLabelById = (id: string, name: string) => {
+  const circle = select(`#${getNodeId(id)}`);
+  select(`#forceNodes`)
+    .append("text")
+    .attr("x", Number.parseFloat(circle.attr("cx") ?? 0) + 10)
+    .attr("y", Number.parseFloat(circle.attr("cy") ?? 0) + 2)
+    .attr("id", "label" + id)
+    .text(name);
+};
+// left menu取消选中后删除标签
+const removeLabelById = (id: string) => {
+  select(`#forceNodes`).select(`#label${id}`).remove();
 };
 
 export {
@@ -60,4 +76,6 @@ export {
   getNodeId,
   highlightNodeById,
   unhighlightNodeById,
+  addLabelById,
+  removeLabelById,
 };

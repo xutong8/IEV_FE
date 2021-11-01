@@ -11,8 +11,7 @@ import { IStore } from "@/reducers";
 import { useSelector } from "react-redux";
 
 export interface IRadar {
-  svgWidth: number;
-  svgHeight: number;
+  radarSide: number; // 用于控制svg绘制
   title: string;
   color: string | undefined;
   tooltipRef: any;
@@ -24,19 +23,17 @@ export interface IRadarItem {
 }
 // TODO: 实现数据Scale range 取整10 算法; 配色方案; tooltip接入; 接入全局的year
 const Radar: React.FC<IRadar> = (props) => {
-  const { svgWidth, svgHeight, title, color, tooltipRef } = props;
+  const { radarSide, title, color, tooltipRef } = props;
   const [data, setData] = useState<Array<IRadarItem>>([]);
   const [maxValue, setMaxValue] = useState<number>(0);
-  const width = svgWidth;
-  const height = svgHeight;
   const level = 4;
   const sides = useMemo(() => data.length, [data]);
-  const size = useMemo(() => Math.min(width, height), [width, height]);
+  const size = useMemo(() => radarSide - 16, [radarSide]); // 用于控制雷达图绘制
   const r = 0.7 * size;
   const r_0 = r / 2;
   const center = {
-    x: size / 2,
-    y: size / 2,
+    x: size / 2 + 8,
+    y: size / 2 + 8,
   };
   const offset = Math.PI;
   const polyangle = (Math.PI * 2) / sides;
@@ -72,7 +69,7 @@ const Radar: React.FC<IRadar> = (props) => {
 
   useEffect(() => {
     reqRadar();
-  }, [year, title]);
+  }, [year, title, radarSide]);
 
   const generatePoint = ({ length, angle }: any) => {
     const point = {
@@ -111,9 +108,9 @@ const Radar: React.FC<IRadar> = (props) => {
           angle < Math.PI / 2 ||
           (angle > Math.PI && angle <= (Math.PI / 2) * 3)
         ) {
-          angle -= Math.PI / 10;
+          angle -= Math.PI / 15;
         } else {
-          angle += Math.PI / 10;
+          angle += Math.PI / 15;
         }
       }
       const point = generatePoint({ length: 0.75 * (size / 2), angle });
@@ -122,17 +119,15 @@ const Radar: React.FC<IRadar> = (props) => {
     return labels;
   };
 
-  return width && data ? (
+  return radarSide && data ? (
     <svg
-      width={svgWidth}
-      height={svgHeight}
-      viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+      width={radarSide}
+      height={radarSide}
+      viewBox={`0 0 ${radarSide} ${radarSide}`}
     >
       <PolyGrid
         sides={sides}
         level={level}
-        width={width}
-        height={height}
         r={r}
         r_0={r_0}
         size={size}
@@ -174,7 +169,7 @@ const Radar: React.FC<IRadar> = (props) => {
                     : item.angle === Math.PI
                     ? "hanging"
                     : "central",
-                fontSize: `${svgWidth / 25}px`,
+                fontSize: `${radarSide / 25}px`,
               }}
               x={item.x}
               y={item.y}

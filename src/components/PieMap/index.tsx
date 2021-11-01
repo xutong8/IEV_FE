@@ -48,7 +48,7 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
 
   return (
     <div className={styles.pieMap}>
-      <Title title="PieMap View"></Title>
+      <Title title="Contrast View"></Title>
       <div className={styles.maps}>
         <div
           className={cn({

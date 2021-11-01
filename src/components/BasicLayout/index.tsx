@@ -100,7 +100,7 @@ const BasicLayout = () => {
               </div>
             </div>
             <div className={styles["radar_chart"]}>
-              <Title title="Radar Chart"></Title>
+              <Title title="Country List"></Title>
               <RadarArea />
             </div>
           </div>
