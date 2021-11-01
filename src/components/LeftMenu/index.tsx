@@ -82,7 +82,7 @@ const LeftMenu = () => {
     );
     countryList.find((country) => country.id === image.id)
       ? removeLabelById(image.id)
-      : updateLabelPos(countryList);
+      : addLabelById(image.id, image.name);
   };
 
   // categoryObj selector
