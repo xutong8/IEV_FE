@@ -35,7 +35,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // tooltip ref
   const toolTipRef = useRef<any>();
 
-  const legendHeight = height * 0.25;
+  const legendHeight = height * 0.2;
+  const switchHeight = 25;
 
   // brush在Y轴上的偏移
   const BrushYOffset = 25;
@@ -51,6 +52,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const [hoverCountry, setHoverCountry] = useState<string>("");
 
   const areaDataRef = useRef<IStackAreaData[]>();
+  const unitTextRef = useRef<SVGTextElement>(null);
 
   // 映射获得年数组
   const years = useMemo(() => areaData.map((item) => item.date), [areaData]);
@@ -150,7 +152,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // y轴的scale
   const yScale = scaleLinear()
     .domain([0, maxY])
-    .range([zeroPosition[1], legendHeight + 30]);
+    .range([zeroPosition[1], legendHeight + switchHeight + 30]);
 
   // 计算area的path d属性
   const areaFunc = area()
@@ -257,6 +259,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // 开关点击处理函数
   const onSwitch = (checked: boolean, e: Event) => {
     fetchData(checked ? "v" : "q");
+    if (unitTextRef.current)
+      unitTextRef.current.innerHTML = checked ? "$ Milion" : "Milion Tunnes";
   };
 
   // year selector
@@ -295,10 +299,10 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               </div>
             </foreignObject>
             <foreignObject
-              width="80px"
-              height="25px"
+              width="100%"
+              height={switchHeight}
               y={legendHeight + 6}
-              x={width / 2 - 40}
+              x={zeroPosition[0] - 30}
             >
               <Switch
                 className={styles.switch}
@@ -312,16 +316,16 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               <clipPath id="clip-path">
                 <rect
                   x={zeroPosition[0]}
-                  y={legendHeight}
+                  y={legendHeight + switchHeight}
                   width={
                     width - 20 - zeroPosition[0] < 0
                       ? 0
                       : width - 20 - zeroPosition[0]
                   }
                   height={
-                    zeroPosition[1] - legendHeight < 0
+                    zeroPosition[1] - legendHeight - switchHeight < 0
                       ? 0
-                      : zeroPosition[1] - legendHeight
+                      : zeroPosition[1] - legendHeight - switchHeight
                   }
                 />
               </clipPath>
@@ -354,14 +358,15 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                 direction={DirectionValue.LEFT}
                 ticks={Y_TICKS}
                 tickValues={yTicks}
-                tickFormat={(tick) => Math.round(tick / 100000)}
+                tickFormat={(tick) => Math.round(tick / 1000000)}
               />
               <text
                 x={zeroPosition[0] - 30}
-                y={legendHeight + 18}
+                y={legendHeight + switchHeight + 18}
                 fontSize={12}
+                ref={unitTextRef}
               >
-                单位：十万
+                $ Milion
               </text>
               <g clipPath="url(#clip-path)">
                 {series.map((item: any, index: number) => {
