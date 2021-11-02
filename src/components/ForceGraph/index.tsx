@@ -155,23 +155,24 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   }, [width, height, nodesState, linksState]);
 
   useEffect(() => {
-    simulation
-      .on("tick", () => {
-        selectAll(`.${styles.node}`)
-          .data(nodesState)
-          .attr("cx", (d) => d.x as number)
-          .attr("cy", (d) => d.y as number);
+    simulation.on("tick", () => {
+      selectAll(`.${styles.node}`)
+        .data(nodesState)
+        .attr("cx", (d) => d.x as number)
+        .attr("cy", (d) => d.y as number);
 
-        selectAll(`.${styles.link}`)
-          .data(linksState)
-          .attr("x1", (d) => d.source.x as number)
-          .attr("y1", (d) => d.source.y as number)
-          .attr("x2", (d) => d.target.x as number)
-          .attr("y2", (d) => d.target.y as number);
-      })
-      .on("end", () => {
-        updateLabelPos(countryList);
-      });
+      selectAll(`.${styles.link}`)
+        .data(linksState)
+        .attr("x1", (d) => d.source.x as number)
+        .attr("y1", (d) => d.source.y as number)
+        .attr("x2", (d) => d.target.x as number)
+        .attr("y2", (d) => d.target.y as number);
+      // 更新位置
+      updateLabelPos(countryList);
+    });
+    // .on("end", () => {
+    //   updateLabelPos(countryList);
+    // });
   }, [simulation, width, height, nodesState, linksState]);
 
   // countryList selector

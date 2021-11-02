@@ -54,3 +54,26 @@ export function numberFormat(value: number) {
   }
   return newValue.join("");
 }
+
+/**
+ * 大数字转换，将大额数字转换为英文格式
+ * @param value 数字值
+ */
+export function numberFormatE(value: number) {
+  console.log(value);
+  let unit;
+  if (value >= 10e9) {
+    unit = "B";
+    // eslint-disable-next-line no-param-reassign
+    value = Math.floor(value / 1e9);
+  } else if (value >= 10e6) {
+    unit = "M";
+    // eslint-disable-next-line no-param-reassign
+    value = Math.floor(value / 1e6);
+  } else if (value >= 10e3) {
+    unit = "K";
+    // eslint-disable-next-line no-param-reassign
+    value = Math.floor(value / 1e3);
+  }
+  return value.toLocaleString() + unit;
+}
