@@ -88,7 +88,7 @@
   "scripts": {
     "prepare": "husky install",
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "build": "PUBLIC_URL=./ node scripts/build.js",
     "test": "node scripts/test.js",
     "lint": "eslint src/** --env browser --ext .ts,.tsx,.js,.jsx ",
     "lint:fix": "eslint src/** --env browser --ext .ts,.tsx,.js,.jsx --fix",
