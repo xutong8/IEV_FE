@@ -87,14 +87,10 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
         return (
           <div>
             <span className={styles.tooltipText}>
-              {`${importCountry.slice(0, 8)}${
-                importCountry.length > 8 ? "..." : ""
-              }`}
+              {importCountry.slice(0, 8)}
             </span>
             {importCountry.length > 8 ? (
-              <Tooltip title={importCountry}>
-                <QuestionCircleOutlined />
-              </Tooltip>
+              <Tooltip title={importCountry}>...</Tooltip>
             ) : null}
           </div>
         );
@@ -120,14 +116,10 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
         return (
           <div>
             <span className={styles.tooltipText}>
-              {`${exportCountry.slice(0, 8)}${
-                exportCountry.length > 8 ? "..." : ""
-              }`}
+              {exportCountry.slice(0, 8)}
             </span>
             {exportCountry.length > 8 ? (
-              <Tooltip title={exportCountry}>
-                <QuestionCircleOutlined />
-              </Tooltip>
+              <Tooltip title={exportCountry}>...</Tooltip>
             ) : null}
           </div>
         );
@@ -159,14 +151,10 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
             }}
           >
             <span className={styles.tooltipText}>
-              {`${industry_category.slice(0, 8)}${
-                industry_category.length > 8 ? "..." : ""
-              }`}
+              {industry_category.slice(0, 8)}
             </span>
             {industry_category?.length > 8 ? (
-              <Tooltip title={industry_category}>
-                <QuestionCircleOutlined />
-              </Tooltip>
+              <Tooltip title={industry_category}>...</Tooltip>
             ) : null}
           </div>
         );
@@ -197,13 +185,9 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
               alignItems: "center",
             }}
           >
-            <span className={styles.tooltipText}>{`${product.slice(0, 5)}${
-              product.length > 5 ? "..." : ""
-            }`}</span>
+            <span className={styles.tooltipText}>{product.slice(0, 5)}</span>
             {product?.length > 5 ? (
-              <Tooltip title={product}>
-                <QuestionCircleOutlined />
-              </Tooltip>
+              <Tooltip title={product}>...</Tooltip>
             ) : null}
           </div>
         );
