@@ -19,7 +19,7 @@ import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 import { httpRequest } from "@/services";
 import { unstable_batchedUpdates } from "react-dom";
-import { Spin } from "antd";
+import { Spin, Switch } from "antd";
 import { filterObjectKeys } from "@/utils/filterObjectKeys";
 import Title from "../Title";
 
@@ -35,7 +35,8 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // tooltip ref
   const toolTipRef = useRef<any>();
 
-  const legendHeight = height * 0.25;
+  const legendHeight = height * 0.2;
+  const switchHeight = 25;
 
   // brush在Y轴上的偏移
   const BrushYOffset = 25;
@@ -51,6 +52,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const [hoverCountry, setHoverCountry] = useState<string>("");
 
   const areaDataRef = useRef<IStackAreaData[]>();
+  const unitTextRef = useRef<SVGTextElement>(null);
 
   // 映射获得年数组
   const years = useMemo(() => areaData.map((item) => item.date), [areaData]);
@@ -150,7 +152,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   // y轴的scale
   const yScale = scaleLinear()
     .domain([0, maxY])
-    .range([zeroPosition[1], legendHeight + 30]);
+    .range([zeroPosition[1], legendHeight + switchHeight + 30]);
 
   // 计算area的path d属性
   const areaFunc = area()
@@ -202,11 +204,13 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const columnsRef = useRef<string[]>();
 
   // 向后端拉取数据
-  const fetchData = () => {
+  const fetchData = (type: string) => {
     // 如果category长度为0，则跳过；
     if (category.length === 0) return;
     httpRequest
-      .get(`/stack_chart?category=${JSON.stringify(category)}`)
+      .get(
+        `/stack_chart?category=${JSON.stringify(category)}&queryvorq=${type}`
+      )
       .then((res: any) => {
         unstable_batchedUpdates(() => {
           const columns = res?.data?.columns ?? [];
@@ -221,7 +225,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   // 每次category变动时，重新请求数据
   useEffect(() => {
-    fetchData();
+    fetchData("v");
   }, [category]);
 
   // 点击legend事件的处理器
@@ -250,6 +254,13 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       );
       setFilterList(newFilterList);
     }
+  };
+
+  // 开关点击处理函数
+  const onSwitch = (checked: boolean, e: Event) => {
+    fetchData(checked ? "v" : "q");
+    if (unitTextRef.current)
+      unitTextRef.current.innerHTML = checked ? "$ Milion" : "Milion Tunnes";
   };
 
   // year selector
@@ -287,20 +298,34 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                 />
               </div>
             </foreignObject>
+            <foreignObject
+              width="100%"
+              height={switchHeight}
+              y={legendHeight + 6}
+              x={zeroPosition[0] - 30}
+            >
+              <Switch
+                className={styles.switch}
+                checkedChildren="value"
+                unCheckedChildren="quantity"
+                onClick={onSwitch}
+                defaultChecked
+              />
+            </foreignObject>
             <defs>
               <clipPath id="clip-path">
                 <rect
                   x={zeroPosition[0]}
-                  y={legendHeight}
+                  y={legendHeight + switchHeight}
                   width={
                     width - 20 - zeroPosition[0] < 0
                       ? 0
                       : width - 20 - zeroPosition[0]
                   }
                   height={
-                    zeroPosition[1] - legendHeight < 0
+                    zeroPosition[1] - legendHeight - switchHeight < 0
                       ? 0
-                      : zeroPosition[1] - legendHeight
+                      : zeroPosition[1] - legendHeight - switchHeight
                   }
                 />
               </clipPath>
@@ -333,14 +358,15 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                 direction={DirectionValue.LEFT}
                 ticks={Y_TICKS}
                 tickValues={yTicks}
-                tickFormat={(tick) => Math.round(tick / 100000)}
+                tickFormat={(tick) => Math.round(tick / 1000000)}
               />
               <text
                 x={zeroPosition[0] - 30}
-                y={legendHeight + 18}
+                y={legendHeight + switchHeight + 18}
                 fontSize={12}
+                ref={unitTextRef}
               >
-                单位：十万
+                $ Milion
               </text>
               <g clipPath="url(#clip-path)">
                 {series.map((item: any, index: number) => {

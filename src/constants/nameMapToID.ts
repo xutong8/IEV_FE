@@ -226,7 +226,7 @@ export const nameToIDObj: { [name: string]: string } = {
   Egypt: "818",
   "United Kingdom": "826",
   "United Republic of Tanzania": "834",
-  "USA, Puerto Rico and US Virgin Islands": "842",
+  USA: "842",
   "US Miscellaneous Pacific Islands": "849",
   "Burkina Faso": "854",
   Uruguay: "858",

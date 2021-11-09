@@ -47,15 +47,15 @@ const Radar: React.FC<IRadar> = (props) => {
   );
 
   const tickValues = useMemo(() => {
-    return rangeWithLen(0, maxValue, level + 1);
+    return rangeWithLen(1, maxValue, level + 1);
   }, [maxValue]);
   // const maxValue = 1;
 
   const radarScale = useMemo(
     () =>
       scaleLinear()
-        .domain([0, maxValue as number])
-        .range([r_0, 0]),
+        .domain([1, maxValue as number])
+        .range([0, r_0]),
     [r_0, maxValue]
   );
 
@@ -119,7 +119,7 @@ const Radar: React.FC<IRadar> = (props) => {
     return labels;
   };
 
-  return radarSide && data ? (
+  return radarSide > 0 && data ? (
     <svg
       width={radarSide}
       height={radarSide}
@@ -140,6 +140,7 @@ const Radar: React.FC<IRadar> = (props) => {
         position={[center.x, center.y - r_0]}
         direction={DirectionValue.LEFT}
         tickValues={tickValues}
+        attributes={{ fontSize: `${radarSide / 25}px` }}
       />
       <RadarArea
         data={data}

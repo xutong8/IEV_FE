@@ -17,6 +17,7 @@ import {
   getNodeId,
   highlightNodeById,
   unhighlightNodeById,
+  updateLabelPos,
 } from "@/utils/nodeUtils";
 import {
   findLinkById,
@@ -33,6 +34,8 @@ import { Spin } from "antd";
 import { isEqual } from "lodash";
 import Title from "../Title";
 import { continentColorMap } from "@/constants/colorMap";
+import { useSelector } from "react-redux";
+import { IStore } from "@/reducers";
 
 export interface IForceGraphProps {
   width: number;
@@ -164,8 +167,19 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
         .attr("y1", (d) => d.source.y as number)
         .attr("x2", (d) => d.target.x as number)
         .attr("y2", (d) => d.target.y as number);
+      // 更新位置
+      updateLabelPos(countryList);
     });
+    // .on("end", () => {
+    //   updateLabelPos(countryList);
+    // });
   }, [simulation, width, height, nodesState, linksState]);
+
+  // countryList selector
+  const countryList = useSelector(
+    (state: IStore) => state.countryList,
+    (prev, next) => isEqual(prev, next)
+  );
 
   // enter node高亮
   const nodeMouseEnterHandler = (event: MouseEvent) => {
@@ -265,6 +279,13 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     zoomRef.current.scaleTo(select(svgRef.current), 0.6);
     zoomRef.current.translateBy(select(svgRef.current), 50, 50);
   }, []);
+
+  // 更新标签位置
+  // useEffect(() => {
+  //   console.log("okk");
+  //   console.log(nodesState);
+  //   updateLabelPos(countryList);
+  // }, [nodesState, countryList]);
 
   return (
     <div className={styles.forceGraph}>

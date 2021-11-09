@@ -7,17 +7,17 @@ export const countryColorMap: { [key: string]: string } = {
   RU: "#ccece6",
   BR: "#bf812d",
   GB: "#41ae76",
-  CA: "#ffeda0",
+  CA: "#6baed6",
   FR: "#66c2a4",
-  AU: "#6baed6",
+  AU: "#807dba",
   IT: "#99d8c9",
-  ES: "#ffffcc",
+  ES: "#f7fcf5",
   KR: "#fed976",
 };
 
 export const continentColorMap: { [key: string]: string } = {
   EU: "#74c476",
-  AS: "#e31a1c",
+  AS: "#D6615C",
   AF: "#fee391",
   NA: "#2171b5",
   SA: "#993404",

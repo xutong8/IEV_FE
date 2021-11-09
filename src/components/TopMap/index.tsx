@@ -12,7 +12,7 @@ import { IStore } from "@/reducers";
 import { isEqual } from "lodash";
 import { Spin } from "antd";
 import Title from "../Title";
-import { numberFormat } from "@/utils/number";
+import { numberFormat, numberFormatE } from "@/utils/number";
 import cn from "classnames";
 export interface ILineObj {
   name: string;
@@ -307,13 +307,13 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
                 style={{
                   position: "absolute",
                   top: -20,
-                  right: -10,
+                  // right: -5,
                   width: 55,
                   fontSize: 12,
                   fontWeight: 450,
                 }}
               >
-                {numberFormat(maxValue)}
+                {numberFormatE(maxValue)}
               </div>
               <div
                 style={{
