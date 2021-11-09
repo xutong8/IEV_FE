@@ -51,7 +51,7 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
         return;
       }
 
-      const curDigit2 = allCountries[id]["iso_2digit_alpha"].toLowerCase();
+      const curDigit2 = allCountries[id]["iso_2digit_alpha"];
 
       select(`.${parentClass} #${curDigit2}`).style(
         "fill",
@@ -64,12 +64,12 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
       allCountries[selectedCountries[1]]["iso_2digit_alpha"],
     ];
     // draw color for selected country
-    select(`.${parentClass} #${selectedPair[0].toLowerCase()}`).classed(
+    select(`.${parentClass} #${selectedPair[0]}`).classed(
       `${styles.shadow1} ${styles.shadow2}`,
       true
     );
 
-    select(`.${parentClass} #${selectedPair[1].toLowerCase()}`).classed(
+    select(`.${parentClass} #${selectedPair[1]}`).classed(
       `${styles.shadow1} ${styles.shadow2}`,
       true
     );
@@ -89,12 +89,12 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
         allCountries[selectedCountries[1]]["iso_2digit_alpha"],
       ];
       // draw color for selected country
-      select(`.${parentClass} #${selectedPair[0].toLowerCase()}`).classed(
+      select(`.${parentClass} #${selectedPair[0]}`).classed(
         `${styles.shadow1} ${styles.shadow2}`,
         false
       );
 
-      select(`.${parentClass} #${selectedPair[1].toLowerCase()}`).classed(
+      select(`.${parentClass} #${selectedPair[1]}`).classed(
         `${styles.shadow1} ${styles.shadow2}`,
         false
       );
