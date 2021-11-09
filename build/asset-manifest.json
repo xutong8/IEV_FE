@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5e5a08cd.chunk.css",
+    "main.js": "/static/js/main.5f6b2dc4.chunk.js",
+    "main.js.map": "/static/js/main.5f6b2dc4.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c6d76f97.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c6d76f97.js.map",
+    "static/css/2.3694e2ae.chunk.css": "/static/css/2.3694e2ae.chunk.css",
+    "static/js/2.a66ac957.chunk.js": "/static/js/2.a66ac957.chunk.js",
+    "static/js/2.a66ac957.chunk.js.map": "/static/js/2.a66ac957.chunk.js.map",
+    "static/js/3.7a2faf8c.chunk.js": "/static/js/3.7a2faf8c.chunk.js",
+    "static/js/3.7a2faf8c.chunk.js.map": "/static/js/3.7a2faf8c.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.3694e2ae.chunk.css.map": "/static/css/2.3694e2ae.chunk.css.map",
+    "static/css/main.5e5a08cd.chunk.css.map": "/static/css/main.5e5a08cd.chunk.css.map",
+    "static/js/2.a66ac957.chunk.js.LICENSE.txt": "/static/js/2.a66ac957.chunk.js.LICENSE.txt",
+    "static/media/brazil.78666c53.png": "/static/media/brazil.78666c53.png",
+    "static/media/india.8caa635d.png": "/static/media/india.8caa635d.png",
+    "static/media/mexico.f109c100.png": "/static/media/mexico.f109c100.png",
+    "static/media/south korea.f39d13c7.png": "/static/media/south korea.f39d13c7.png",
+    "static/media/turkey.2e16551f.png": "/static/media/turkey.2e16551f.png",
+    "static/media/united states.cb6a174c.png": "/static/media/united states.cb6a174c.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c6d76f97.js",
+    "static/css/2.3694e2ae.chunk.css",
+    "static/js/2.a66ac957.chunk.js",
+    "static/css/main.5e5a08cd.chunk.css",
+    "static/js/main.5f6b2dc4.chunk.js"
+  ]
+}
