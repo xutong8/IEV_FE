@@ -87,9 +87,11 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
         return (
           <div>
             <span className={styles.tooltipText}>
-              {importCountry.slice(0, 5)}
+              {`${importCountry.slice(0, 8)}${
+                importCountry.length > 8 ? "..." : ""
+              }`}
             </span>
-            {importCountry.length > 5 ? (
+            {importCountry.length > 8 ? (
               <Tooltip title={importCountry}>
                 <QuestionCircleOutlined />
               </Tooltip>
@@ -118,9 +120,11 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
         return (
           <div>
             <span className={styles.tooltipText}>
-              {exportCountry.slice(0, 5)}
+              {`${exportCountry.slice(0, 8)}${
+                exportCountry.length > 8 ? "..." : ""
+              }`}
             </span>
-            {exportCountry.length > 5 ? (
+            {exportCountry.length > 8 ? (
               <Tooltip title={exportCountry}>
                 <QuestionCircleOutlined />
               </Tooltip>
@@ -155,9 +159,11 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
             }}
           >
             <span className={styles.tooltipText}>
-              {industry_category?.slice(0, 5)}
+              {`${industry_category.slice(0, 8)}${
+                industry_category.length > 8 ? "..." : ""
+              }`}
             </span>
-            {industry_category?.length > 5 ? (
+            {industry_category?.length > 8 ? (
               <Tooltip title={industry_category}>
                 <QuestionCircleOutlined />
               </Tooltip>
@@ -191,7 +197,9 @@ export const customColumnsFunc = (valueType: ValueType, maxAmount: number) => {
               alignItems: "center",
             }}
           >
-            <span className={styles.tooltipText}>{product?.slice(0, 5)}</span>
+            <span className={styles.tooltipText}>{`${product.slice(0, 5)}${
+              product.length > 5 ? "..." : ""
+            }`}</span>
             {product?.length > 5 ? (
               <Tooltip title={product}>
                 <QuestionCircleOutlined />

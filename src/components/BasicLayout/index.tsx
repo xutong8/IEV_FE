@@ -30,9 +30,7 @@ const BasicLayout = () => {
   // 对比国家
   const [sourceCountry, setSourceCountry] = useState<string>("China");
   // 参照国家
-  const [targetCountry, setTargetCountry] = useState<string>(
-    "USA, Puerto Rico and US Virgin Islands"
-  );
+  const [targetCountry, setTargetCountry] = useState<string>("USA");
 
   // force graph的ref
   const forceGraphRef = useRef<HTMLDivElement>(null);
@@ -100,7 +98,7 @@ const BasicLayout = () => {
               </div>
             </div>
             <div className={styles["radar_chart"]}>
-              <Title title="Country List"></Title>
+              <Title title="Country/Region List"></Title>
               <RadarArea />
             </div>
           </div>
