@@ -63,10 +63,6 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
         .style("background-color", null);
     });
   };
-  console.log(tableRef.current?.clientHeight);
-  console.log(
-    Math.max(Math.floor((tableRef.current?.clientHeight ?? 800) / 55), 20)
-  );
   return (
     <div className={styles["search_table"]}>
       <Title title="Source Data"></Title>
