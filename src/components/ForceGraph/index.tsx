@@ -30,7 +30,7 @@ import { zoom } from "d3-zoom";
 import { httpRequest } from "@/services";
 import { unstable_batchedUpdates } from "react-dom";
 import randomcolor from "randomcolor";
-import { Spin } from "antd";
+import { InputNumber, Slider, Spin } from "antd";
 import { isEqual } from "lodash";
 import Title from "../Title";
 import { continentColorMap } from "@/constants/colorMap";
@@ -65,6 +65,11 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   const [continents, setContinents] = useState<string[]>([]);
   // colorMap
   const [colorMap, setColorMap] = useState<Map<string, string>>();
+
+  // alphaDecay
+  const [alphaDecay, setAlpha] = useState<number>(0.15);
+  // velocityDecay
+  const [velocityDecay, setVelocity] = useState<number>(0.6);
 
   // 获取数据
   const fetchData = () => {
@@ -143,8 +148,8 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   // 设置布局算法
   const simulation = useMemo(() => {
     return forceSimulation(nodesState as any)
-      .alphaDecay(0.15)
-      .velocityDecay(0.6)
+      .alphaDecay(alphaDecay)
+      .velocityDecay(velocityDecay)
       .force(
         "link",
         forceLink(linksState as any).id((d: any) => d.id)
@@ -260,6 +265,15 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
     select("#graphRoot").attr("transform", event.transform);
   };
 
+  // 处理alphaDecay值改变
+  const onChangeAlpha = (value: number) => {
+    setAlpha(value);
+  };
+  // 处理velocityDecay值改变
+  const onChangeVelocity = (value: number) => {
+    setVelocity(value);
+  };
+
   // zoom ref
   const zoomRef = useRef<any>(null);
 
@@ -300,10 +314,50 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
               onClick={handleClick}
             />
           </div>
+          <div className={styles.configMenu}>
+            <div className={styles.configItem}>
+              <div className={styles.label}>Time</div>
+              <Slider
+                className={styles.slider}
+                min={0}
+                max={1}
+                onChange={onChangeAlpha}
+                value={alphaDecay}
+                step={0.01}
+              />
+              <InputNumber
+                min={0}
+                max={1}
+                // style={{ margin: "0 16px" }}
+                step={0.01}
+                value={alphaDecay}
+                onChange={onChangeAlpha}
+              />
+            </div>
+            <div className={styles.configItem}>
+              <div className={styles.label}>Velocity</div>
+              <Slider
+                className={styles.slider}
+                min={0}
+                max={1}
+                onChange={onChangeVelocity}
+                value={velocityDecay}
+                step={0.01}
+              />
+              <InputNumber
+                min={0}
+                max={1}
+                // style={{ margin: "0 16px" }}
+                step={0.01}
+                value={velocityDecay}
+                onChange={onChangeVelocity}
+              />
+            </div>
+          </div>
           <svg
             width={width}
-            // 总高为80，其中legend高度为50，title高度为30
-            height={height - 80 >= 0 ? height - 80 : 0}
+            // 总高为80，其中legend高度为50，title高度为30, configMenu高度为154
+            height={height - 154 >= 0 ? height - 154 : 0}
             ref={svgRef}
           >
             <g id="graphRoot">
