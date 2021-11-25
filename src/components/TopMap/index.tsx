@@ -53,7 +53,7 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
   // 圆的半径
   const circleRadius = 4;
   // 柱状图的宽度
-  const barWidth = 200;
+  const barWidth = 100;
   // 高度的基准值
   const fixedHeight = 237;
 
@@ -96,9 +96,10 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
   const barDataSource = useMemo(
     () =>
       dataSource.map((item) => ({
+        // 修改了名称，改变了方向
         countryName: item.countryName,
-        exptotal: item.exptotal,
-        imptotal: item.imptotal,
+        imptotal: item.exptotal,
+        exptotal: item.imptotal,
       })),
     [dataSource]
   );

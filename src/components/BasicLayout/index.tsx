@@ -103,7 +103,7 @@ const BasicLayout = () => {
             </div>
           </div>
           <div className={styles.progress}>
-            <Title title="Progress View"></Title>
+            <Title title="Timeline"></Title>
             <div className={styles.main}>
               <div className={styles.playBtn}>
                 <Button

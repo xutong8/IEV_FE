@@ -60,7 +60,6 @@ export function numberFormat(value: number) {
  * @param value 数字值
  */
 export function numberFormatE(value: number) {
-  console.log(value);
   let unit;
   if (value >= 10e9) {
     unit = "B";

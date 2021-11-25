@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./index.less";
 import { Table } from "antd";
 import { ValueType } from "@/types";
@@ -19,6 +19,7 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
   const [dataSource, setDataSource] = useState<ITableCountry[]>([]);
   // 条件数组
   const [query_conditions, setQueryConditions] = useState<string[]>([]);
+  const tableRef = useRef<HTMLDivElement>(null);
 
   // 获取数据
   const fetchData = () => {
@@ -62,14 +63,13 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
         .style("background-color", null);
     });
   };
-
   return (
     <div className={styles["search_table"]}>
       <Title title="Source Data"></Title>
       <div className={styles["search_top"]}>
         <SearchInput onSearch={handleSearch} />
       </div>
-      <div className={styles["search_list"]}>
+      <div className={styles["search_list"]} ref={tableRef}>
         <div className={styles["search_container"]}>
           {/* TODO: 当pageNo切换时，需要考虑高亮的问题 */}
           <Table
@@ -78,7 +78,9 @@ const SearchTable: React.FC<ISearchTableProps> = (props) => {
             rowKey={(record) => record.id}
             pagination={{
               showSizeChanger: false,
-              pageSize: 15,
+              pageSize: Math.floor(
+                (tableRef.current?.clientHeight ?? 800) / 55 - 2
+              ),
               size: "small",
               onChange: handlePageSizeChange,
             }}
