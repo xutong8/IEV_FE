@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const BASE_URL = "http://mpthvy.natappfree.cc/iev";
+const BASE_URL = "/iev";
 
 // TODO: timeline接口响应有点慢，所以设置成25s。如果此时还没有返回，则抛出error。
 const TIME_OUT = 25000;
