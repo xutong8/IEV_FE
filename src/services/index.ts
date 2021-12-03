@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const BASE_URL = "/iev";
+const BASE_URL = "http://10.76.0.166:23333/iev";
 
 // TODO: timeline接口响应有点慢，所以设置成25s。如果此时还没有返回，则抛出error。
 const TIME_OUT = 25000;
