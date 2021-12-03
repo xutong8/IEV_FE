@@ -179,7 +179,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
         value,
       });
     },
-    [xScale]
+    [xScale, areaData]
   );
 
   // 移入legend事件的处理器
@@ -265,7 +265,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
 
   // year selector
   const year = useSelector((state: IStore) => state.year);
-
+  console.log(series);
   return (
     <div className={styles.container}>
       <Title title="StackChart"></Title>
