@@ -50,26 +50,49 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
     <div className={styles.pieMap}>
       <Title title="Contrast View"></Title>
       <div className={styles.maps}>
-        <div
-          className={cn({
-            [styles.sourceMap]: true,
-            [styles.basicMap]: true,
-          })}
-          ref={sourceMapRef}
-        >
-          <div className={styles.placeholder} />
-          <div className={styles.chart}>
-            <RadarChart
-              title={sourceCountry}
-              draggable={false}
-              fontSize={25}
-              style={{ flex: "1 0 0" }}
-              color="red"
-              solveDrop={setSourceCountry}
-              parentRef={sourceMapRef}
-            />
+        <div className={styles.leftRadarArea}>
+          <div
+            className={cn({
+              [styles.sourceMap]: true,
+              [styles.basicMap]: true,
+            })}
+            ref={sourceMapRef}
+          >
+            <div className={styles.placeholder} />
+            <div className={styles.chart}>
+              <RadarChart
+                title={sourceCountry}
+                draggable={false}
+                fontSize={25}
+                style={{ flex: "1 0 0" }}
+                color="red"
+                solveDrop={setSourceCountry}
+                parentRef={sourceMapRef}
+              />
+            </div>
+            <div className={styles.placeholder} />
           </div>
-          <div className={styles.placeholder} />
+          <div
+            className={cn({
+              [styles.targetMap]: true,
+              [styles.basicMap]: true,
+            })}
+            ref={targetMapRef}
+          >
+            <div className={styles.placeholder} />
+            <div className={styles.chart}>
+              <RadarChart
+                title={targetCountry}
+                draggable={false}
+                fontSize={25}
+                color="blue"
+                style={{ flex: "1 0 0" }}
+                parentRef={targetMapRef}
+                solveDrop={setTargetCountry}
+              />
+            </div>
+            <div className={styles.placeholder} />
+          </div>
         </div>
         <div className={styles.middleMap} ref={middleMapRef}>
           <Spin
@@ -91,27 +114,6 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
               parentClass={styles.middleMap}
             />
           </Spin>
-        </div>
-        <div
-          className={cn({
-            [styles.targetMap]: true,
-            [styles.basicMap]: true,
-          })}
-          ref={targetMapRef}
-        >
-          <div className={styles.placeholder} />
-          <div className={styles.chart}>
-            <RadarChart
-              title={targetCountry}
-              draggable={false}
-              fontSize={25}
-              color="blue"
-              style={{ flex: "1 0 0" }}
-              parentRef={targetMapRef}
-              solveDrop={setTargetCountry}
-            />
-          </div>
-          <div className={styles.placeholder} />
         </div>
       </div>
     </div>

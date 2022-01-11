@@ -3,7 +3,7 @@ import LeftMenu from "../LeftMenu";
 import styles from "./index.less";
 import StackChart from "../StackChart";
 import ProgressBar from "../ProgressBar";
-import PieMap from "../PieMap";
+import PieMap from "../ContrastView";
 import { useRef, useState } from "react";
 import { useSVGSize } from "@/hooks/useSVGSize";
 import ForceGraphWithStore from "@/containers/ForceGraphWithStore";
