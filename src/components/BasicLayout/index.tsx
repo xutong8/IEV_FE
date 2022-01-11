@@ -21,6 +21,7 @@ import { IconState } from "@/constants";
 import { useDispatch } from "react-redux";
 import { addOneYear } from "@/actions/year";
 import { max_year, min_year } from "@/constants/year";
+import { header } from "@/assets/images";
 
 const BasicLayout = () => {
   // stack container的ref
@@ -56,111 +57,119 @@ const BasicLayout = () => {
   const timerRef = useRef<any>(null);
 
   return (
-    <div className={styles["basic_layout"]}>
-      <div className={styles["left_menu"]}>
-        <LeftMenu />
-      </div>
-      <div className={styles["main_content"]}>
-        <div className={styles["bottom"]}>
-          <div className={styles["container"]}>
-            <div className={styles["chart_content"]}>
-              <div className={styles.first}>
-                <div className={styles.firstLeft}>
-                  <div className={styles.topMap}>
-                    <TopMapWithStore />
-                  </div>
-                </div>
-                <div className={styles.firstRight}>
-                  <div className={styles.force} ref={forceGraphRef}>
-                    <ForceGraphWithStore
-                      width={forceWidth}
-                      height={forceHeight}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={styles.second}>
-                <div className={styles.secondLeft}>
-                  <div className={styles.pieMapContainer}>
-                    <PieMap
-                      sourceCountry={sourceCountry}
-                      setSourceCountry={setSourceCountry}
-                      targetCountry={targetCountry}
-                      setTargetCountry={setTargetCountry}
-                    />
-                  </div>
-                </div>
-                <div className={styles.secondRight}>
-                  <div className={styles.stack} ref={stackContainerRef}>
-                    <StackChart width={stackWidth} height={stackHeight} />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles["radar_chart"]}>
-              <Title title="Country/Region List"></Title>
-              <RadarArea />
-            </div>
+    <>
+      <div
+        className={styles["header"]}
+        style={{ backgroundImage: `url(${header})` }}
+      />
+      <div className={styles["basic_layout"]}>
+        <div className={styles["left_content"]}>
+          <LeftMenu />
+          <div className={styles["radar_chart"]}>
+            <Title title="Country/Region List"></Title>
+            <RadarArea />
           </div>
-          <div className={styles.progress}>
-            <Title title="Timeline"></Title>
-            <div className={styles.main}>
-              <div className={styles.playBtn}>
-                <Button
-                  type="default"
-                  icon={
-                    iconState === IconState.PLAY ? (
-                      <PlayCircleTwoTone />
-                    ) : (
-                      <PauseCircleTwoTone />
-                    )
-                  }
-                  onClick={() => {
-                    if (iconState === IconState.PLAY) {
-                      timerRef.current = setInterval(() => {
-                        if (yearRef.current >= max_year) {
-                          clearInterval(timerRef.current);
-                          timerRef.current = null;
-                          return;
-                        }
-                        yearRef.current = yearRef.current + 1;
-                        dispatch(addOneYear());
-                      }, 5000);
-                    } else {
-                      clearInterval(timerRef.current);
-                      timerRef.current = null;
+        </div>
+        <div className={styles["main_content"]}>
+          <div className={styles["bottom"]}>
+            <div className={styles["container"]}>
+              <div className={styles["chart_content"]}>
+                <div className={styles.first}>
+                  <div className={styles.firstLeft}>
+                    <div className={styles.topMap}>
+                      <TopMapWithStore />
+                    </div>
+                  </div>
+                  <div className={styles.firstRight}>
+                    <div className={styles.force} ref={forceGraphRef}>
+                      <ForceGraphWithStore
+                        width={forceWidth}
+                        height={forceHeight}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.second}>
+                  <div className={styles.secondLeft}>
+                    <div className={styles.pieMapContainer}>
+                      <PieMap
+                        sourceCountry={sourceCountry}
+                        setSourceCountry={setSourceCountry}
+                        targetCountry={targetCountry}
+                        setTargetCountry={setTargetCountry}
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.secondRight}>
+                    <div className={styles.stack} ref={stackContainerRef}>
+                      <StackChart width={stackWidth} height={stackHeight} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.progress}>
+              <Title title="Timeline"></Title>
+              <div className={styles.main}>
+                <div className={styles.playBtn}>
+                  <Button
+                    type="default"
+                    icon={
+                      iconState === IconState.PLAY ? (
+                        <PlayCircleTwoTone />
+                      ) : (
+                        <PauseCircleTwoTone />
+                      )
                     }
-                    setIconState((prev) =>
-                      prev === IconState.PLAY ? IconState.PAUSE : IconState.PLAY
-                    );
-                  }}
-                />
-              </div>
-              <div className={`${styles.sortBtn}`}>
-                <Button
-                  className={sorted ? styles.sorted : ""}
-                  onClick={() => setSorted(!sorted)}
-                  icon={<SortAscendingOutlined />}
-                />
-              </div>
-              <div className={styles.progressContent} ref={progressRef}>
-                <ProgressBar
-                  width={progressWidth}
-                  height={progressHeight}
-                  sourceCountry={sourceCountry}
-                  targetCountry={targetCountry}
-                  sorted={sorted}
-                />
+                    onClick={() => {
+                      if (iconState === IconState.PLAY) {
+                        timerRef.current = setInterval(() => {
+                          if (yearRef.current >= max_year) {
+                            clearInterval(timerRef.current);
+                            timerRef.current = null;
+                            return;
+                          }
+                          yearRef.current = yearRef.current + 1;
+                          dispatch(addOneYear());
+                        }, 5000);
+                      } else {
+                        clearInterval(timerRef.current);
+                        timerRef.current = null;
+                      }
+                      setIconState((prev) =>
+                        prev === IconState.PLAY
+                          ? IconState.PAUSE
+                          : IconState.PLAY
+                      );
+                    }}
+                  />
+                </div>
+                <div className={`${styles.sortBtn}`}>
+                  <Button
+                    className={sorted ? styles.sorted : ""}
+                    onClick={() => setSorted(!sorted)}
+                    icon={<SortAscendingOutlined />}
+                  />
+                </div>
+                <div className={styles.progressContent} ref={progressRef}>
+                  <ProgressBar
+                    width={progressWidth}
+                    height={progressHeight}
+                    sourceCountry={sourceCountry}
+                    targetCountry={targetCountry}
+                    sorted={sorted}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className={styles["right_menu"]}>
-        <SearchTableWithStore />
+        <div className={styles["right_menu"]}>
+          <SearchTableWithStore />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

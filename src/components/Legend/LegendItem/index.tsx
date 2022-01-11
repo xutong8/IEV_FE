@@ -34,7 +34,11 @@ const LegendItem: React.FC<ILegendItem> = (props) => {
     >
       <div
         className={styles["legend_swatch"]}
-        style={{ background: selected ? "gray" : fill }}
+        style={{
+          background: selected ? "gray" : fill,
+          opacity: 0.6,
+          border: `1px solid ${selected ? "gray" : fill}`,
+        }}
       />
       <div className={styles["legend_label"]}>{label}</div>
     </div>

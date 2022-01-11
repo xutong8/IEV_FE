@@ -377,7 +377,8 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
                       x2={link.target.x as number}
                       y2={link.target.y as number}
                       attributes={{
-                        strokeWidth: 2,
+                        strokeWidth: 1,
+                        strokeOpacity: 0.86,
                       }}
                     />
                   );
@@ -399,6 +400,8 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
                         cy={node.y as number}
                         attributes={{
                           fill: colorMap?.get(node.continent) ?? "",
+                          fillOpacity: 0.6,
+                          stroke: colorMap?.get(node.continent) ?? "",
                         }}
                       />
                     </g>
