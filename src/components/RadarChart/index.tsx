@@ -37,7 +37,7 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
   const radarRef = useRef<HTMLDivElement>(null);
 
   const [radarWidth, radarHeight] = useSVGSize(parentRef);
-  // console.log(radarWidth, radarHeight);
+  console.log(radarWidth, radarHeight);
   const radarSide = useMemo(
     // 减去的为margin
     () => (parentWidth ? parentWidth : Math.min(radarWidth, radarHeight) - 20),

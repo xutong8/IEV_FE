@@ -58,13 +58,13 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
             })}
             ref={sourceMapRef}
           >
-            <div className={styles.placeholder} />
+            {/* <div className={styles.placeholder} /> */}
             <div className={styles.chart}>
               <RadarChart
                 title={sourceCountry}
                 draggable={false}
-                fontSize={25}
-                style={{ flex: "1 0 0" }}
+                // fontSize={25}
+                style={{ flex: "5", marginLeft: "10px" }}
                 color="red"
                 solveDrop={setSourceCountry}
                 parentRef={sourceMapRef}
@@ -79,14 +79,14 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
             })}
             ref={targetMapRef}
           >
-            <div className={styles.placeholder} />
+            {/* <div className={styles.placeholder} /> */}
             <div className={styles.chart}>
               <RadarChart
                 title={targetCountry}
                 draggable={false}
-                fontSize={25}
+                // fontSize={25}
                 color="blue"
-                style={{ flex: "1 0 0" }}
+                style={{ flex: "5", marginLeft: "10px" }}
                 parentRef={targetMapRef}
                 solveDrop={setTargetCountry}
               />
