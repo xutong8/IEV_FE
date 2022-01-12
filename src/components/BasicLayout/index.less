@@ -1,5 +1,6 @@
 @import url("../../styles/base.less");
 
+@marginUnit: 8px;
 .header {
   width: 100vw;
   height: 8vh;
@@ -13,27 +14,26 @@
 }
 
 .left_content {
-  padding-top: 16px;
-  padding-bottom: 12px;
-  padding-left: 8px;
+  margin: @marginUnit 0px;
   flex: 1 0 0;
   height: 100%;
-}
 
-.radar_chart {
-  height: calc(50% + 40px);
-  display: flex;
-  flex-direction: column;
-  margin-left: 10px;
-  background-color: #fff;
-  border-radius: 8px;
+  .radar_chart {
+    height: calc(46vh - @marginUnit + 40px);
+    margin-top: @marginUnit;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+  }
 }
 
 .main_content {
   flex: 6 0 0;
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  margin: @marginUnit;
 
   .bottom {
     flex: 5 0 0;
@@ -41,7 +41,7 @@
     flex-direction: column;
 
     .progress {
-      margin-top: 12px;
+      margin-top: @marginUnit;
       height: 80px;
       display: flex;
       flex-direction: column;
@@ -104,7 +104,7 @@
           .firstRight {
             flex: 1 0 0;
             height: 100%;
-            margin-left: 12px;
+            margin-left: @marginUnit;
 
             .force {
               flex: 1 0 0;
@@ -117,7 +117,7 @@
 
         .second {
           flex: 1 0 0;
-          margin-top: 12px;
+          margin-top: @marginUnit;
           display: flex;
           flex-direction: row;
 
@@ -135,7 +135,7 @@
           .secondRight {
             flex: 1 0 0;
             display: flex;
-            margin-left: 12px;
+            margin-left: @marginUnit;
 
             .stack {
               flex: 1 0 0;
@@ -150,7 +150,7 @@
 }
 
 .right_menu {
-  margin: 16px 0;
+  margin: @marginUnit 0;
   flex: 2 0 0;
   overflow: auto;
   &:extend(.block);

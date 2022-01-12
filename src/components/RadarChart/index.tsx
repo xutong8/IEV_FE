@@ -15,6 +15,7 @@ export interface IRadarChart {
   solveDrop?: (value: string) => void;
   deleteItem?: (name: string) => void;
   style?: CSSProperties;
+  parentWidth?: number;
 }
 /**
  * 绘制一个雷达图，包括radar以及title
@@ -31,14 +32,16 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
     solveDrop,
     deleteItem,
     parentRef,
+    parentWidth,
   } = props;
   const radarRef = useRef<HTMLDivElement>(null);
 
   const [radarWidth, radarHeight] = useSVGSize(parentRef);
+  // console.log(radarWidth, radarHeight);
   const radarSide = useMemo(
     // 减去的为margin
-    () => Math.min(radarWidth, radarHeight) - 20,
-    [radarWidth, radarHeight]
+    () => (parentWidth ? parentWidth : Math.min(radarWidth, radarHeight) - 20),
+    [radarWidth, radarHeight, parentWidth]
   );
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);

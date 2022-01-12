@@ -1,17 +1,19 @@
 @import url("../../styles/base.less");
 
+@marginUnit: 8px;
+
 .leftmenu {
   width: 100%;
-  height: calc(50% - 55px);
+  height: calc(46vh - 2 * @marginUnit - 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
 
   .item {
     display: flex;
     flex-direction: column;
     overflow: auto;
-
-    &:nth-child(2) {
-      margin-top: 12px;
-    }
 
     .list {
       flex: 1 0 0;
@@ -59,10 +61,10 @@
     &:extend(.block);
   }
   .itemTop {
-    height: 50%;
+    flex: 1;
   }
   .itemBottom {
-    height: 50%;
+    flex: 1;
   }
 }
 
