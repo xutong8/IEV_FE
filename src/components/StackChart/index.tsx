@@ -341,6 +341,34 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                   height={20}
                 />
               </clipPath>
+              {Array.from(colorMap.keys())?.map((item: any) => {
+                console.log(item);
+                return (
+                  <linearGradient
+                    key={item}
+                    id={`grad_${item}`}
+                    x1="0%"
+                    y1="100%"
+                    x2="0%"
+                    y2="0%"
+                  >
+                    <stop
+                      offset="0%"
+                      style={{
+                        stopColor: colorMap.get(item),
+                        stopOpacity: 0.05,
+                      }}
+                    ></stop>
+                    <stop
+                      offset="100%"
+                      style={{
+                        stopColor: colorMap.get(item),
+                        stopOpacity: 0.5,
+                      }}
+                    ></stop>
+                  </linearGradient>
+                );
+              })}
             </defs>
             <g>
               <g clipPath="url(#clip-axis)">
@@ -372,19 +400,22 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                 {series.map((item: any, index: number) => {
                   return (
                     <Path
-                      id={item.key as string}
+                      id={item.key}
                       key={index}
                       attributes={{
-                        fill:
-                          hoverCountry && item.key === hoverCountry
-                            ? "#8fce74"
-                            : colorMap.get(item.key),
+                        // fill:
+                        //   hoverCountry && item.key === hoverCountry
+                        //     ? "#8fce74"
+                        //     : `url("#${item.key}")`,
                         d: areaFunc(item) as string,
                       }}
                       onMouseEnter={onMouseEnter}
                       onMouseLeave={onMouseLeave}
                       onMouseMove={onMouseMove}
-                      style={{ transition: "all .5s ease" }}
+                      style={{
+                        transition: "all .5s ease",
+                        fill: `url("#grad_${item.key}")`,
+                      }}
                     />
                   );
                 })}
