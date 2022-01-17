@@ -1,5 +1,5 @@
 import { scaleLinear } from "d3-scale";
-import { area, stack } from "d3-shape";
+import { area, stack, line } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
 import { IStackAreaData } from "@/types/areaChart";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -60,7 +60,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const minYear = useMemo(() => Math.min(...years), [years]);
   // 获取最大年
   const maxYear = useMemo(() => Math.max(...years), [years]);
-
+  console.log(areaData);
   // 使用stack函数计算得到堆叠后的数据
   const series = useMemo(
     () => (areaData.length !== 0 ? stack().keys(columns)(areaData) : []),
@@ -160,6 +160,11 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     .y0((d) => yScale(d[0]))
     .y1((d) => yScale(d[1]));
 
+  const lineFunc = line()
+    .x((d: any) => xScale(Number(d.data.date)))
+    // .y0((d) => yScale(d[0]))
+    .y((d) => yScale(d[1]));
+
   // 移入area path事件的处理器
   const onMouseEnter = useCallback(
     (hoverName) => {
@@ -213,7 +218,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       )
       .then((res: any) => {
         unstable_batchedUpdates(() => {
-          const columns = res?.data?.columns ?? [];
+          const columns = res?.data?.columns.splice(1) ?? [];
           setColumns(columns);
           columnsRef.current = columns;
           const areaData = res?.data?.data ?? [];
@@ -313,6 +318,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               />
             </foreignObject>
             <defs>
+              <filter id="lineBlur" x="-5%" y="-5%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
+              </filter>
               <clipPath id="clip-path">
                 <rect
                   x={zeroPosition[0]}
@@ -341,8 +349,12 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                   height={20}
                 />
               </clipPath>
+              {series.map((item: any, index: number) => (
+                <mask id={`${item.key}_mask`} key={index}>
+                  <path d={areaFunc(item) as string} fill="#fff" />
+                </mask>
+              ))}
               {Array.from(colorMap.keys())?.map((item: any) => {
-                console.log(item);
                 return (
                   <linearGradient
                     key={item}
@@ -399,7 +411,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               <g clipPath="url(#clip-path)">
                 {series.map((item: any, index: number) => {
                   return (
-                    <Path
+                    /**
+                     * 之前的堆栈的写法
+                     * <Path
                       id={item.key}
                       key={index}
                       attributes={{
@@ -417,6 +431,49 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                         fill: `url("#grad_${item.key}")`,
                       }}
                     />
+                     */
+
+                    <g key={index}>
+                      <Path
+                        id={`${item.key}_blur`}
+                        onMouseEnter={onMouseEnter}
+                        onMouseLeave={onMouseLeave}
+                        onMouseMove={onMouseMove}
+                        attributes={{
+                          d: lineFunc(item) as string,
+                        }}
+                        style={{
+                          fill: "none",
+                          stroke: `${colorMap.get(item.key)}`,
+                          strokeWidth: "10px",
+                          filter: "url(#lineBlur)",
+                          mask: `url(#${item.key}_mask)`,
+                        }}
+                      />
+                      <Path
+                        id={item.key}
+                        onMouseEnter={onMouseEnter}
+                        onMouseLeave={onMouseLeave}
+                        onMouseMove={onMouseMove}
+                        attributes={{
+                          d: lineFunc(item) as string,
+                        }}
+                        style={{
+                          fill: "none",
+                          stroke: `${colorMap.get(item.key)}`,
+                          strokeWidth: "1px",
+                        }}
+                      />
+                      {item.map((singleYear: any) => (
+                        <circle
+                          key={`${item.key}_${singleYear.data.date}`}
+                          cx={xScale(Number(singleYear.data.date))}
+                          cy={yScale(singleYear[1])}
+                          r={2}
+                          fill={colorMap.get(item.key)}
+                        />
+                      ))}
+                    </g>
                   );
                 })}
               </g>
