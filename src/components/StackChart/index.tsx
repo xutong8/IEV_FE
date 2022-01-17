@@ -434,14 +434,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                      */
 
                     <g key={index}>
-                      <Path
+                      <path
                         id={`${item.key}_blur`}
-                        onMouseEnter={onMouseEnter}
-                        onMouseLeave={onMouseLeave}
-                        onMouseMove={onMouseMove}
-                        attributes={{
-                          d: lineFunc(item) as string,
-                        }}
+                        d={lineFunc(item) as string}
                         style={{
                           fill: "none",
                           stroke: `${colorMap.get(item.key)}`,
@@ -450,14 +445,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                           mask: `url(#${item.key}_mask)`,
                         }}
                       />
-                      <Path
+                      <path
                         id={item.key}
-                        onMouseEnter={onMouseEnter}
-                        onMouseLeave={onMouseLeave}
-                        onMouseMove={onMouseMove}
-                        attributes={{
-                          d: lineFunc(item) as string,
-                        }}
+                        d={lineFunc(item) as string}
                         style={{
                           fill: "none",
                           stroke: `${colorMap.get(item.key)}`,
