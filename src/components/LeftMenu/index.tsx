@@ -133,7 +133,7 @@ const LeftMenu = () => {
                   })}`}
                   onClick={() => handleCountryClick(country)}
                   style={{
-                    lineHeight: `${country.name.length > 11 ? "9px" : "18px"}`,
+                    lineHeight: `${country.name.length > 11 ? "10px" : "18px"}`,
                   }}
                   dangerouslySetInnerHTML={{
                     __html: addBrForLabel(country.name, 8),
@@ -189,7 +189,9 @@ const LeftMenu = () => {
                   })}`}
                   onClick={() => handleCategoryClick(category)}
                   style={{
-                    lineHeight: `${category.name.length > 11 ? "9px" : "18px"}`,
+                    lineHeight: `${
+                      category.name.length > 11 ? "10px" : "18px"
+                    }`,
                   }}
                   dangerouslySetInnerHTML={{
                     __html: addBrForLabel(category.name, 8),

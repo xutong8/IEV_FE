@@ -65,12 +65,12 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
                 draggable={false}
                 // fontSize={25}
                 style={{ flex: "5", marginLeft: "10px" }}
-                color="red"
+                color="#BE1E2E"
                 solveDrop={setSourceCountry}
                 parentRef={sourceMapRef}
               />
             </div>
-            <div className={styles.placeholder} />
+            {/* <div className={styles.placeholder} /> */}
           </div>
           <div
             className={cn({
@@ -85,13 +85,13 @@ const PieMap: React.FC<IPieMapProps> = (props) => {
                 title={targetCountry}
                 draggable={false}
                 // fontSize={25}
-                color="blue"
+                color="#1653A1"
                 style={{ flex: "5", marginLeft: "10px" }}
                 parentRef={targetMapRef}
                 solveDrop={setTargetCountry}
               />
             </div>
-            <div className={styles.placeholder} />
+            {/* <div className={styles.placeholder} /> */}
           </div>
         </div>
         <div className={styles.middleMap} ref={middleMapRef}>

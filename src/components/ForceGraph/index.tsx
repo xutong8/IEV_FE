@@ -290,8 +290,8 @@ const ForceGraph: React.FC<IForceGraphProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    zoomRef.current.scaleTo(select(svgRef.current), 0.6);
-    zoomRef.current.translateBy(select(svgRef.current), 50, 50);
+    zoomRef.current.scaleTo(select(svgRef.current), 0.65);
+    zoomRef.current.translateBy(select(svgRef.current), 50, 20);
   }, []);
 
   // 更新标签位置

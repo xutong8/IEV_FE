@@ -115,7 +115,7 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
         className={styles.map}
         style={{
           width: choroplethWidth,
-          height: choroplethHeight,
+          height: Math.min(choroplethWidth / 1.5, choroplethHeight), // 为了控制居中
         }}
       />
       <div className={styles.colorScale}>

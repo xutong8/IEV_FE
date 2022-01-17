@@ -32,7 +32,7 @@ const RadarArea = () => {
             draggable={true}
             deleteItem={deleteItem}
             parentRef={RadarAreaRef}
-            parentWidth={160}
+            parentWidth={180}
           />
         ))}
       </div>
