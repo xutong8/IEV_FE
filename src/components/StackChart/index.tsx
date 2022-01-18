@@ -318,7 +318,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               />
             </foreignObject>
             <defs>
-              <filter id="lineBlur" x="-5%" y="-5%">
+              <filter id="lineBlur" x="0" y="0">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
               </filter>
               <clipPath id="clip-path">
@@ -350,9 +350,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                 />
               </clipPath>
               {series.map((item: any, index: number) => (
-                <mask id={`${item.key}_mask`} key={index}>
+                <clipPath id={`${item.key}_clipPath`} key={index}>
                   <path d={areaFunc(item) as string} fill="#fff" />
-                </mask>
+                </clipPath>
               ))}
               {Array.from(colorMap.keys())?.map((item: any) => {
                 return (
@@ -442,7 +442,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                           stroke: `${colorMap.get(item.key)}`,
                           strokeWidth: "10px",
                           filter: "url(#lineBlur)",
-                          mask: `url(#${item.key}_mask)`,
+                          clipPath: `url(#${item.key}_clipPath)`,
                         }}
                       />
                       <path

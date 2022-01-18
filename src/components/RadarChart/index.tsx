@@ -37,12 +37,13 @@ const RadarChart: React.FC<IRadarChart> = (props) => {
   const radarRef = useRef<HTMLDivElement>(null);
 
   const [radarWidth, radarHeight] = useSVGSize(parentRef);
-  console.log(radarWidth, radarHeight);
+
   const radarSide = useMemo(
     // 减去的为margin
     () => (parentWidth ? parentWidth : Math.min(radarWidth, radarHeight) - 20),
     [radarWidth, radarHeight, parentWidth]
   );
+  console.log(radarWidth, radarHeight, radarSide);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
