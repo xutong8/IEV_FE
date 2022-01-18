@@ -30,9 +30,9 @@ const RadarArea = () => {
             key={item}
             title={item}
             draggable={true}
-            style={{ flex: "0 0 20%" }}
             deleteItem={deleteItem}
             parentRef={RadarAreaRef}
+            parentWidth={180}
           />
         ))}
       </div>

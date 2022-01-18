@@ -1,12 +1,21 @@
+@marginUnit: 8px;
+
 .radar_area {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 0;
+  // display: flex;
+  // flex-direction: column;
+  height: calc(46vh - @marginUnit + 10px);
 
   .radar_chart_list {
     display: flex;
-    flex: 1 0 0;
+    height: calc(100% - 40px);
     flex-direction: column;
-    overflow-y: auto;
+    // flex: 0 1 auto;
+    overflow-y: scroll;
+    gap: 10px;
+    // margin: 0 20px;
+  }
+
+  .radar_chart_list::-webkit-scrollbar {
+    display: none;
   }
 }

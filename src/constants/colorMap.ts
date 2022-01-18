@@ -22,5 +22,5 @@ export const continentColorMap: { [key: string]: string } = {
   NA: "#2171b5",
   SA: "#993404",
   OC: "#807dba",
-  SP: "#969696",
+  SP: "#fdb462",
 };
