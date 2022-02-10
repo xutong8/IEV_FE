@@ -454,7 +454,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                           strokeWidth: "1px",
                         }}
                       />
-                      {item.map((singleYear: any) => (
+                      {/* {item.map((singleYear: any) => (
                         <circle
                           key={`${item.key}_${singleYear.data.date}`}
                           cx={xScale(Number(singleYear.data.date))}
@@ -462,7 +462,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                           r={2}
                           fill={colorMap.get(item.key)}
                         />
-                      ))}
+                      ))} */}
                     </g>
                   );
                 })}
