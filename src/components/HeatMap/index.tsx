@@ -173,15 +173,16 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                     row.countryName === item.countryName ? "#ffffff" : "#2781E5"
                   }
                   fillOpacity={
-                    // countryList.length === 0 ||
-                    // countryList.find(
-                    //   (country) =>
-                    //     country.name === item.countryName ||
-                    //     country.name === row.countryName
-                    // )
-                    //   ? 1
-                    //   : 0.4
-                    colorScale(item.expvalue)
+                    countryList.length === 0
+                      ? colorScale(item.expvalue)
+                      : countryList.find(
+                          (country) =>
+                            country.name === item.countryName ||
+                            country.name === row.countryName
+                        )
+                      ? colorScale(item.expvalue)
+                      : // 0.8 * (1 - colorScale(item.expvalue))
+                        colorScale(item.expvalue) * 0.25
                   }
                   strokeWidth={1}
                   stroke="#ffffff"
@@ -196,7 +197,14 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                     rowIdx === currentRowIdx ||
                     columnIdx === currentColumnIdx
                       ? undefined
-                      : "url(#f1)"
+                      : // : countryList.length === 0 ||
+                        //   countryList.find(
+                        //     (country) =>
+                        //       country.name === item.countryName ||
+                        //       country.name === row.countryName
+                        //   )
+                        // ? undefined
+                        "url(#f1)"
                   }
                 />
               );

@@ -75,6 +75,7 @@ const LeftMenu = () => {
 
   // 处理国家被点击的事件
   const handleCountryClick = (image: Image) => {
+    console.log("click");
     dispatch(
       countryList.find((country) => country.id === image.id)
         ? delCountryItem(image)
