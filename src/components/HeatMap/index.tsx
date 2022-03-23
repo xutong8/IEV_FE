@@ -16,9 +16,9 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
   const { width, height, dataSource, className = "", maxValue } = props;
 
   // color scale
-  const colorScale = scaleLinear<string>()
+  const colorScale = scaleLinear<number>()
     .domain([0, maxValue])
-    .range(["#f8d06b", "#eb7f3e"]);
+    .range([0.3, 1]);
 
   const countryNames = useMemo(
     () => dataSource.map((item) => item.countryName),
@@ -170,22 +170,21 @@ const HeatMap: React.FC<IHeatMapProps> = (props) => {
                   x={xScale(item.countryName)}
                   y={yScale(row.countryName)}
                   fill={
-                    row.countryName === item.countryName
-                      ? "#ffffff"
-                      : colorScale(item.expvalue)
+                    row.countryName === item.countryName ? "#ffffff" : "#2781E5"
                   }
                   fillOpacity={
-                    countryList.length === 0 ||
-                    countryList.find(
-                      (country) =>
-                        country.name === item.countryName ||
-                        country.name === row.countryName
-                    )
-                      ? 1
-                      : 0.4
+                    // countryList.length === 0 ||
+                    // countryList.find(
+                    //   (country) =>
+                    //     country.name === item.countryName ||
+                    //     country.name === row.countryName
+                    // )
+                    //   ? 1
+                    //   : 0.4
+                    colorScale(item.expvalue)
                   }
                   strokeWidth={1}
-                  stroke="#d3d3d2"
+                  stroke="#ffffff"
                   width={width / countryNames.length}
                   height={height / countryNames.length}
                   onMouseEnter={() =>

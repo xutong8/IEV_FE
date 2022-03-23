@@ -1,17 +1,19 @@
 @import url("../../styles/base.less");
 
+@marginUnit: 8px;
+
 .leftmenu {
   width: 100%;
-  height: 100%;
+  height: calc(46vh - 2 * @marginUnit - 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
 
   .item {
     display: flex;
     flex-direction: column;
     overflow: auto;
-
-    &:nth-child(2) {
-      margin-top: 12px;
-    }
 
     .list {
       flex: 1 0 0;
@@ -33,13 +35,11 @@
           cursor: pointer;
           text-align: center;
           width: 100%;
-          height: 36px;
+          height: 24px;
           padding: 0 3px;
-          font-size: 14px;
-          // overflow: hidden;
-          // text-overflow: ellipsis;
+          font-size: 10px;
           white-space: pre;
-          margin: 12px 2px;
+          margin: 0 2px;
           background: #fafafa;
           border: 1px solid #d9d9d9;
           border-radius: 2px;
@@ -59,10 +59,10 @@
     &:extend(.block);
   }
   .itemTop {
-    height: calc(50% - 55px);
+    flex: 1;
   }
   .itemBottom {
-    height: calc(50% + 40px);
+    flex: 1;
   }
 }
 
@@ -73,9 +73,8 @@
 }
 
 .btn {
-  margin-top: 24px;
+  margin: 12px 4px;
   font-size: 12px;
-  margin-bottom: 24px;
 }
 
 .middle {

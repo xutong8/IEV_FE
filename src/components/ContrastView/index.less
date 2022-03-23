@@ -7,43 +7,45 @@
     flex: 1 0 0;
     display: flex;
     flex-direction: row;
+    // gap: 20px;
 
     .select {
       width: 140px;
       margin-bottom: 12px;
     }
 
-    .basicMap {
+    .leftRadarArea {
+      flex: 30%;
+      min-width: 30%;
+      max-width: 30%;
       display: flex;
       flex-direction: column;
-      // align-items: center;
-      // justify-content: center;
-    }
-
-    .sourceMap {
-      flex: 25%;
-      min-width: 25%;
-      max-width: 25%;
-      display: flex;
-      flex-direction: column;
+      .basicMap {
+        display: flex;
+        flex: 1;
+        margin-bottom: 10px;
+        // align-items: center;
+        // justify-content: center;
+      }
     }
 
     .middleMap {
-      flex: 50%;
-      min-width: 50%;
-      max-width: 50%;
+      flex: 70%;
+      min-width: 70%;
+      max-width: 70%;
       display: flex;
       flex-direction: column;
       position: relative;
+      padding: 0 10px;
     }
 
-    .targetMap {
-      flex: 25%;
-      min-width: 25%;
-      max-width: 25%;
-      display: flex;
-      flex-direction: column;
-    }
+    // .sourceMap {
+    //   margin-bottom: 10px;
+    // }
+
+    // .targetMap {
+    //   margin-bottom: 10px;
+    // }
   }
 }
 

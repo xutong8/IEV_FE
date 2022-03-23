@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { IStore } from "@/reducers";
 import { scaleLinear } from "d3-scale";
 import { colorDomain, colorRange } from "@/constants/colorScale";
+import { useSVGSize } from "@/hooks/useSVGSize";
 export interface IChoropleth {
   selectedCountries: Array<string>;
   parentClass: string;
@@ -30,6 +31,9 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
   );
 
   const allCountriesRef = useRef<any>();
+  const choroplethRef = useRef<HTMLDivElement>(null);
+  const [choroplethWidth, choroplethHeight] = useSVGSize(choroplethRef);
+  console.log("choropleth", choroplethHeight, choroplethWidth);
 
   const handleData = async () => {
     // 如果category长度为0，则跳过
@@ -53,10 +57,13 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
 
       const curDigit2 = allCountries[id]["iso_2digit_alpha"];
 
-      select(`.${parentClass} #${curDigit2}`).style(
-        "fill",
-        `${colorScale(data[id])}`
-      );
+      select(`.${parentClass} #${curDigit2}`)
+        .style(
+          "fill",
+          // `${colorScale(data[id])}`
+          `${data[id] > 0 ? "#BE1E2E" : "#1653A1"}`
+        )
+        .style("fill-opacity", Math.abs(data[id]));
     });
 
     const selectedPair = [
@@ -102,29 +109,27 @@ const Choropleth: React.FC<IChoropleth> = (props) => {
   }, [selectedCountries, year, category, allCountriesRef.current]);
 
   return (
-    <div className={styles["choropleth_container"]}>
+    <div className={styles["choropleth_container"]} ref={choroplethRef}>
       <CountryMap
         name="World"
         className={styles.map}
         style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
+          width: choroplethWidth,
+          height: Math.min(choroplethWidth / 1.5, choroplethHeight), // 为了控制居中
         }}
       />
       <div className={styles.colorScale}>
         <div
           style={{
             flex: "1 0 0",
-            backgroundImage: "linear-gradient(to right, blue, #fff)",
+            backgroundImage: "linear-gradient(to right, #1653A1, #fff)",
           }}
           className={styles.left}
         ></div>
         <div
           style={{
             flex: "1 0 0",
-            backgroundImage: "linear-gradient(to right, #fff, red)",
+            backgroundImage: "linear-gradient(to right, #fff, #BE1E2E)",
           }}
           className={styles.right}
         ></div>

@@ -1,5 +1,5 @@
 import { scaleLinear } from "d3-scale";
-import { area, stack } from "d3-shape";
+import { area, stack, line } from "d3-shape";
 import Axis, { DirectionValue } from "../Axis";
 import { IStackAreaData } from "@/types/areaChart";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -60,7 +60,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
   const minYear = useMemo(() => Math.min(...years), [years]);
   // 获取最大年
   const maxYear = useMemo(() => Math.max(...years), [years]);
-
+  console.log(areaData);
   // 使用stack函数计算得到堆叠后的数据
   const series = useMemo(
     () => (areaData.length !== 0 ? stack().keys(columns)(areaData) : []),
@@ -160,6 +160,11 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
     .y0((d) => yScale(d[0]))
     .y1((d) => yScale(d[1]));
 
+  const lineFunc = line()
+    .x((d: any) => xScale(Number(d.data.date)))
+    // .y0((d) => yScale(d[0]))
+    .y((d) => yScale(d[1]));
+
   // 移入area path事件的处理器
   const onMouseEnter = useCallback(
     (hoverName) => {
@@ -213,7 +218,7 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
       )
       .then((res: any) => {
         unstable_batchedUpdates(() => {
-          const columns = res?.data?.columns ?? [];
+          const columns = res?.data?.columns.splice(1) ?? [];
           setColumns(columns);
           columnsRef.current = columns;
           const areaData = res?.data?.data ?? [];
@@ -313,6 +318,9 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               />
             </foreignObject>
             <defs>
+              <filter id="lineBlur" x="0" y="0">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
+              </filter>
               <clipPath id="clip-path">
                 <rect
                   x={zeroPosition[0]}
@@ -341,6 +349,38 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
                   height={20}
                 />
               </clipPath>
+              {series.map((item: any, index: number) => (
+                <clipPath id={`${item.key}_clipPath`} key={index}>
+                  <path d={areaFunc(item) as string} fill="#fff" />
+                </clipPath>
+              ))}
+              {Array.from(colorMap.keys())?.map((item: any) => {
+                return (
+                  <linearGradient
+                    key={item}
+                    id={`grad_${item}`}
+                    x1="0%"
+                    y1="100%"
+                    x2="0%"
+                    y2="0%"
+                  >
+                    <stop
+                      offset="0%"
+                      style={{
+                        stopColor: colorMap.get(item),
+                        stopOpacity: 0.05,
+                      }}
+                    ></stop>
+                    <stop
+                      offset="100%"
+                      style={{
+                        stopColor: colorMap.get(item),
+                        stopOpacity: 0.5,
+                      }}
+                    ></stop>
+                  </linearGradient>
+                );
+              })}
             </defs>
             <g>
               <g clipPath="url(#clip-axis)">
@@ -371,21 +411,59 @@ const StackChart: React.FC<IStackChartProps> = (props) => {
               <g clipPath="url(#clip-path)">
                 {series.map((item: any, index: number) => {
                   return (
-                    <Path
-                      id={item.key as string}
+                    /**
+                     * 之前的堆栈的写法
+                     * <Path
+                      id={item.key}
                       key={index}
                       attributes={{
-                        fill:
-                          hoverCountry && item.key === hoverCountry
-                            ? "#8fce74"
-                            : colorMap.get(item.key),
+                        // fill:
+                        //   hoverCountry && item.key === hoverCountry
+                        //     ? "#8fce74"
+                        //     : `url("#${item.key}")`,
                         d: areaFunc(item) as string,
                       }}
                       onMouseEnter={onMouseEnter}
                       onMouseLeave={onMouseLeave}
                       onMouseMove={onMouseMove}
-                      style={{ transition: "all .5s ease" }}
+                      style={{
+                        transition: "all .5s ease",
+                        fill: `url("#grad_${item.key}")`,
+                      }}
                     />
+                     */
+
+                    <g key={index}>
+                      <path
+                        id={`${item.key}_blur`}
+                        d={lineFunc(item) as string}
+                        style={{
+                          fill: "none",
+                          stroke: `${colorMap.get(item.key)}`,
+                          strokeWidth: "10px",
+                          filter: "url(#lineBlur)",
+                          clipPath: `url(#${item.key}_clipPath)`,
+                        }}
+                      />
+                      <path
+                        id={item.key}
+                        d={lineFunc(item) as string}
+                        style={{
+                          fill: "none",
+                          stroke: `${colorMap.get(item.key)}`,
+                          strokeWidth: "1px",
+                        }}
+                      />
+                      {item.map((singleYear: any) => (
+                        <circle
+                          key={`${item.key}_${singleYear.data.date}`}
+                          cx={xScale(Number(singleYear.data.date))}
+                          cy={yScale(singleYear[1])}
+                          r={2}
+                          fill={colorMap.get(item.key)}
+                        />
+                      ))}
+                    </g>
                   );
                 })}
               </g>

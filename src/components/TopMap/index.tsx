@@ -301,14 +301,15 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
             <div
               className={styles.colorScale}
               style={{
-                backgroundImage: "linear-gradient(#eb7f3e, #f8d06b)",
+                backgroundImage:
+                  "linear-gradient(to right, rgba(39, 129, 229, 1), rgba(39, 129, 229, 0.3))",
               }}
             >
               <div
                 style={{
                   position: "absolute",
-                  top: -20,
-                  // right: -5,
+                  top: -5,
+                  left: -25,
                   width: 55,
                   fontSize: 12,
                   fontWeight: 450,
@@ -319,8 +320,9 @@ const TopMap: React.FC<ITopMapProps> = (props) => {
               <div
                 style={{
                   position: "absolute",
-                  bottom: -20,
-                  right: 0,
+                  // bottom: -20,
+                  top: -5,
+                  right: -7,
                   fontSize: 12,
                   fontWeight: 450,
                 }}
